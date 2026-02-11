@@ -19,7 +19,7 @@ if (!DATABASE_URL) {
 }
 
 // Define users table structure
-const users = pgTable("prospera-reef_user", {
+const users = pgTable("samal-reef_user", {
   id: varchar({ length: 255 }).primaryKey(),
   name: varchar({ length: 255 }),
   email: varchar({ length: 255 }).notNull(),
@@ -48,7 +48,7 @@ async function seedAdmin() {
 
     // Check if admin already exists
     const result = await conn`
-      SELECT * FROM "prospera-reef_user"
+      SELECT * FROM "samal-reef_user"
       WHERE email = 'admin@arkpad.co'
     `;
 

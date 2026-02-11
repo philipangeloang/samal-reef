@@ -34,7 +34,7 @@ if (!DATABASE_URL) {
 
 // Define pricingTiers table structure (with collectionId)
 const pricingTiers = pgTable(
-  "prospera-reef_pricing_tier",
+  "samal-reef_pricing_tier",
   {
     id: integer().primaryKey().generatedByDefaultAsIdentity(),
     collectionId: integer().notNull(),
@@ -73,51 +73,58 @@ const pricingTiers = pgTable(
  */
 const GLAMPHOUSE_PRICING_TIERS = [
   {
-    percentage: 100, // 1%
-    cryptoPrice: "1100.00",
-    fiatPrice: "1200.00",
-    displayLabel: "1%",
+    percentage: 75, // 0.75%
+    cryptoPrice: "350.00",
+    fiatPrice: "25000.00",
+    displayLabel: "0.75%",
+    isActive: true,
+  },
+  {
+    percentage: 150, // 1.5%
+    cryptoPrice: "670.00",
+    fiatPrice: "47000.00",
+    displayLabel: "1.5%",
     isActive: true,
   },
   {
     percentage: 300, // 3%
-    cryptoPrice: "3000.00",
-    fiatPrice: "3200.00",
+    cryptoPrice: "1320.00",
+    fiatPrice: "94000.00",
     displayLabel: "3%",
     isActive: true,
   },
   {
     percentage: 600, // 6%
-    cryptoPrice: "5800.00",
-    fiatPrice: "6000.00",
+    cryptoPrice: "2575.00",
+    fiatPrice: "187000.00",
     displayLabel: "6%",
     isActive: true,
   },
   {
-    percentage: 1200, // 12%
-    cryptoPrice: "11500.00",
-    fiatPrice: "12000.00",
-    displayLabel: "12%",
+    percentage: 1250, // 12.5%
+    cryptoPrice: "5110.00",
+    fiatPrice: "371000.00",
+    displayLabel: "12.5%",
     isActive: true,
   },
   {
     percentage: 2500, // 25%
-    cryptoPrice: "23000.00",
-    fiatPrice: "24000.00",
+    cryptoPrice: "10100.00",
+    fiatPrice: "725000.00",
     displayLabel: "25%",
     isActive: true,
   },
   {
     percentage: 5000, // 50%
-    cryptoPrice: "45000.00",
-    fiatPrice: "48000.00",
+    cryptoPrice: "20000.00",
+    fiatPrice: "1450000.00",
     displayLabel: "50%",
     isActive: true,
   },
   {
     percentage: 10000, // 100%
-    cryptoPrice: "89000.00",
-    fiatPrice: "95000.00",
+    cryptoPrice: "40000.00",
+    fiatPrice: "2750000.00",
     displayLabel: "100%",
     isActive: true,
   },
@@ -144,7 +151,7 @@ async function seedPricingTiers() {
 
     // Get Glamphouse collection ID
     const glamphouseResult = await conn`
-      SELECT id FROM "prospera-reef_property_collection"
+      SELECT id FROM "samal-reef_property_collection"
       WHERE slug = 'glamphouse'
       LIMIT 1
     `;
@@ -164,7 +171,7 @@ async function seedPricingTiers() {
 
     // Check if tiers already exist for this collection
     const existingTiers = await conn`
-      SELECT COUNT(*) as count FROM "prospera-reef_pricing_tier"
+      SELECT COUNT(*) as count FROM "samal-reef_pricing_tier"
       WHERE "collectionId" = ${glamphouseId}
     `;
     const existingCount = parseInt(existingTiers[0]?.count ?? "0");
@@ -187,7 +194,7 @@ async function seedPricingTiers() {
     // Insert all pricing tiers
     await db.insert(pricingTiers).values(tiersWithCollection);
 
-    console.log("✅ Successfully seeded 7 pricing tiers for Glamphouse:");
+    console.log("✅ Successfully seeded 8 pricing tiers for Glamphouse:");
     GLAMPHOUSE_PRICING_TIERS.forEach((tier) => {
       console.log(
         `   - ${tier.displayLabel}: Crypto $${tier.cryptoPrice} | Fiat $${tier.fiatPrice}`,

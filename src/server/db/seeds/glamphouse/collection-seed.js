@@ -26,7 +26,7 @@ if (!DATABASE_URL) {
 }
 
 // Define property collections table structure
-const propertyCollections = pgTable("prospera-reef_property_collection", {
+const propertyCollections = pgTable("samal-reef_property_collection", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   slug: varchar({ length: 255 }).notNull().unique(),
@@ -56,7 +56,7 @@ async function seedGlamphouseCollection() {
 
     // Check if Glamphouse collection already exists
     const existingCollection = await conn`
-      SELECT * FROM "prospera-reef_property_collection"
+      SELECT * FROM "samal-reef_property_collection"
       WHERE slug = 'glamphouse'
     `;
 

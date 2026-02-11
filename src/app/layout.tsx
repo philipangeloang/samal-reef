@@ -32,8 +32,7 @@ export default function RootLayout({
             <Suspense fallback={null}>
               <AffiliateTracker />
             </Suspense>
-            {/* TEMPORARY: Hidden for Coming Soon — restore when ready */}
-            {/* <SiteHeader /> */}
+            <SiteHeader />
             <div className="min-h-screen">{children}</div>
             <Toaster />
           </TRPCReactProvider>

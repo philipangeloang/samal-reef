@@ -1,7 +1,7 @@
 /**
  * Glamphouse Units Seed
  *
- * This file creates 24 units (Glamphouse A1-A8, B1-B8, C1-C8) for the Glamphouse collection.
+ * This file creates 14 units (Glamphouse B1-B10, C1-C4) for the Glamphouse collection.
  * All units start with 0% ownership and AVAILABLE status.
  *
  * IMPORTANT: Run collection-seed.js FIRST before running this!
@@ -27,7 +27,7 @@ if (!DATABASE_URL) {
 }
 
 // Define units table structure (with collectionId)
-const units = pgTable("prospera-reef_unit", {
+const units = pgTable("samal-reef_unit", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   collectionId: integer().notNull(),
   name: varchar({ length: 255 }).notNull(),
@@ -54,11 +54,11 @@ async function seedUnits() {
   const db = drizzle(conn);
 
   try {
-    console.log("🌱 Seeding Glamphouse units (Glamphouse A1-A8, B1-B8, C1-C8)...");
+    console.log("🌱 Seeding Glamphouse units (Glamphouse B1-B10, C1-C4)...");
 
     // Get Glamphouse collection ID
     const glamphouseResult = await conn`
-      SELECT id FROM "prospera-reef_property_collection"
+      SELECT id FROM "samal-reef_property_collection"
       WHERE slug = 'glamphouse'
       LIMIT 1
     `;
@@ -78,7 +78,7 @@ async function seedUnits() {
 
     // Check if units already exist for this collection
     const existingUnits = await conn`
-      SELECT * FROM "prospera-reef_unit"
+      SELECT * FROM "samal-reef_unit"
       WHERE "collectionId" = ${glamphouseId}
       AND name LIKE 'Glamphouse %'
       ORDER BY name
@@ -96,15 +96,18 @@ async function seedUnits() {
       return;
     }
 
-    // Generate units Glamphouse A1-A8, B1-B8, C1-C8
+    // Generate units Glamphouse B1-B10, C1-C4
     const unitsToInsert = [];
-    const buildings = ['A', 'B', 'C'];
+    const buildings = [
+      { letter: 'B', count: 10 },
+      { letter: 'C', count: 4 },
+    ];
 
     for (const building of buildings) {
-      for (let i = 1; i <= 8; i++) {
+      for (let i = 1; i <= building.count; i++) {
         unitsToInsert.push({
           collectionId: glamphouseId,
-          name: `Glamphouse ${building}${i}`,
+          name: `Glamphouse ${building.letter}${i}`,
           description: null,
           imageUrl: null,
           status: "AVAILABLE",
@@ -117,8 +120,8 @@ async function seedUnits() {
 
     console.log("✅ Glamphouse units created successfully!");
     console.log(`   Collection: Glamphouse`);
-    console.log(`   Total units: 24`);
-    console.log(`   Names: Glamphouse A1-A8, B1-B8, C1-C8`);
+    console.log(`   Total units: 14`);
+    console.log(`   Names: Glamphouse B1-B10, C1-C4`);
     console.log(`   Status: AVAILABLE`);
     console.log(`   Ownership: 0% (no ownerships yet)`);
 

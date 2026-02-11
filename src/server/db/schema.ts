@@ -13,7 +13,7 @@ import { type AdapterAccount } from "next-auth/adapters";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `prospera-reef_${name}`);
+export const createTable = pgTableCreator((name) => `samal-reef_${name}`);
 
 // ===== USERS TABLE =====
 // Core user accounts with role-based access control
