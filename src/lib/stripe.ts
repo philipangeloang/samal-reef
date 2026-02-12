@@ -9,6 +9,7 @@
 
 import Stripe from "stripe";
 import { env } from "@/env";
+import { siteConfig } from "@/site.config";
 
 // Initialize Stripe client with API key
 export const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
@@ -51,7 +52,7 @@ export async function createCheckoutSession(params: {
       line_items: [
         {
           price_data: {
-            currency: "php",
+            currency: siteConfig.currency.code.toLowerCase(),
             product_data: {
               name: `${collectionName} - ${displayLabel} Ownership`,
               description: `Fractional ownership in ${collectionName}. Unit will be assigned after payment.`,

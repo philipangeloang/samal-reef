@@ -7,6 +7,7 @@
 
 import { Resend } from "resend";
 import { env } from "@/env";
+import { currencySymbol } from "@/lib/currency";
 
 // Initialize Resend client
 const resend = new Resend(env.RESEND_API_KEY);
@@ -400,7 +401,7 @@ export const emailService = {
                                 <tr>
                                   <td style="padding: 8px 0;">
                                     <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Amount Paid</p>
-                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">₱${amount}</p>
+                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">${currencySymbol}${amount}</p>
                                   </td>
                                 </tr>
                                 <tr>
@@ -843,7 +844,7 @@ export const emailService = {
                                 Commission Earned
                               </p>
                               <p style="margin: 0; font-size: 48px; font-weight: 700; color: #22d3ee;">
-                                ₱${commissionAmount}
+                                ${currencySymbol}${commissionAmount}
                               </p>
                             </td>
                           </tr>
@@ -1010,7 +1011,7 @@ export const emailService = {
                                 <tr>
                                   <td style="padding: 8px 0;">
                                     <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Amount Paid</p>
-                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">₱${amount}</p>
+                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">${currencySymbol}${amount}</p>
                                   </td>
                                 </tr>
                               </table>
@@ -1700,7 +1701,7 @@ export const emailService = {
                                     <span style="color: rgba(224, 242, 254, 0.6); font-size: 14px;">Amount</span>
                                   </td>
                                   <td style="padding: 8px 0; border-bottom: 1px solid rgba(34, 211, 238, 0.1); text-align: right;">
-                                    <span style="color: #4ade80; font-size: 14px; font-weight: 600;">₱${amount}</span>
+                                    <span style="color: #4ade80; font-size: 14px; font-weight: 600;">${currencySymbol}${amount}</span>
                                   </td>
                                 </tr>
                                 <tr>
@@ -1922,7 +1923,7 @@ export const emailService = {
                                 </tr>
                                 <tr>
                                   <td style="padding: 16px 0 0 0; border-top: 1px solid rgba(34, 211, 238, 0.2); color: rgba(224, 242, 254, 0.7); font-size: 14px;">Total Paid:</td>
-                                  <td style="padding: 16px 0 0 0; border-top: 1px solid rgba(34, 211, 238, 0.2); color: #22d3ee; font-size: 20px; font-weight: 700; text-align: right;">₱${totalPrice}</td>
+                                  <td style="padding: 16px 0 0 0; border-top: 1px solid rgba(34, 211, 238, 0.2); color: #22d3ee; font-size: 20px; font-weight: 700; text-align: right;">${currencySymbol}${totalPrice}</td>
                                 </tr>
                               </table>
                             </td>

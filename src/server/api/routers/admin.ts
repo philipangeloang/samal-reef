@@ -14,6 +14,7 @@ import {
 } from "@/server/db/schema";
 import { eq, sql, desc, and, or, like, gte, lte } from "drizzle-orm";
 import { emailService } from "@/server/email";
+import { formatCurrency, currencyCode } from "@/lib/currency";
 
 export const adminRouter = createTRPCRouter({
   /**
@@ -522,7 +523,7 @@ export const adminRouter = createTRPCRouter({
         pricingTierId: z.number().int().positive(),
         unitId: z.number().int().positive(),
         purchasePrice: z.string().regex(/^\d+\.?\d*$/),
-        currency: z.string().default("PHP"),
+        currency: z.string().default(currencyCode),
         paymentMethod: z.enum(["FIAT", "CRYPTO", "MANUAL"]),
         // Optional
         affiliateCode: z.string().optional(),
@@ -907,10 +908,7 @@ export const adminRouter = createTRPCRouter({
             collection: ownership.unit!.collection,
           },
         percentageOwned: (ownership.percentageOwned / 100).toFixed(2),
-        purchasePrice: `₱${parseFloat(ownership.purchasePrice).toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`,
+        purchasePrice: formatCurrency(ownership.purchasePrice),
         purchaseDate: ownership.createdAt.toISOString(),
         isSigned: ownership.isSigned,
         moaUrl: ownership.moaUrl,

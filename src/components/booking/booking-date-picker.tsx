@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { currencySymbol } from "@/lib/currency";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 import {
@@ -306,7 +307,7 @@ export function BookingDatePicker({
               <span className="font-medium">{date.getDate()}</span>
               {!hidePrices && isAvailable && availability.minPrice && !compact && (
                 <span className="text-[9px] text-cyan-300/70">
-                  ₱{Math.round(availability.minPrice)}
+                  {currencySymbol}{Math.round(availability.minPrice)}
                 </span>
               )}
               {!isPast && !availability.isAvailable && (
@@ -351,7 +352,7 @@ export function BookingDatePicker({
           {nights} night{nights !== 1 ? "s" : ""}
           {!hidePrices && estimatedPrice !== null && (
             <span className="ml-2 font-medium text-green-400">
-              ~₱{estimatedPrice.toLocaleString()}
+              ~{currencySymbol}{estimatedPrice.toLocaleString()}
             </span>
           )}
         </p>

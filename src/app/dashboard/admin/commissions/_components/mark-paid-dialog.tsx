@@ -14,6 +14,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { currencySymbol } from "@/lib/currency";
 
 interface Commission {
   id: number;
@@ -91,7 +92,7 @@ export function MarkPaidDialog({
                     Commission Amount:
                   </span>
                   <span className="text-lg font-bold">
-                    ₱{parseFloat(commission.commissionAmount).toFixed(2)}
+                    {currencySymbol}{parseFloat(commission.commissionAmount).toFixed(2)}
                   </span>
                 </div>
               </div>

@@ -31,6 +31,7 @@ import {
   Link as LinkIcon,
   Calendar
 } from "lucide-react";
+import { currencySymbol } from "@/lib/currency";
 
 export default async function AffiliateDashboardPage() {
   const session = await auth();
@@ -87,7 +88,7 @@ export default async function AffiliateDashboardPage() {
                 </div>
               </div>
               <CardTitle className="text-3xl font-bold text-white">
-                ₱{totalEarned.toFixed(2)}
+                {currencySymbol}{totalEarned.toFixed(2)}
               </CardTitle>
             </CardHeader>
           </Card>
@@ -105,7 +106,7 @@ export default async function AffiliateDashboardPage() {
                 </div>
               </div>
               <CardTitle className="text-3xl font-bold text-white">
-                ₱{totalPaid.toFixed(2)}
+                {currencySymbol}{totalPaid.toFixed(2)}
               </CardTitle>
             </CardHeader>
           </Card>
@@ -123,7 +124,7 @@ export default async function AffiliateDashboardPage() {
                 </div>
               </div>
               <CardTitle className="text-3xl font-bold text-white">
-                ₱{pendingAmount.toFixed(2)}
+                {currencySymbol}{pendingAmount.toFixed(2)}
               </CardTitle>
             </CardHeader>
           </Card>
@@ -273,7 +274,7 @@ export default async function AffiliateDashboardPage() {
                             )}
                           </TableCell>
                           <TableCell className="font-semibold text-green-400">
-                            ₱{transaction.commissionAmount}
+                            {currencySymbol}{transaction.commissionAmount}
                           </TableCell>
                           <TableCell>
                             {transaction.isPaid ? (

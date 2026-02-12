@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
+import { currencyCode } from "@/lib/currency";
 
 type PricingTier = RouterOutputs["pricing"]["getAllTiers"][number];
 
@@ -119,7 +120,7 @@ export function EditTierDialog({ open, onOpenChange, tier }: EditTierDialogProps
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="editFiatPrice">Fiat Price (PHP) *</Label>
+              <Label htmlFor="editFiatPrice">Fiat Price ({currencyCode}) *</Label>
               <Input
                 id="editFiatPrice"
                 type="number"

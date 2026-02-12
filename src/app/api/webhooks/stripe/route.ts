@@ -27,6 +27,7 @@ import {
   getAffiliateLinkId,
 } from "@/server/services/payment-processor";
 import { processBookingPayment } from "@/server/services/booking-processor";
+import { currencyCode } from "@/lib/currency";
 
 export async function POST(req: NextRequest) {
   try {
@@ -151,7 +152,7 @@ async function handleOwnershipPayment(session: {
       externalId: session.id,
       userId,
       amount: amountPaid.toFixed(2),
-      currency: "PHP",
+      currency: currencyCode,
       status: "SUCCESS",
       collectionId,
       pricingTierId,
@@ -178,7 +179,7 @@ async function handleOwnershipPayment(session: {
     pricingTierId,
     percentageToBuy: pricingTier.percentage,
     amountPaid: amountPaid.toFixed(2),
-    currency: "PHP",
+    currency: currencyCode,
     paymentMethod: "FIAT",
     affiliateLinkId,
     isNewUser,
@@ -237,7 +238,7 @@ async function handleBookingPayment(session: {
       externalId: session.id,
       userId: session.metadata?.userId ?? null,
       amount: amountPaid.toFixed(2),
-      currency: "PHP",
+      currency: currencyCode,
       status: "SUCCESS",
       metadata: { ...session.metadata, type: "BOOKING" },
       webhookProcessedAt: new Date(),

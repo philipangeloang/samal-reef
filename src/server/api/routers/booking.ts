@@ -44,6 +44,7 @@ import {
   syncBookingToSmoobu,
 } from "@/server/services/booking-processor";
 import { smoobuClient, type SmoobuReservation } from "@/server/services/smoobu-client";
+import { currencyCode } from "@/lib/currency";
 
 /**
  * Generate a unique booking reference code
@@ -723,7 +724,7 @@ export const bookingRouter = createTRPCRouter({
         cleaningFee: z.string().regex(/^\d+\.?\d*$/).default("0"),
         serviceFee: z.string().regex(/^\d+\.?\d*$/).default("0"),
         totalPrice: z.string().regex(/^\d+\.?\d*$/),
-        currency: z.string().default("PHP"),
+        currency: z.string().default(currencyCode),
         // Optional
         guestNotes: z.string().optional(),
         internalNotes: z.string().optional(),
@@ -956,7 +957,7 @@ export const bookingRouter = createTRPCRouter({
           monthlyTotals: {} as Record<number, number>,
           yearTotal: 0,
           bookingCount: 0,
-          currency: "PHP",
+          currency: currencyCode,
           lastRefreshedAt: null,
           error: null,
         };
@@ -1037,7 +1038,7 @@ export const bookingRouter = createTRPCRouter({
         monthlyTotals,
         yearTotal,
         bookingCount: totalBookingCount,
-        currency: "PHP",
+        currency: currencyCode,
         lastRefreshedAt: cacheMeta?.lastRefreshedAt ?? null,
         error: cacheMeta?.error ?? null,
       };

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { currencySymbol } from "@/lib/currency";
 import Link from "next/link";
 import NextImage from "next/image";
 import { useSession } from "next-auth/react";
@@ -584,10 +585,10 @@ export function CheckoutClient({
                         <div>
                           <div className="flex items-center justify-between text-sm">
                             <span className="text-cyan-300/70">Accommodation</span>
-                            <span className="font-medium text-white">₱{fmt(baseSubtotal)}</span>
+                            <span className="font-medium text-white">{currencySymbol}{fmt(baseSubtotal)}</span>
                           </div>
                           <p className="mt-0.5 text-xs text-cyan-300/40">
-                            ₱{fmt(baseRate)}/night &times; {pricing.totalNights} night{pricing.totalNights !== 1 ? "s" : ""}
+                            {currencySymbol}{fmt(baseRate)}/night &times; {pricing.totalNights} night{pricing.totalNights !== 1 ? "s" : ""}
                             {pricing.unitsRequired && pricing.unitsRequired > 1
                               ? ` × ${pricing.unitsRequired} units`
                               : ""}
@@ -602,14 +603,14 @@ export function CheckoutClient({
                                 ? ` (×${pricing.unitsRequired})`
                                 : ""}
                             </span>
-                            <span className="font-medium text-white">₱{fmt(pricing.cleaningFee)}</span>
+                            <span className="font-medium text-white">{currencySymbol}{fmt(pricing.cleaningFee)}</span>
                           </div>
                         )}
 
                         {pricing.serviceFee > 0 && (
                           <div className="flex items-center justify-between text-sm">
                             <span className="text-cyan-300/70">Service fee</span>
-                            <span className="font-medium text-white">₱{fmt(pricing.serviceFee)}</span>
+                            <span className="font-medium text-white">{currencySymbol}{fmt(pricing.serviceFee)}</span>
                           </div>
                         )}
                       </div>
@@ -627,7 +628,7 @@ export function CheckoutClient({
                                     <span className="text-green-400">
                                       {d.label} ({d.percent}%)
                                     </span>
-                                    <span className="font-medium text-green-400">-₱{fmt(amt)}</span>
+                                    <span className="font-medium text-green-400">-{currencySymbol}{fmt(amt)}</span>
                                   </div>
                                 );
                               })
@@ -637,13 +638,13 @@ export function CheckoutClient({
                                   {pricing.discountLabel ?? "Special Discount"}
                                   {pricing.discountPercent ? ` (${pricing.discountPercent}%)` : ""}
                                 </span>
-                                <span className="font-medium text-green-400">-₱{fmt(collectionDiscount)}</span>
+                                <span className="font-medium text-green-400">-{currencySymbol}{fmt(collectionDiscount)}</span>
                               </div>
                             ) : null}
                             {affiliateDiscountAmt > 0 && (
                               <div className="flex items-center justify-between text-sm">
                                 <span className="text-purple-400">Referral Discount (5%)</span>
-                                <span className="font-medium text-purple-400">-₱{fmt(affiliateDiscountAmt)}</span>
+                                <span className="font-medium text-purple-400">-{currencySymbol}{fmt(affiliateDiscountAmt)}</span>
                               </div>
                             )}
                           </div>
@@ -661,7 +662,7 @@ export function CheckoutClient({
                               ? "text-green-400"
                               : "text-white"
                         }`}>
-                          ₱{fmt(pricing.totalPrice)}
+                          {currencySymbol}{fmt(pricing.totalPrice)}
                         </span>
                       </div>
                       {hasDiscounts && (() => {
@@ -670,7 +671,7 @@ export function CheckoutClient({
                           : collectionDiscount;
                         return (
                           <p className="text-right text-xs text-cyan-300/40">
-                            You save ₱{fmt(totalCollectionSavings + affiliateDiscountAmt)}
+                            You save {currencySymbol}{fmt(totalCollectionSavings + affiliateDiscountAmt)}
                           </p>
                         );
                       })()}

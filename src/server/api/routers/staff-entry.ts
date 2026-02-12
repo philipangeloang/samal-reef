@@ -18,6 +18,7 @@ import {
 } from "@/server/db/schema";
 import { eq, and, desc, isNotNull, sql } from "drizzle-orm";
 import { emailService } from "@/server/email";
+import { currencyCode } from "@/lib/currency";
 import { syncBookingToSmoobu } from "@/server/services/booking-processor";
 
 export const staffEntryRouter = createTRPCRouter({
@@ -35,7 +36,7 @@ export const staffEntryRouter = createTRPCRouter({
         collectionId: z.number().int().positive(),
         pricingTierId: z.number().int().positive(),
         purchasePrice: z.string().regex(/^\d+\.?\d*$/), // Amount paid
-        currency: z.string().default("PHP"),
+        currency: z.string().default(currencyCode),
         paymentMethod: z.enum(["FIAT", "CRYPTO", "MANUAL"]),
         // Optional
         affiliateCode: z.string().optional(),
@@ -132,7 +133,7 @@ export const staffEntryRouter = createTRPCRouter({
         cleaningFee: z.string().regex(/^\d+\.?\d*$/).default("0"),
         serviceFee: z.string().regex(/^\d+\.?\d*$/).default("0"),
         totalPrice: z.string().regex(/^\d+\.?\d*$/),
-        currency: z.string().default("PHP"),
+        currency: z.string().default(currencyCode),
         // Optional
         guestNotes: z.string().optional(),
         internalNotes: z.string().optional(),

@@ -37,6 +37,7 @@ import {
   Link2,
   ArrowLeft,
 } from "lucide-react";
+import { currencySymbol } from "@/lib/currency";
 
 type UserData = RouterOutputs["admin"]["getUserDetail"];
 
@@ -190,7 +191,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
                   </div>
                 </div>
                 <CardTitle className="text-3xl font-bold text-white">
-                  ₱{parseFloat(investorData.totalInvested).toLocaleString("en-US")}
+                  {currencySymbol}{parseFloat(investorData.totalInvested).toLocaleString("en-US")}
                 </CardTitle>
               </CardHeader>
             </Card>
@@ -283,7 +284,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
                               </Badge>
                             </TableCell>
                             <TableCell className="font-semibold text-green-400">
-                              ₱{parseFloat(ownership.purchasePrice).toLocaleString("en-US")}
+                              {currencySymbol}{parseFloat(ownership.purchasePrice).toLocaleString("en-US")}
                             </TableCell>
                             <TableCell className="text-cyan-100/70">
                               {new Date(ownership.purchaseDate).toLocaleDateString()}
@@ -351,7 +352,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
                   </div>
                 </div>
                 <CardTitle className="text-2xl font-bold text-white">
-                  ₱{parseFloat(affiliateData.totalEarned).toLocaleString("en-US")}
+                  {currencySymbol}{parseFloat(affiliateData.totalEarned).toLocaleString("en-US")}
                 </CardTitle>
               </CardHeader>
             </Card>
@@ -367,7 +368,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
                   </div>
                 </div>
                 <CardTitle className="text-2xl font-bold text-white">
-                  ₱{parseFloat(affiliateData.totalPaid).toLocaleString("en-US")}
+                  {currencySymbol}{parseFloat(affiliateData.totalPaid).toLocaleString("en-US")}
                 </CardTitle>
               </CardHeader>
             </Card>
@@ -383,7 +384,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
                   </div>
                 </div>
                 <CardTitle className="text-2xl font-bold text-white">
-                  ₱{parseFloat(affiliateData.totalPending).toLocaleString("en-US")}
+                  {currencySymbol}{parseFloat(affiliateData.totalPending).toLocaleString("en-US")}
                 </CardTitle>
               </CardHeader>
             </Card>
@@ -511,7 +512,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
                               {commission.ownership.unitName}
                             </TableCell>
                             <TableCell className="text-cyan-100/70">
-                              ₱
+                              {currencySymbol}
                               {parseFloat(commission.ownership.purchasePrice).toLocaleString(
                                 "en-US",
                               )}
@@ -520,7 +521,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
                               {commission.rate}%
                             </TableCell>
                             <TableCell className="font-semibold text-green-400">
-                              ₱{parseFloat(commission.amount).toLocaleString("en-US")}
+                              {currencySymbol}{parseFloat(commission.amount).toLocaleString("en-US")}
                             </TableCell>
                             <TableCell>
                               {commission.isPaid ? (

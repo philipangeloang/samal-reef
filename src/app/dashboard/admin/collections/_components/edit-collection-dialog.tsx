@@ -26,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Trash2, Loader2 } from "lucide-react";
+import { currencyCode } from "@/lib/currency";
 
 type Collection = RouterOutputs["collection"]["getAll"][number];
 
@@ -382,7 +383,7 @@ export function EditCollectionDialog({
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
                   <Label htmlFor="edit-pricePerNight" className="text-cyan-100">
-                    Price Per Night (PHP)
+                    Price Per Night ({currencyCode})
                   </Label>
                   <Input
                     id="edit-pricePerNight"
@@ -398,7 +399,7 @@ export function EditCollectionDialog({
 
                 <div className="grid gap-2">
                   <Label htmlFor="edit-cleaningFee" className="text-cyan-100">
-                    Cleaning Fee (PHP)
+                    Cleaning Fee ({currencyCode})
                   </Label>
                   <Input
                     id="edit-cleaningFee"

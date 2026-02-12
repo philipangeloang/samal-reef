@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Loader2, Building2 } from "lucide-react";
+import { currencySymbol, currencyCode } from "@/lib/currency";
 
 type Collection = RouterOutputs["collection"]["getAll"][number];
 
@@ -93,7 +94,7 @@ export function AddOwnershipForm({ collections, isAdmin }: AddOwnershipFormProps
       collectionId: selectedCollectionId,
       pricingTierId: selectedTierId,
       purchasePrice,
-      currency: "PHP",
+      currency: currencyCode,
       paymentMethod,
       affiliateCode: affiliateData?.affiliateCode || undefined,
       internalNotes: internalNotes || undefined,
@@ -205,7 +206,7 @@ export function AddOwnershipForm({ collections, isAdmin }: AddOwnershipFormProps
                   <SelectContent>
                     {pricingTiers.map((tier) => (
                       <SelectItem key={tier.id} value={tier.id.toString()}>
-                        {tier.displayLabel} - ₱{tier.fiatPrice} ({(tier.percentage / 100).toFixed(2)}%)
+                        {tier.displayLabel} - {currencySymbol}{tier.fiatPrice} ({(tier.percentage / 100).toFixed(2)}%)
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -218,7 +219,7 @@ export function AddOwnershipForm({ collections, isAdmin }: AddOwnershipFormProps
                 <p className="text-sm text-cyan-100/70">
                   Selected: <span className="font-medium text-white">{selectedTier.displayLabel}</span>
                   {" - "}
-                  <span className="text-green-400">₱{selectedTier.fiatPrice}</span>
+                  <span className="text-green-400">{currencySymbol}{selectedTier.fiatPrice}</span>
                   {" for "}
                   <span className="text-blue-400">{(selectedTier.percentage / 100).toFixed(2)}%</span>
                   {" ownership"}
@@ -233,7 +234,7 @@ export function AddOwnershipForm({ collections, isAdmin }: AddOwnershipFormProps
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="purchasePrice" className="text-cyan-100">
-                  Amount (PHP)
+                  Amount ({currencyCode})
                 </Label>
                 <Input
                   id="purchasePrice"

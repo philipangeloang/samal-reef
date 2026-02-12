@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { stripe } from "@/lib/stripe";
 import { env } from "@/env";
+import { siteConfig } from "@/site.config";
 
 const requestSchema = z.object({
   bookingId: z.number().int().positive(),
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
       line_items: [
         {
           price_data: {
-            currency: "php",
+            currency: siteConfig.currency.code.toLowerCase(),
             product_data: {
               name: `${data.collectionName} - ${data.nights} Night Stay`,
               description: `Check-in: ${checkInDate} | Check-out: ${checkOutDate}`,

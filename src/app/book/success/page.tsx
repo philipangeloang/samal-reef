@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { currencySymbol } from "@/lib/currency";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -139,7 +140,7 @@ export default async function BookingSuccessPage({
                   <div className="flex items-center justify-between">
                     <span className="text-cyan-300/70">Total Paid</span>
                     <span className="text-xl font-bold text-white">
-                      ₱{parseFloat(bookingDetails.totalPrice).toFixed(2)}
+                      {currencySymbol}{parseFloat(bookingDetails.totalPrice).toFixed(2)}
                     </span>
                   </div>
                 </div>

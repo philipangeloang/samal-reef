@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { auth } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { TrendingUp, Users, DollarSign, Building2 } from "lucide-react";
+import { currencySymbol } from "@/lib/currency";
 
 export default async function AdminDashboardPage() {
   const session = await auth();
@@ -65,7 +66,7 @@ export default async function AdminDashboardPage() {
             </CardHeader>
             <CardContent className="relative">
               <div className="text-2xl font-bold text-white">
-                ₱{stats.totalRevenue}
+                {currencySymbol}{stats.totalRevenue}
               </div>
               <p className="mt-1 text-xs text-cyan-100/60">
                 {stats.totalSales} total sales
@@ -86,7 +87,7 @@ export default async function AdminDashboardPage() {
             </CardHeader>
             <CardContent className="relative">
               <div className="text-2xl font-bold text-white">
-                ₱{stats.pendingCommissions}
+                {currencySymbol}{stats.pendingCommissions}
               </div>
               <p className="mt-1 text-xs text-cyan-100/60">
                 {stats.pendingCommissionsCount} unpaid
@@ -185,7 +186,7 @@ export default async function AdminDashboardPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="font-semibold text-green-400">
-                          ₱{transaction.purchasePrice}
+                          {currencySymbol}{transaction.purchasePrice}
                         </TableCell>
                         <TableCell>
                           <Badge className="border-purple-400/30 bg-purple-400/20 text-purple-300">
@@ -243,7 +244,7 @@ export default async function AdminDashboardPage() {
                           {commission.ownership?.unit?.name ?? "Unknown"}
                         </TableCell>
                         <TableCell className="font-semibold text-green-400">
-                          ₱{commission.commissionAmount}
+                          {currencySymbol}{commission.commissionAmount}
                         </TableCell>
                         <TableCell>
                           <Button

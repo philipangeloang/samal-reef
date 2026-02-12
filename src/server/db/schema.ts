@@ -6,6 +6,7 @@ import {
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
+import { siteConfig } from "@/site.config";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -160,7 +161,7 @@ export const propertyCollections = createTable(
     isActive: d.boolean().notNull().default(true), // Can be hidden from frontend
     displayOrder: d.integer().notNull().default(0), // Sort order on homepage
     // ===== BOOKING PRICING (managed in-app, not from Smoobu) =====
-    bookingPricePerNight: d.numeric({ precision: 10, scale: 2 }), // Base nightly rate in PHP
+    bookingPricePerNight: d.numeric({ precision: 10, scale: 2 }), // Base nightly rate in site currency
     bookingCleaningFee: d.numeric({ precision: 10, scale: 2 }).default("50.00"), // Fixed cleaning fee
     bookingServiceFeePercent: d.numeric({ precision: 5, scale: 2 }).default("10.00"), // Service fee % (e.g., 10.00 = 10%)
     bookingMinNights: d.integer().default(1), // Minimum nights required
@@ -327,7 +328,7 @@ export const ownerships = createTable(
     percentageOwned: d.integer().notNull(), // Basis points from pricing tier: 100 = 1%, 300 = 3%, etc.
     purchasePrice: d.numeric({ precision: 10, scale: 2 }).notNull(), // Actual amount paid (crypto or fiat price)
     paymentMethod: d.varchar({ length: 20 }).notNull(), // 'CRYPTO' | 'FIAT'
-    currency: d.varchar({ length: 10 }).notNull().default("PHP"), // 'PHP', 'ETH', 'USDC', etc.
+    currency: d.varchar({ length: 10 }).notNull().default(siteConfig.currency.code), // Site currency or crypto
     // Affiliate tracking
     affiliateLinkId: d.integer().references(() => affiliateLinks.id),
     // Payment tracking
@@ -658,14 +659,14 @@ export const bookings = createTable(
     checkIn: d.date().notNull(),
     checkOut: d.date().notNull(),
 
-    // Pricing (in PHP)
+    // Pricing
     nightlyRate: d.numeric({ precision: 10, scale: 2 }).notNull(),
     totalNights: d.integer().notNull(),
     subtotal: d.numeric({ precision: 10, scale: 2 }).notNull(),
     cleaningFee: d.numeric({ precision: 10, scale: 2 }).notNull().default("0.00"),
     serviceFee: d.numeric({ precision: 10, scale: 2 }).notNull().default("0.00"),
     totalPrice: d.numeric({ precision: 10, scale: 2 }).notNull(),
-    currency: d.varchar({ length: 10 }).notNull().default("PHP"),
+    currency: d.varchar({ length: 10 }).notNull().default(siteConfig.currency.code),
 
     // Status
     status: d

@@ -30,6 +30,7 @@ import {
   getAffiliateLinkId,
 } from "@/server/services/payment-processor";
 import { emailService } from "@/server/email";
+import { currencyCode } from "@/lib/currency";
 
 /**
  * Generate a unique reference code for manual payments
@@ -158,9 +159,9 @@ export const manualPaymentRouter = createTRPCRouter({
         pricingTierId: input.pricingTierId,
         percentage: pricingTier.displayLabel,
         percentageBasisPoints: pricingTier.percentage,
-        // Use fiat price for manual payments (in PHP)
+        // Use fiat price for manual payments
         amountDue: pricingTier.fiatPrice,
-        currency: "PHP",
+        currency: currencyCode,
         paymentMethod: {
           id: paymentMethod.id,
           name: paymentMethod.name,
@@ -187,7 +188,7 @@ export const manualPaymentRouter = createTRPCRouter({
         manualPaymentMethodId: z.string().min(1),
         proofImageUrl: z.string().url(),
         amountPaid: z.string(),
-        currency: z.string().default("PHP"),
+        currency: z.string().default(currencyCode),
         affiliateLinkId: z.number().int().positive().optional(),
       }),
     )

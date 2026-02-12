@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { currencySymbol } from "@/lib/currency";
 import NextImage from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -317,7 +318,7 @@ export function CollectionShowcase({ collections, manualPaymentMethods = [] }: C
                             <div className="text-3xl font-bold text-cyan-100">
                               {paymentMethod === "CRYPTO"
                                 ? `${Number(tier.cryptoPrice).toLocaleString()} USDC`
-                                : `₱${Number(tier.fiatPrice).toLocaleString()}`}
+                                : `${currencySymbol}${Number(tier.fiatPrice).toLocaleString()}`}
                             </div>
                           </div>
 

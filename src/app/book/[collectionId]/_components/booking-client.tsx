@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { currencySymbol } from "@/lib/currency";
 import Link from "next/link";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
@@ -335,15 +336,15 @@ export function BookingClient({
                         combinedDiscountPercent > 0 ? (
                           <>
                             <span className="mr-2 text-sm text-red-400/70 line-through">
-                              ₱{totalEstimate.toLocaleString()}
+                              {currencySymbol}{totalEstimate.toLocaleString()}
                             </span>
                             <span className="text-xl font-bold text-green-400">
-                              ₱{Math.round(totalEstimate * (1 - combinedDiscountPercent / 100)).toLocaleString()}
+                              {currencySymbol}{Math.round(totalEstimate * (1 - combinedDiscountPercent / 100)).toLocaleString()}
                             </span>
                           </>
                         ) : (
                           <span className="text-xl font-bold text-white">
-                            ₱{totalEstimate.toLocaleString()}
+                            {currencySymbol}{totalEstimate.toLocaleString()}
                           </span>
                         )
                       ) : (

@@ -27,6 +27,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw, TrendingUp, DollarSign, Calendar, Building2, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { formatCurrency } from "@/lib/currency";
 
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -39,15 +40,6 @@ const QUARTERS = [
   { label: "Q3", months: [7, 8, 9], name: "Jul - Sep" },
   { label: "Q4", months: [10, 11, 12], name: "Oct - Dec" },
 ];
-
-function formatCurrency(amount: number, currency: string = "PHP") {
-  return new Intl.NumberFormat("en-PH", {
-    style: "currency",
-    currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
 
 function formatRelativeTime(date: Date): string {
   const now = new Date();
@@ -182,7 +174,7 @@ export function BookingRevenueClient() {
               <div className="text-right">
                 <p className="text-sm text-cyan-100/60">Year Total</p>
                 <p className="text-3xl font-bold text-green-400">
-                  {formatCurrency(revenue.yearTotal, revenue.currency)}
+                  {formatCurrency(revenue.yearTotal, 0)}
                 </p>
               </div>
             </div>
@@ -214,7 +206,7 @@ export function BookingRevenueClient() {
                         quarterTotal > 0 ? "text-green-400" : "text-gray-500"
                       }`}
                     >
-                      {formatCurrency(quarterTotal, revenue.currency)}
+                      {formatCurrency(quarterTotal, 0)}
                     </p>
                   </div>
                 );
@@ -278,7 +270,7 @@ export function BookingRevenueClient() {
                           amount > 0 ? "text-green-400" : "text-gray-500"
                         }`}
                       >
-                        {formatCurrency(amount, revenue.currency)}
+                        {formatCurrency(amount, 0)}
                       </p>
                     </div>
                   );
@@ -347,13 +339,13 @@ export function BookingRevenueClient() {
                                 }`}
                               >
                                 {amount > 0
-                                  ? formatCurrency(amount, revenue.currency)
+                                  ? formatCurrency(amount, 0)
                                   : "-"}
                               </TableCell>
                             );
                           })}
                           <TableCell className="text-right font-bold text-green-400">
-                            {formatCurrency(unit.yearTotal, revenue.currency)}
+                            {formatCurrency(unit.yearTotal, 0)}
                           </TableCell>
                           <TableCell className="text-right text-cyan-100/60">
                             {unit.bookingCount}
@@ -378,13 +370,13 @@ export function BookingRevenueClient() {
                               className="text-right text-xs font-semibold text-green-400"
                             >
                               {amount > 0
-                                ? formatCurrency(amount, revenue.currency)
+                                ? formatCurrency(amount, 0)
                                 : "-"}
                             </TableCell>
                           );
                         })}
                         <TableCell className="text-right font-bold text-green-400">
-                          {formatCurrency(revenue.yearTotal, revenue.currency)}
+                          {formatCurrency(revenue.yearTotal, 0)}
                         </TableCell>
                         <TableCell className="text-right font-semibold text-cyan-100">
                           {revenue.bookingCount}

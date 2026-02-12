@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
+import { currencyCode } from "@/lib/currency";
 
 interface CreateTierDialogProps {
   open: boolean;
@@ -182,7 +183,7 @@ export function CreateTierDialog({ open, onOpenChange }: CreateTierDialogProps) 
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="fiatPrice">Fiat Price (PHP) *</Label>
+              <Label htmlFor="fiatPrice">Fiat Price ({currencyCode}) *</Label>
               <Input
                 id="fiatPrice"
                 type="number"

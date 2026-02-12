@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/dialog";
 import { Search, ChevronLeft, ChevronRight, Plus, Loader2, Check, Clock, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
+import { currencySymbol, currencyCode } from "@/lib/currency";
 
 type Transaction = RouterOutputs["admin"]["getAllTransactions"]["transactions"][number];
 
@@ -376,7 +377,7 @@ export function TransactionsManagementClient({
                         </Badge>
                       </TableCell>
                       <TableCell className="font-semibold text-green-400">
-                        ₱{parseFloat(transaction.purchasePrice).toLocaleString("en-US", {
+                        {currencySymbol}{parseFloat(transaction.purchasePrice).toLocaleString("en-US", {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })}
@@ -545,7 +546,7 @@ export function TransactionsManagementClient({
                     <SelectContent>
                       {pricingTiers.map((tier) => (
                         <SelectItem key={tier.id} value={tier.id.toString()}>
-                          {(tier.percentage / 100).toFixed(2)}% - ₱{parseFloat(tier.fiatPrice).toLocaleString()}
+                          {(tier.percentage / 100).toFixed(2)}% - {currencySymbol}{parseFloat(tier.fiatPrice).toLocaleString()}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -581,10 +582,10 @@ export function TransactionsManagementClient({
               <h3 className="text-sm font-medium text-cyan-300">Payment Details</h3>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label className="text-cyan-100">Purchase Price (PHP)</Label>
+                  <Label className="text-cyan-100">Purchase Price ({currencyCode})</Label>
                   <div className="flex h-10 w-full items-center rounded-md border border-cyan-500/30 bg-gray-900/50 px-3 text-white">
                     {selectedTier
-                      ? `₱${parseFloat(selectedTier.fiatPrice).toLocaleString()}`
+                      ? `${currencySymbol}${parseFloat(selectedTier.fiatPrice).toLocaleString()}`
                       : "Select a pricing tier"}
                   </div>
                   <p className="text-xs text-cyan-100/50">
@@ -642,7 +643,7 @@ export function TransactionsManagementClient({
                   </div>
                   <div className="flex justify-between border-t border-cyan-500/20 pt-1 font-semibold text-green-400">
                     <span>Purchase Price</span>
-                    <span>₱{parseFloat(selectedTier.fiatPrice).toLocaleString()} PHP</span>
+                    <span>{currencySymbol}{parseFloat(selectedTier.fiatPrice).toLocaleString()} {currencyCode}</span>
                   </div>
                 </div>
               </div>

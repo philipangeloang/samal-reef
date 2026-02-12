@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Pencil, Plus, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { currencySymbol } from "@/lib/currency";
 import { CreateTierDialog } from "./create-tier-dialog";
 import { EditTierDialog } from "./edit-tier-dialog";
 
@@ -157,7 +158,7 @@ export function PricingManagementClient({ initialTiers }: PricingManagementClien
                         {tier.cryptoPrice} USDC
                       </TableCell>
                       <TableCell className="text-cyan-100/70">
-                        ₱{tier.fiatPrice}
+                        {currencySymbol}{tier.fiatPrice}
                       </TableCell>
                       <TableCell>
                         <Badge

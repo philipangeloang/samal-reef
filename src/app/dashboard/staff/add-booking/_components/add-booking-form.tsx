@@ -24,6 +24,7 @@ import {
 import { toast } from "sonner";
 import { Loader2, CalendarDays } from "lucide-react";
 import { BookingDatePicker } from "@/components/booking/booking-date-picker";
+import { currencySymbol, currencyCode } from "@/lib/currency";
 
 type Collection = RouterOutputs["collection"]["getAll"][number];
 
@@ -258,7 +259,7 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
       cleaningFee,
       serviceFee,
       totalPrice,
-      currency: "PHP",
+      currency: currencyCode,
       guestNotes: guestNotes || undefined,
       internalNotes: internalNotes || undefined,
       affiliateCode: affiliateData?.affiliateCode || undefined,
@@ -424,7 +425,7 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
 
           {/* Pricing */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium text-cyan-300">Pricing (PHP)</h3>
+            <h3 className="text-sm font-medium text-cyan-300">Pricing ({currencyCode})</h3>
 
             {/* Discount Badges */}
             {activeDiscounts.length > 0 && (
@@ -453,8 +454,8 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
                   value={
                     nightlyRate !== "0"
                       ? discountPercent > 0
-                        ? `₱${nightlyRate} (was ₱${baseNightlyRate})`
-                        : `₱${nightlyRate}`
+                        ? `${currencySymbol}${nightlyRate} (was ${currencySymbol}${baseNightlyRate})`
+                        : `${currencySymbol}${nightlyRate}`
                       : ""
                   }
                   disabled
@@ -469,7 +470,7 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
                 <Input
                   id="cleaningFee"
                   type="text"
-                  value={cleaningFee !== "0" ? `₱${cleaningFee}` : "₱0"}
+                  value={cleaningFee !== "0" ? `${currencySymbol}${cleaningFee}` : `${currencySymbol}0`}
                   disabled
                   className="border-cyan-400/30 bg-[#0a1929]/50 text-white disabled:cursor-not-allowed disabled:opacity-60"
                 />
@@ -499,35 +500,35 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
                     <span>
                       {discountPercent > 0 ? (
                         <>
-                          <span className="text-red-400/70 line-through">₱{baseNightlyRate}</span>{" "}
-                          <span className="text-green-400">₱{nightlyRate}</span>
+                          <span className="text-red-400/70 line-through">{currencySymbol}{baseNightlyRate}</span>{" "}
+                          <span className="text-green-400">{currencySymbol}{nightlyRate}</span>
                         </>
                       ) : (
-                        `₱${nightlyRate}`
+                        `${currencySymbol}${nightlyRate}`
                       )}{" "}
                       x {totalNights} night{totalNights > 1 ? "s" : ""}
                     </span>
                     <span>
                       {originalSubtotal ? (
                         <span className="flex items-center gap-2">
-                          <span className="text-red-400/70 line-through">₱{originalSubtotal}</span>
-                          <span className="text-green-400">₱{subtotal}</span>
+                          <span className="text-red-400/70 line-through">{currencySymbol}{originalSubtotal}</span>
+                          <span className="text-green-400">{currencySymbol}{subtotal}</span>
                         </span>
                       ) : (
-                        `₱${subtotal}`
+                        `${currencySymbol}${subtotal}`
                       )}
                     </span>
                   </div>
                   {parseFloat(cleaningFee) > 0 && (
                     <div className="flex justify-between text-cyan-100/70">
                       <span>Cleaning fee</span>
-                      <span>₱{cleaningFee}</span>
+                      <span>{currencySymbol}{cleaningFee}</span>
                     </div>
                   )}
                   {parseFloat(serviceFee) > 0 && (
                     <div className="flex justify-between text-cyan-100/70">
                       <span>Service fee ({serviceFeePercent}%)</span>
-                      <span>₱{serviceFee}</span>
+                      <span>{currencySymbol}{serviceFee}</span>
                     </div>
                   )}
                   <div className="border-t border-cyan-400/20 pt-2">
@@ -537,12 +538,12 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
                         {originalTotalPrice ? (
                           <>
                             <span className="mr-2 text-sm text-red-400/70 line-through">
-                              ₱{originalTotalPrice}
+                              {currencySymbol}{originalTotalPrice}
                             </span>
-                            <span className="text-green-400">₱{totalPrice} PHP</span>
+                            <span className="text-green-400">{currencySymbol}{totalPrice} {currencyCode}</span>
                           </>
                         ) : (
-                          <span className="text-green-400">₱{totalPrice} PHP</span>
+                          <span className="text-green-400">{currencySymbol}{totalPrice} {currencyCode}</span>
                         )}
                       </span>
                     </div>

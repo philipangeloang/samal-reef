@@ -46,6 +46,7 @@ import {
   Plus,
   Check,
 } from "lucide-react";
+import { currencySymbol } from "@/lib/currency";
 
 type Booking = RouterOutputs["booking"]["getAllBookings"]["bookings"][number];
 type Collection = RouterOutputs["collection"]["getAll"][number];
@@ -611,7 +612,7 @@ export function BookingsClient({
                       </TableCell>
                       <TableCell>
                         <span className="font-semibold text-green-400">
-                          ₱{parseFloat(booking.totalPrice).toLocaleString()}
+                          {currencySymbol}{parseFloat(booking.totalPrice).toLocaleString()}
                         </span>
                       </TableCell>
                       <TableCell>
@@ -744,7 +745,7 @@ export function BookingsClient({
                 <div>
                   <p className="text-sm text-cyan-100/60">Total Price</p>
                   <p className="text-lg font-bold text-green-400">
-                    ₱{parseFloat(selectedBooking.totalPrice).toLocaleString()}
+                    {currencySymbol}{parseFloat(selectedBooking.totalPrice).toLocaleString()}
                   </p>
                 </div>
                 <div>
@@ -997,18 +998,18 @@ export function BookingsClient({
                 <div className="space-y-1 text-sm text-cyan-100/70">
                   <div className="flex justify-between">
                     <span>
-                      ₱{nightlyRate} × {totalNights} nights
+                      {currencySymbol}{nightlyRate} × {totalNights} nights
                       {discountPercent > 0 && (
                         <span className="ml-2 text-cyan-100/50 line-through">
-                          ₱{baseNightlyRate}
+                          {currencySymbol}{baseNightlyRate}
                         </span>
                       )}
                     </span>
                     <span>
-                      ₱{subtotal}
+                      {currencySymbol}{subtotal}
                       {originalSubtotal && (
                         <span className="ml-2 text-cyan-100/50 line-through">
-                          ₱{originalSubtotal}
+                          {currencySymbol}{originalSubtotal}
                         </span>
                       )}
                     </span>
@@ -1016,22 +1017,22 @@ export function BookingsClient({
                   {parseFloat(cleaningFee) > 0 && (
                     <div className="flex justify-between">
                       <span>Cleaning fee</span>
-                      <span>₱{cleaningFee}</span>
+                      <span>{currencySymbol}{cleaningFee}</span>
                     </div>
                   )}
                   {parseFloat(serviceFee) > 0 && (
                     <div className="flex justify-between">
                       <span>Service fee ({serviceFeePercent}%)</span>
-                      <span>₱{serviceFee}</span>
+                      <span>{currencySymbol}{serviceFee}</span>
                     </div>
                   )}
                   <div className="flex justify-between border-t border-cyan-500/20 pt-1 font-semibold text-green-400">
                     <span>Total</span>
                     <span>
-                      ₱{totalPrice}
+                      {currencySymbol}{totalPrice}
                       {originalTotalPrice && (
                         <span className="ml-2 text-cyan-100/50 line-through font-normal">
-                          ₱{originalTotalPrice}
+                          {currencySymbol}{originalTotalPrice}
                         </span>
                       )}
                     </span>

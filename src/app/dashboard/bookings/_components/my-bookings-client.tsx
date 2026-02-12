@@ -1,5 +1,6 @@
 "use client";
 
+import { currencySymbol } from "@/lib/currency";
 import { api, type RouterOutputs } from "@/trpc/react";
 import {
   Card,
@@ -241,7 +242,7 @@ export function MyBookingsClient({ initialBookings }: MyBookingsClientProps) {
                           </div>
                         </TableCell>
                         <TableCell className="font-semibold text-green-400">
-                          ₱{parseFloat(booking.totalPrice).toFixed(2)}
+                          {currencySymbol}{parseFloat(booking.totalPrice).toFixed(2)}
                         </TableCell>
                         <TableCell>
                           <Badge className={`${status.className} ${isUpcoming ? "animate-pulse" : ""}`}>

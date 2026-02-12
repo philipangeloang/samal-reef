@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { currencySymbol, currencyCode } from "@/lib/currency";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -81,9 +82,9 @@ export default async function PurchaseSuccessPage({
                 <div className="flex justify-between">
                   <span className="text-gray-400">Amount Paid:</span>
                   <span className="font-semibold text-white">
-                    {latestOwnership.currency && latestOwnership.currency !== "PHP"
+                    {latestOwnership.currency && latestOwnership.currency !== currencyCode
                       ? `${parseFloat(latestOwnership.purchasePrice).toFixed(4)} ${latestOwnership.currency}`
-                      : `₱${parseFloat(latestOwnership.purchasePrice).toLocaleString()}`
+                      : `${currencySymbol}${parseFloat(latestOwnership.purchasePrice).toLocaleString()}`
                     }
                   </span>
                 </div>
