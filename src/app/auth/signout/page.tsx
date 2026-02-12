@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Waves, LogOut, Loader2, ArrowLeft, Home } from "lucide-react";
+import { siteConfig } from "@/site.config";
 
 export default function SignOutPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -167,7 +168,7 @@ export default function SignOutPage() {
           <p className="mt-6 text-center text-xs text-cyan-200/50">
             Need help?{" "}
             <Link
-              href="https://www.facebook.com/reefresortofficial/"
+              href={siteConfig.social.facebook}
               target="_blank"
               rel="noopener noreferrer"
               className="text-cyan-400/70 hover:text-cyan-400"

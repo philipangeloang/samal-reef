@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Waves, Mail } from "lucide-react";
+import { siteConfig } from "@/site.config";
 
 export function FinalCTA() {
   const scrollToCollection = () => {
@@ -56,7 +57,7 @@ export function FinalCTA() {
                 className="rounded-full border-2 border-cyan-400/60 bg-transparent px-10 py-6 text-lg font-bold text-cyan-100 transition-all hover:border-cyan-400 hover:bg-cyan-400/20"
               >
                 <Link
-                  href="https://www.facebook.com/reefresortofficial/"
+                  href={siteConfig.social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -98,13 +99,13 @@ export function FinalCTA() {
             <div className="mb-8 flex flex-col items-center gap-6 md:flex-row md:justify-between">
               {/* Email */}
               <Link
-                href="mailto:sales@arkpad.co"
+                href={`mailto:${siteConfig.emails.sales}`}
                 className="group flex items-center gap-2 text-cyan-200/80 transition-colors hover:text-cyan-300"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full border border-cyan-400/30 bg-cyan-400/10 transition-all group-hover:border-cyan-400/50 group-hover:bg-cyan-400/20">
                   <Mail className="h-5 w-5" />
                 </div>
-                <span className="text-sm font-medium">sales@arkpad.co</span>
+                <span className="text-sm font-medium">{siteConfig.emails.sales}</span>
               </Link>
 
               {/* Social Links */}
@@ -113,7 +114,7 @@ export function FinalCTA() {
                 <div className="flex gap-3">
                   {/* Facebook */}
                   <Link
-                    href="https://www.facebook.com/reefresortofficial/"
+                    href={siteConfig.social.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex h-10 w-10 items-center justify-center rounded-full border border-cyan-400/30 bg-cyan-400/10 transition-all hover:scale-110 hover:border-cyan-400/50 hover:bg-cyan-400/20"
@@ -130,7 +131,7 @@ export function FinalCTA() {
 
                   {/* Instagram */}
                   <Link
-                    href="https://www.instagram.com/reefresort.official/"
+                    href={siteConfig.social.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex h-10 w-10 items-center justify-center rounded-full border border-cyan-400/30 bg-cyan-400/10 transition-all hover:scale-110 hover:border-cyan-400/50 hover:bg-cyan-400/20"
@@ -147,7 +148,7 @@ export function FinalCTA() {
 
                   {/* TikTok */}
                   <Link
-                    href="https://www.tiktok.com/@reefresort.official"
+                    href={siteConfig.social.tiktok}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex h-10 w-10 items-center justify-center rounded-full border border-cyan-400/30 bg-cyan-400/10 transition-all hover:scale-110 hover:border-cyan-400/50 hover:bg-cyan-400/20"
@@ -168,7 +169,7 @@ export function FinalCTA() {
             {/* Copyright */}
             <div className="text-center">
               <p className="text-sm text-cyan-100/60">
-                © 2025 Reef Resort. All rights reserved.
+                © 2025 {siteConfig.brand.name}. All rights reserved.
               </p>
             </div>
           </div>

@@ -25,6 +25,9 @@ import { sql } from "drizzle-orm";
 import postgres from "postgres";
 import "dotenv/config";
 
+// Table prefix — must match siteConfig.tablePrefix in src/site.config.ts
+const TABLE_PREFIX = "samal-reef";
+
 // Get DATABASE_URL from environment
 const DATABASE_URL = process.env.DATABASE_URL;
 if (!DATABASE_URL) {
@@ -34,7 +37,7 @@ if (!DATABASE_URL) {
 
 // Define pricingTiers table structure (with collectionId)
 const pricingTiers = pgTable(
-  "samal-reef_pricing_tier",
+  `${TABLE_PREFIX}_pricing_tier`,
   {
     id: integer().primaryKey().generatedByDefaultAsIdentity(),
     collectionId: integer().notNull(),
@@ -151,7 +154,7 @@ async function seedPricingTiers() {
 
     // Get Glamphouse collection ID
     const glamphouseResult = await conn`
-      SELECT id FROM "samal-reef_property_collection"
+      SELECT id FROM ${conn(`${TABLE_PREFIX}_property_collection`)}
       WHERE slug = 'glamphouse'
       LIMIT 1
     `;
@@ -171,7 +174,7 @@ async function seedPricingTiers() {
 
     // Check if tiers already exist for this collection
     const existingTiers = await conn`
-      SELECT COUNT(*) as count FROM "samal-reef_pricing_tier"
+      SELECT COUNT(*) as count FROM ${conn(`${TABLE_PREFIX}_pricing_tier`)}
       WHERE "collectionId" = ${glamphouseId}
     `;
     const existingCount = parseInt(existingTiers[0]?.count ?? "0");

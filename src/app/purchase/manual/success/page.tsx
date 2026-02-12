@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Clock, Home, Mail, CheckCircle, MessageCircle } from "lucide-react";
+import { siteConfig } from "@/site.config";
 
 export default function ManualPaymentSuccessPage() {
   return (
@@ -91,7 +92,7 @@ export default function ManualPaymentSuccessPage() {
               <p className="text-xs text-cyan-100/70">
                 For queries or follow-ups,{" "}
                 <a
-                  href="https://www.facebook.com/reefresortofficial"
+                  href={siteConfig.social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-cyan-400 underline hover:text-cyan-300"

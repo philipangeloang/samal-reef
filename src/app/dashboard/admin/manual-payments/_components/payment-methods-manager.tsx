@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { api, type RouterOutputs } from "@/trpc/react";
+import { siteConfig } from "@/site.config";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -373,7 +374,7 @@ export function PaymentMethodsManager({
                 </Label>
                 <Input
                   id="create-account-name"
-                  placeholder="e.g., Reef Resort Inc."
+                  placeholder={`e.g., ${siteConfig.brand.name} Inc.`}
                   value={formData.accountName}
                   onChange={(e) =>
                     setFormData({ ...formData, accountName: e.target.value })

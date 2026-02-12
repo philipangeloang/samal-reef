@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { api, type RouterOutputs } from "@/trpc/react";
+import { siteConfig } from "@/site.config";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -281,7 +282,7 @@ export function EditCollectionDialog({
                   id="edit-name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Reef Resort Bungalows"
+                  placeholder={`${siteConfig.brand.name} Bungalows`}
                   required
                   className="border-cyan-400/30 bg-[#0a1929]/50 text-white placeholder:text-cyan-100/40"
                 />

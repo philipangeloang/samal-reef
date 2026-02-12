@@ -15,6 +15,7 @@
 
 import "server-only";
 import { env } from "@/env";
+import { siteConfig } from "@/site.config";
 
 // ============================================================================
 // Types
@@ -145,7 +146,7 @@ interface SmoobuError {
 // API Client
 // ============================================================================
 
-const SMOOBU_BASE_URL = "https://login.smoobu.com/api";
+const SMOOBU_BASE_URL = siteConfig.integrations.smoobuBaseUrl;
 
 class SmoobuClient {
   private apiKey: string;

@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { siteConfig } from "@/site.config";
 import { api } from "@/trpc/react";
 import { EditNameDialog } from "./edit-name-dialog";
 import {
@@ -233,13 +234,13 @@ export function DashboardSidebar() {
         <Link href="/" className="flex items-center gap-3 px-2 py-4">
           <Image
             src="/Logo.png"
-            alt="Reef Resort"
+            alt={siteConfig.brand.name}
             width={32}
             height={32}
             className="h-8 w-8"
           />
           <span className="bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-lg font-bold text-transparent">
-            Reef Resort
+            {siteConfig.brand.name}
           </span>
         </Link>
       </SidebarHeader>

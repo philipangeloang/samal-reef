@@ -14,7 +14,7 @@ import { siteConfig } from "@/site.config";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `samal-reef_${name}`);
+export const createTable = pgTableCreator((name) => `${siteConfig.tablePrefix}_${name}`);
 
 // ===== USERS TABLE =====
 // Core user accounts with role-based access control

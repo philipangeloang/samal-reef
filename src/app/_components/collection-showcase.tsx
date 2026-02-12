@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { currencySymbol } from "@/lib/currency";
+import { siteConfig } from "@/site.config";
 import NextImage from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -87,7 +88,7 @@ export function CollectionShowcase({ collections, manualPaymentMethods = [] }: C
             Invest in the Future of Ocean Living
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-cyan-100/70">
-            Build your floating real estate portfolio with Reef Resort
+            Build your floating real estate portfolio with {siteConfig.brand.name}
             — combining real-estate investment with sustainable living on the
             Caribbean coast of Honduras
           </p>

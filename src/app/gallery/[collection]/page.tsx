@@ -6,6 +6,7 @@ import {
   GALLERY_COLLECTIONS as COLLECTIONS,
   type GalleryCollectionKey as CollectionKey,
 } from "@/lib/gallery-config";
+import { siteConfig } from "@/site.config";
 
 interface PageProps {
   params: Promise<{
@@ -70,7 +71,7 @@ export default async function GalleryPage({ params }: PageProps) {
           <footer className="border-t border-cyan-400/20 py-8">
             <div className="container mx-auto px-4 text-center">
               <p className="text-sm text-cyan-100/50">
-                {collectionData.name} - Reef Resort Collection
+                {collectionData.name} - {siteConfig.brand.name} Collection
               </p>
             </div>
           </footer>

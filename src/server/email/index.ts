@@ -8,13 +8,14 @@
 import { Resend } from "resend";
 import { env } from "@/env";
 import { currencySymbol } from "@/lib/currency";
+import { siteConfig } from "@/site.config";
 
 // Initialize Resend client
 const resend = new Resend(env.RESEND_API_KEY);
 
 // Email configuration
-const FROM_EMAIL = "Reef Resort <noreply@reefresort.co>";
-const FROM_NAME = "Reef Resort";
+const FROM_EMAIL = `${siteConfig.brand.name} <${siteConfig.emails.noreply}>`;
+const FROM_NAME = siteConfig.brand.name;
 
 /**
  * Email sending utilities
@@ -30,14 +31,14 @@ export const emailService = {
       const { data, error } = await resend.emails.send({
         from: FROM_EMAIL,
         to,
-        subject: "🌊 Sign in to Reef Resort",
+        subject: `🌊 Sign in to ${siteConfig.brand.name}`,
         html: `
           <!DOCTYPE html>
           <html lang="en">
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Sign in to Reef Resort</title>
+            <title>Sign in to ${siteConfig.brand.name}</title>
           </head>
           <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(180deg, #0a1929 0%, #0d1f31 50%, #0f2435 100%);">
             <!-- Main Container -->
@@ -54,7 +55,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -69,7 +70,7 @@ export const emailService = {
                                 Welcome Back to Paradise
                               </h2>
                               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
-                                Click the button below to securely sign in to your Reef Resort account. Your investment dashboard awaits!
+                                Click the button below to securely sign in to your ${siteConfig.brand.name} account. Your investment dashboard awaits!
                               </p>
                             </td>
                           </tr>
@@ -131,7 +132,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort - Your Gateway to Paradise Investment
+                          ${siteConfig.brand.name} - Your Gateway to Paradise Investment
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This email was sent to ${to}
@@ -174,7 +175,7 @@ export const emailService = {
       const { data, error } = await resend.emails.send({
         from: FROM_EMAIL,
         to,
-        subject: "🎉 You're invited to join Reef Resort as an Affiliate",
+        subject: `🎉 You're invited to join ${siteConfig.brand.name} as an Affiliate`,
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -196,7 +197,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -211,7 +212,7 @@ export const emailService = {
                                 You're Invited to Join Our Affiliate Program! 🎉
                               </h2>
                               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
-                                Start earning commissions by sharing Reef Resort with your network.
+                                Start earning commissions by sharing ${siteConfig.brand.name} with your network.
                               </p>
                             </td>
                           </tr>
@@ -288,7 +289,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort - Earn While You Share Paradise
+                          ${siteConfig.brand.name} - Earn While You Share Paradise
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This email was sent to ${to}
@@ -335,7 +336,7 @@ export const emailService = {
       const { data, error} = await resend.emails.send({
         from: FROM_EMAIL,
         to,
-        subject: "✅ Purchase Confirmed - Reef Resort",
+        subject: `✅ Purchase Confirmed - ${siteConfig.brand.name}`,
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -357,7 +358,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -455,7 +456,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort - Your Gateway to Paradise Investment
+                          ${siteConfig.brand.name} - Your Gateway to Paradise Investment
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This email was sent to ${to}
@@ -494,7 +495,7 @@ export const emailService = {
       const { data, error } = await resend.emails.send({
         from: FROM_EMAIL,
         to,
-        subject: "🌴 Welcome to Reef Resort!",
+        subject: `🌴 Welcome to ${siteConfig.brand.name}!`,
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -516,7 +517,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -531,7 +532,7 @@ export const emailService = {
                                 Welcome to Paradise, ${userName}! 🌴
                               </h2>
                               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
-                                Congratulations on your first investment! You're now part of the Reef Resort family.
+                                Congratulations on your first investment! You're now part of the ${siteConfig.brand.name} family.
                               </p>
                             </td>
                           </tr>
@@ -588,7 +589,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort - Your Gateway to Paradise Investment
+                          ${siteConfig.brand.name} - Your Gateway to Paradise Investment
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This email was sent to ${to}
@@ -632,7 +633,7 @@ export const emailService = {
       const { data, error } = await resend.emails.send({
         from: FROM_EMAIL,
         to,
-        subject: "🎊 Welcome to Reef Resort Affiliate Program!",
+        subject: `🎊 Welcome to ${siteConfig.brand.name} Affiliate Program!`,
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -654,7 +655,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -669,7 +670,7 @@ export const emailService = {
                                 Welcome, ${userName}! 🎊
                               </h2>
                               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
-                                You're now part of the Reef Resort affiliate program. Start earning today!
+                                You're now part of the ${siteConfig.brand.name} affiliate program. Start earning today!
                               </p>
                             </td>
                           </tr>
@@ -748,7 +749,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort - Earn While You Share Paradise
+                          ${siteConfig.brand.name} - Earn While You Share Paradise
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This email was sent to ${to}
@@ -815,7 +816,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -898,7 +899,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort - Earn While You Share Paradise
+                          ${siteConfig.brand.name} - Earn While You Share Paradise
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This email was sent to ${to}
@@ -945,7 +946,7 @@ export const emailService = {
       const { data, error } = await resend.emails.send({
         from: FROM_EMAIL,
         to,
-        subject: "🎉 Welcome to Reef Resort - Your Purchase is Complete!",
+        subject: `🎉 Welcome to ${siteConfig.brand.name} - Your Purchase is Complete!`,
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -967,7 +968,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -979,7 +980,7 @@ export const emailService = {
                           <tr>
                             <td style="padding-top: 24px;">
                               <h2 style="margin: 0 0 16px 0; font-size: 24px; font-weight: 600; color: #e0f2fe; text-align: center;">
-                                Welcome to Reef Resort! 🎉
+                                Welcome to ${siteConfig.brand.name}! 🎉
                               </h2>
                               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
                                 Thank you for your purchase. Your investment is now complete!
@@ -1104,7 +1105,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort - Your Gateway to Paradise Investment
+                          ${siteConfig.brand.name} - Your Gateway to Paradise Investment
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This email was sent to ${to} because a purchase was completed using this email address
@@ -1150,7 +1151,7 @@ export const emailService = {
       const { data, error } = await resend.emails.send({
         from: FROM_EMAIL,
         to,
-        subject: "📄 Sign Your Memorandum of Agreement - Reef Resort",
+        subject: `📄 Sign Your Memorandum of Agreement - ${siteConfig.brand.name}`,
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -1172,7 +1173,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -1269,7 +1270,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort - Your Gateway to Paradise Investment
+                          ${siteConfig.brand.name} - Your Gateway to Paradise Investment
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This email was sent to ${to}
@@ -1313,7 +1314,7 @@ export const emailService = {
       const { data, error } = await resend.emails.send({
         from: FROM_EMAIL,
         to,
-        subject: "✅ Your MOA Has Been Signed - Reef Resort",
+        subject: `✅ Your MOA Has Been Signed - ${siteConfig.brand.name}`,
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -1335,7 +1336,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -1414,7 +1415,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort - Your Gateway to Paradise Investment
+                          ${siteConfig.brand.name} - Your Gateway to Paradise Investment
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This email was sent to ${to}
@@ -1458,8 +1459,8 @@ export const emailService = {
 
     // Get admin email from environment or use a default
     const adminEmail = env.NEXT_PUBLIC_APP_URL.includes("localhost")
-      ? "admin@reefresort.co"  // Development fallback
-      : "admin@reefresort.co"; // Production admin email
+      ? siteConfig.emails.admin  // Development fallback
+      : siteConfig.emails.admin; // Production admin email
 
     try {
       const { data, error } = await resend.emails.send({
@@ -1487,7 +1488,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort Admin
+                                  🌊 ${siteConfig.brand.name} Admin
                                 </h1>
                               </div>
                             </td>
@@ -1569,7 +1570,7 @@ export const emailService = {
                     <tr>
                       <td style="text-align: center; padding: 0 20px;">
                         <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
-                          Reef Resort Admin Notification
+                          ${siteConfig.brand.name} Admin Notification
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
                           This is an automated notification
@@ -1616,7 +1617,7 @@ export const emailService = {
       const { data, error } = await resend.emails.send({
         from: FROM_EMAIL,
         to,
-        subject: "🕐 Payment Under Review - Reef Resort",
+        subject: `🕐 Payment Under Review - ${siteConfig.brand.name}`,
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -1638,7 +1639,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -1761,7 +1762,7 @@ export const emailService = {
                               <p style="margin: 0 0 12px 0; font-size: 14px; color: rgba(224, 242, 254, 0.8);">
                                 Need help with your payment? Contact us on Facebook:
                               </p>
-                              <a href="https://www.facebook.com/reefresortofficial" style="display: inline-block; padding: 10px 24px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 8px;">
+                              <a href="${siteConfig.social.facebook}" style="display: inline-block; padding: 10px 24px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 8px;">
                                 📱 Message us on Facebook
                               </a>
                             </td>
@@ -1775,8 +1776,8 @@ export const emailService = {
                               <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
                                 Questions? Reply to this email or contact us at
                               </p>
-                              <a href="mailto:support@reefresort.co" style="color: #22d3ee; text-decoration: none; font-size: 13px;">
-                                support@reefresort.co
+                              <a href="mailto:${siteConfig.emails.support}" style="color: #22d3ee; text-decoration: none; font-size: 13px;">
+                                ${siteConfig.emails.support}
                               </a>
                             </td>
                           </tr>
@@ -1858,7 +1859,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -1961,8 +1962,8 @@ export const emailService = {
                               <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
                                 Questions? Contact us at
                               </p>
-                              <a href="mailto:support@reefresort.co" style="color: #22d3ee; text-decoration: none; font-size: 13px;">
-                                support@reefresort.co
+                              <a href="mailto:${siteConfig.emails.support}" style="color: #22d3ee; text-decoration: none; font-size: 13px;">
+                                ${siteConfig.emails.support}
                               </a>
                             </td>
                           </tr>
@@ -2041,7 +2042,7 @@ export const emailService = {
                             <td style="text-align: center; padding-bottom: 32px;">
                               <div style="display: inline-block; padding: 16px 32px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">
                                 <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
-                                  🌊 Reef Resort
+                                  🌊 ${siteConfig.brand.name}
                                 </h1>
                               </div>
                             </td>
@@ -2103,7 +2104,7 @@ export const emailService = {
                               <p style="margin: 0 0 16px 0; font-size: 14px; color: rgba(224, 242, 254, 0.7);">
                                 We hope to see you again soon!
                               </p>
-                              <a href="https://reefresort.co/book" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%); color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 10px;">
+                              <a href="${env.NEXT_PUBLIC_APP_URL}/book" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%); color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 10px;">
                                 Book Another Stay
                               </a>
                             </td>
@@ -2117,8 +2118,8 @@ export const emailService = {
                               <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
                                 Questions? Contact us at
                               </p>
-                              <a href="mailto:support@reefresort.co" style="color: #22d3ee; text-decoration: none; font-size: 13px;">
-                                support@reefresort.co
+                              <a href="mailto:${siteConfig.emails.support}" style="color: #22d3ee; text-decoration: none; font-size: 13px;">
+                                ${siteConfig.emails.support}
                               </a>
                             </td>
                           </tr>

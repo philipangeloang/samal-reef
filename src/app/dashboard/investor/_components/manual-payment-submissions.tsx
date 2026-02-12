@@ -39,6 +39,7 @@ import {
 } from "lucide-react";
 import { UploadButton } from "@/utils/uploadthing";
 import { currencySymbol } from "@/lib/currency";
+import { siteConfig } from "@/site.config";
 
 type Submission = RouterOutputs["manualPayment"]["getMySubmissions"][number];
 
@@ -120,7 +121,7 @@ export function ManualPaymentSubmissions({
               </div>
             </div>
             <a
-              href="https://www.facebook.com/reefresortofficial"
+              href={siteConfig.social.facebook}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 text-sm text-cyan-300 transition-colors hover:bg-cyan-500/20"
@@ -237,7 +238,7 @@ export function ManualPaymentSubmissions({
               <p className="mt-1 text-xs text-cyan-100/70">
                 For queries, follow-ups, or issues with your manual payments,{" "}
                 <a
-                  href="https://www.facebook.com/reefresortofficial"
+                  href={siteConfig.social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-cyan-400 underline hover:text-cyan-300"

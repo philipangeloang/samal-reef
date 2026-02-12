@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { currencySymbol } from "@/lib/currency";
+import { siteConfig } from "@/site.config";
 import Link from "next/link";
 import NextImage from "next/image";
 import { useSession } from "next-auth/react";
@@ -192,7 +193,7 @@ export function CheckoutClient({
       }
 
       const script = document.createElement("script");
-      script.src = "https://integrate.depay.com/widgets/v13.js";
+      script.src = siteConfig.integrations.depayWidgetScript;
       script.async = true;
       script.onload = () => resolve();
       script.onerror = reject;

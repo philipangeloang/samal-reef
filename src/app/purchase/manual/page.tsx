@@ -21,6 +21,7 @@ import {
 import { UploadButton } from "@/utils/uploadthing";
 import ReactMarkdown from "react-markdown";
 import Link from "next/link";
+import { siteConfig } from "@/site.config";
 
 function ManualPaymentContent() {
   const router = useRouter();
@@ -394,7 +395,7 @@ function ManualPaymentContent() {
             <p className="mt-1 text-sm text-gray-400">
               For queries, follow-ups, or payment issues,{" "}
               <a
-                href="https://www.facebook.com/reefresortofficial"
+                href={siteConfig.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-cyan-400 underline hover:text-cyan-300"

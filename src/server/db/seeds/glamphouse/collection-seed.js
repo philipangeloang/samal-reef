@@ -18,6 +18,9 @@ import { sql } from "drizzle-orm";
 import postgres from "postgres";
 import "dotenv/config";
 
+// Table prefix — must match siteConfig.tablePrefix in src/site.config.ts
+const TABLE_PREFIX = "samal-reef";
+
 // Get DATABASE_URL from environment
 const DATABASE_URL = process.env.DATABASE_URL;
 if (!DATABASE_URL) {
@@ -26,7 +29,7 @@ if (!DATABASE_URL) {
 }
 
 // Define property collections table structure
-const propertyCollections = pgTable("samal-reef_property_collection", {
+const propertyCollections = pgTable(`${TABLE_PREFIX}_property_collection`, {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   slug: varchar({ length: 255 }).notNull().unique(),
@@ -56,7 +59,7 @@ async function seedGlamphouseCollection() {
 
     // Check if Glamphouse collection already exists
     const existingCollection = await conn`
-      SELECT * FROM "samal-reef_property_collection"
+      SELECT * FROM ${conn(`${TABLE_PREFIX}_property_collection`)}
       WHERE slug = 'glamphouse'
     `;
 

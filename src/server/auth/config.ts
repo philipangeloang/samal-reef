@@ -5,6 +5,7 @@ import Resend from "next-auth/providers/resend";
 import { db } from "@/server/db";
 import { env } from "@/env";
 import { emailService } from "@/server/email";
+import { siteConfig } from "@/site.config";
 import {
   accounts,
   sessions,
@@ -48,7 +49,7 @@ export const authConfig = {
      */
     Resend({
       apiKey: env.RESEND_API_KEY,
-      from: "Reef Resort <noreply@reefresort.co>",
+      from: `${siteConfig.brand.name} <${siteConfig.emails.noreply}>`,
       maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
       // Use our custom ocean-themed email template
       sendVerificationRequest: async ({ identifier: email, url }) => {

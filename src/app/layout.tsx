@@ -9,9 +9,10 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "@/components/ui/sonner";
 import { AffiliateTracker } from "@/components/affiliate-tracker";
+import { siteConfig } from "@/site.config";
 
 export const metadata: Metadata = {
-  title: "Reef Resort - Fractional Resort Ownership",
+  title: `${siteConfig.brand.name} - ${siteConfig.brand.tagline}`,
   description: "Invest in fractional resort ownership with crypto or fiat",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };

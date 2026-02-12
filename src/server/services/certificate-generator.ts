@@ -1,6 +1,7 @@
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import * as fs from "fs";
 import * as path from "path";
+import { siteConfig } from "@/site.config";
 
 /**
  * Certificate of Ownership Generator Service
@@ -75,7 +76,7 @@ function constructLocation(data: CertificateData): string {
  * Get manager name with fallback to default
  */
 function getManagerName(data: CertificateData): string {
-  const manager = data.manager ?? "MITCHELL SUCHNER";
+  const manager = data.manager ?? siteConfig.company.defaultManager;
   return sanitizeText(manager);
 }
 

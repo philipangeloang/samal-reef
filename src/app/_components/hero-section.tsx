@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/site.config";
 import {
   ArrowDown,
   Waves,
@@ -52,7 +53,7 @@ export function HeroSection() {
 
         <h1 className="mb-6 text-5xl leading-tight font-bold text-balance md:text-7xl lg:text-8xl">
           <span className="bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-300 bg-clip-text text-transparent">
-            Reef Resort
+            {siteConfig.brand.name}
           </span>
         </h1>
 

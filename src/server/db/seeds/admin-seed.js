@@ -11,6 +11,9 @@ import { sql } from "drizzle-orm";
 import postgres from "postgres";
 import "dotenv/config";
 
+// Table prefix — must match siteConfig.tablePrefix in src/site.config.ts
+const TABLE_PREFIX = "samal-reef";
+
 // Get DATABASE_URL from environment
 const DATABASE_URL = process.env.DATABASE_URL;
 if (!DATABASE_URL) {
@@ -19,7 +22,7 @@ if (!DATABASE_URL) {
 }
 
 // Define users table structure
-const users = pgTable("samal-reef_user", {
+const users = pgTable(`${TABLE_PREFIX}_user`, {
   id: varchar({ length: 255 }).primaryKey(),
   name: varchar({ length: 255 }),
   email: varchar({ length: 255 }).notNull(),
@@ -48,7 +51,7 @@ async function seedAdmin() {
 
     // Check if admin already exists
     const result = await conn`
-      SELECT * FROM "samal-reef_user"
+      SELECT * FROM ${conn(`${TABLE_PREFIX}_user`)}
       WHERE email = 'admin@arkpad.co'
     `;
 

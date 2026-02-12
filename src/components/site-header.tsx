@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
+import { siteConfig } from "@/site.config";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -36,7 +37,7 @@ export function SiteHeader() {
         <Link href="/" className="flex items-center">
           <Image
             src="https://reefresort.co/wp-content/uploads/2025/03/Frame-171.png"
-            alt="Reef Resort"
+            alt={siteConfig.brand.name}
             width={150}
             height={40}
             className="h-8 w-auto md:h-10"

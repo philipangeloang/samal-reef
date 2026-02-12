@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { api } from "@/trpc/react";
+import { siteConfig } from "@/site.config";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -117,7 +118,7 @@ export function CreateCollectionDialog({
                 id="name"
                 value={name}
                 onChange={(e) => handleNameChange(e.target.value)}
-                placeholder="Reef Resort Bungalows"
+                placeholder={`${siteConfig.brand.name} Bungalows`}
                 required
                 className="border-cyan-400/30 bg-[#0a1929]/50 text-white placeholder:text-cyan-100/40"
               />

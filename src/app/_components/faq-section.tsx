@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, HelpCircle } from "lucide-react";
+import { siteConfig } from "@/site.config";
 
 interface FAQItem {
   question: string;
@@ -57,7 +58,7 @@ export function FAQSection() {
             <span className="text-white">We Have Answers</span>
           </h2>
           <p className="mx-auto max-w-3xl text-lg leading-relaxed text-cyan-50/90 md:text-xl">
-            Everything you need to know about investing in Reef Resort
+            Everything you need to know about investing in {siteConfig.brand.name}
           </p>
         </div>
 

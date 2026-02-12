@@ -1,11 +1,12 @@
 import { PDFDocument, rgb, StandardFonts, PDFFont, PDFPage } from "pdf-lib";
 import * as fs from "fs";
 import * as path from "path";
+import { siteConfig } from "@/site.config";
 
 /**
  * MOA Generator Service
  * Creates Memorandum of Agreement PDFs matching the official template
- * for ARK-MARINE CONSTRUCTION, INC. (SAMAL REEF RESORTS)
+ * for ${siteConfig.company.legalName} (${siteConfig.company.dba})
  */
 
 export interface MoaData {
@@ -143,7 +144,7 @@ function constructLocation(data: MoaData): string {
  */
 function getConstructionCompany(data: MoaData): string {
   const company = data.construction ??
-    "ARK-MARINE CONSTRUCTION, INC. (doing business under the name and style of SAMAL REEF RESORTS)";
+    `${siteConfig.company.legalName} (doing business under the name and style of ${siteConfig.company.dba})`;
   return sanitizeText(company);
 }
 
@@ -151,7 +152,7 @@ function getConstructionCompany(data: MoaData): string {
  * Get manager name with fallback to default
  */
 function getManagerName(data: MoaData): string {
-  const manager = data.manager ?? "MITCHELL SUCHNER";
+  const manager = data.manager ?? siteConfig.company.defaultManager;
   return sanitizeText(manager);
 }
 
@@ -224,7 +225,7 @@ export async function generateUnsignedMoaPdf(
 
   // Subtitle (centered)
   const subtitleText =
-    "Shared Ownership of a Floating House in the Philippines";
+    `Shared Ownership of a Floating House in the ${siteConfig.location.country}`;
   const subtitleWidth = bodyFont.widthOfTextAtSize(subtitleText, 11);
   page1.drawText(subtitleText, {
     x: (pageWidth - subtitleWidth) / 2,
@@ -286,7 +287,7 @@ export async function generateUnsignedMoaPdf(
 
   y = drawTextWrapped(
     page1,
-    `${companyName} a corporation duly organized and existing under the laws of the Philippines with principal place of business situated in ${location}, herein represented by its ${managerPosition}, ${managerName}, and hereinafter referred to as the FIRST PARTY;`,
+    `${companyName} a corporation duly organized and existing under the laws of the ${siteConfig.location.country} with principal place of business situated in ${location}, herein represented by its ${managerPosition}, ${managerName}, and hereinafter referred to as the FIRST PARTY;`,
     { x: marginX, y, size: 10, maxWidth: contentWidth, font: boldFont },
     bodyFont,
   );
@@ -646,7 +647,7 @@ export async function generateUnsignedMoaPdf(
   const monthlyFee = getMonthlyFee(data);
   y = drawTextWrapped(
     page2,
-    `III.4 In reference to common facilities, including access to the walkways of the Reef Resort, mooring system, and legal permits to occupy the waterspace, a monthly fee will be charged to unit owners in accordance with their ownership percentage, initially totalling ${monthlyFee}.`,
+    `III.4 In reference to common facilities, including access to the walkways of the ${siteConfig.brand.name}, mooring system, and legal permits to occupy the waterspace, a monthly fee will be charged to unit owners in accordance with their ownership percentage, initially totalling ${monthlyFee}.`,
     { x: marginX, y, size: 10, maxWidth: contentWidth },
     bodyFont,
   );
@@ -687,7 +688,7 @@ export async function generateUnsignedMoaPdf(
   // V.1
   y = drawTextWrapped(
     page3,
-    "V.1. Disputes arising out of or in connection with this Agreement shall be resolved through amicable negotiations between the owners. If the dispute cannot be resolved through negotiations within 6 months, the FIRST PARTY shall act as the mediator. If no solution is found within an additional 6 months of mediation by the FIRST PARTY, the dispute shall then be submitted to the regular court proceedings in accordance with the laws of the Philippines and the exclusive venue thereof shall be in the Island Garden City of Samal, Davao del Norte.",
+    `V.1. Disputes arising out of or in connection with this Agreement shall be resolved through amicable negotiations between the owners. If the dispute cannot be resolved through negotiations within 6 months, the FIRST PARTY shall act as the mediator. If no solution is found within an additional 6 months of mediation by the FIRST PARTY, the dispute shall then be submitted to the regular court proceedings in accordance with the laws of the ${siteConfig.location.country} and the exclusive venue thereof shall be in the ${siteConfig.location.jurisdiction}.`,
     { x: marginX, y, size: 10, maxWidth: contentWidth },
     bodyFont,
   );
@@ -762,7 +763,7 @@ export async function generateUnsignedMoaPdf(
   });
   y -= 14;
 
-  page3.drawText("in Davao City, Philippines.", {
+  page3.drawText(`in ${siteConfig.location.city}, ${siteConfig.location.country}.`, {
     x: marginX,
     y: y,
     size: 10,
@@ -775,7 +776,7 @@ export async function generateUnsignedMoaPdf(
   const signatureY = y;
 
   // Left side: First Party
-  page3.drawText("ARK-MARINE CONSTRUCTION, INC.", {
+  page3.drawText(siteConfig.company.legalName, {
     x: marginX,
     y: signatureY,
     size: 10,

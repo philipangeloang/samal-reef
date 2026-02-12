@@ -3,6 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/site.config";
 import {
   Card,
   CardContent,
@@ -200,7 +201,7 @@ export default function AffiliateJoinPage() {
                 You&apos;re Invited!
               </h1>
               <p className="text-cyan-100/70">
-                Join the Reef Resort Affiliate Program
+                Join the {siteConfig.brand.name} Affiliate Program
               </p>
             </div>
 

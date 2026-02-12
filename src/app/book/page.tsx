@@ -5,6 +5,7 @@ import { ArrowRight, MapPin, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GALLERY_COLLECTIONS } from "@/lib/gallery-config";
 import { GalleryViewer } from "@/app/gallery/[collection]/_components/gallery-viewer";
+import { siteConfig } from "@/site.config";
 
 export default async function BookPage() {
   // Get all active collections (public endpoint, no auth required)
@@ -102,7 +103,7 @@ export default async function BookPage() {
           <h2 className="text-center text-2xl font-bold text-white">Gallery</h2>
           <GalleryViewer
             images={Object.values(GALLERY_COLLECTIONS).flatMap((c) => Array.from(c.images))}
-            collectionName="Reef Resort"
+            collectionName={siteConfig.brand.name}
             columns={2}
           />
         </div>

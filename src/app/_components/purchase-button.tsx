@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { getAffiliateCode } from "@/hooks/use-affiliate-tracking";
 import { EmailCollectionDialog } from "./email-collection-dialog";
+import { siteConfig } from "@/site.config";
 
 // DePay widget types
 declare global {
@@ -84,7 +85,7 @@ export function PurchaseButton({
 
       // Load script from CDN
       const script = document.createElement("script");
-      script.src = "https://integrate.depay.com/widgets/v13.js";
+      script.src = siteConfig.integrations.depayWidgetScript;
       script.async = true;
       script.onload = () => resolve();
       script.onerror = reject;
@@ -193,7 +194,7 @@ export function PurchaseButton({
   const handleEmailConfirmed = (email: string) => {
     setGuestEmail(email);
     // Immediately proceed with purchase using the confirmed email
-    handlePurchase(email);
+    void handlePurchase(email);
   };
 
   return (
