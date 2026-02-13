@@ -16,7 +16,7 @@ import {
 } from "@/server/services/certificate-generator";
 import { UTApi } from "uploadthing/server";
 import { emailService } from "@/server/email";
-import { formatCurrency } from "@/lib/currency";
+import { formatCurrency, formatCurrencyPdf } from "@/lib/currency";
 
 // Initialize UploadThing API for server-side uploads
 const utapi = new UTApi();
@@ -63,7 +63,7 @@ export const moaRouter = createTRPCRouter({
       // Prepare MOA data with dynamic fields
       const moaData: MoaData = {
         ownershipPercentage: ownership.percentageOwned,
-        purchasePrice: formatCurrency(ownership.purchasePrice),
+        purchasePrice: formatCurrencyPdf(ownership.purchasePrice),
         unitName: ownership.unit.name,
         purchaseDate: ownership.createdAt,
         location: ownership.unit.collection.location ?? "Property Location",
@@ -155,7 +155,7 @@ export const moaRouter = createTRPCRouter({
           Pick<MoaData, "investorName" | "signatureDataUrl" | "signDate">
         > = {
         ownershipPercentage: ownership.percentageOwned,
-        purchasePrice: formatCurrency(ownership.purchasePrice),
+        purchasePrice: formatCurrencyPdf(ownership.purchasePrice),
         unitName: ownership.unit.name,
         purchaseDate: ownership.createdAt,
         location: ownership.unit.collection.location ?? "Property Location",

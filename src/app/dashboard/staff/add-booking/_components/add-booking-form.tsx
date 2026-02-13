@@ -24,7 +24,7 @@ import {
 import { toast } from "sonner";
 import { Loader2, CalendarDays } from "lucide-react";
 import { BookingDatePicker } from "@/components/booking/booking-date-picker";
-import { currencySymbol, currencyCode } from "@/lib/currency";
+import { formatCurrency, currencySymbol, currencyCode } from "@/lib/currency";
 
 type Collection = RouterOutputs["collection"]["getAll"][number];
 
@@ -454,8 +454,8 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
                   value={
                     nightlyRate !== "0"
                       ? discountPercent > 0
-                        ? `${currencySymbol}${nightlyRate} (was ${currencySymbol}${baseNightlyRate})`
-                        : `${currencySymbol}${nightlyRate}`
+                        ? `${formatCurrency(nightlyRate)} (was ${formatCurrency(baseNightlyRate)})`
+                        : `${formatCurrency(nightlyRate)}`
                       : ""
                   }
                   disabled
@@ -470,7 +470,7 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
                 <Input
                   id="cleaningFee"
                   type="text"
-                  value={cleaningFee !== "0" ? `${currencySymbol}${cleaningFee}` : `${currencySymbol}0`}
+                  value={cleaningFee !== "0" ? formatCurrency(cleaningFee) : formatCurrency(0)}
                   disabled
                   className="border-cyan-400/30 bg-[#0a1929]/50 text-white disabled:cursor-not-allowed disabled:opacity-60"
                 />
@@ -500,35 +500,35 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
                     <span>
                       {discountPercent > 0 ? (
                         <>
-                          <span className="text-red-400/70 line-through">{currencySymbol}{baseNightlyRate}</span>{" "}
-                          <span className="text-green-400">{currencySymbol}{nightlyRate}</span>
+                          <span className="text-red-400/70 line-through">{formatCurrency(baseNightlyRate)}</span>{" "}
+                          <span className="text-green-400">{formatCurrency(nightlyRate)}</span>
                         </>
                       ) : (
-                        `${currencySymbol}${nightlyRate}`
+                        formatCurrency(nightlyRate)
                       )}{" "}
                       x {totalNights} night{totalNights > 1 ? "s" : ""}
                     </span>
                     <span>
                       {originalSubtotal ? (
                         <span className="flex items-center gap-2">
-                          <span className="text-red-400/70 line-through">{currencySymbol}{originalSubtotal}</span>
-                          <span className="text-green-400">{currencySymbol}{subtotal}</span>
+                          <span className="text-red-400/70 line-through">{formatCurrency(originalSubtotal ?? "0")}</span>
+                          <span className="text-green-400">{formatCurrency(subtotal)}</span>
                         </span>
                       ) : (
-                        `${currencySymbol}${subtotal}`
+                        formatCurrency(subtotal)
                       )}
                     </span>
                   </div>
                   {parseFloat(cleaningFee) > 0 && (
                     <div className="flex justify-between text-cyan-100/70">
                       <span>Cleaning fee</span>
-                      <span>{currencySymbol}{cleaningFee}</span>
+                      <span>{formatCurrency(cleaningFee)}</span>
                     </div>
                   )}
                   {parseFloat(serviceFee) > 0 && (
                     <div className="flex justify-between text-cyan-100/70">
                       <span>Service fee ({serviceFeePercent}%)</span>
-                      <span>{currencySymbol}{serviceFee}</span>
+                      <span>{formatCurrency(serviceFee)}</span>
                     </div>
                   )}
                   <div className="border-t border-cyan-400/20 pt-2">
@@ -538,12 +538,12 @@ export function AddBookingForm({ collections, isAdmin }: AddBookingFormProps) {
                         {originalTotalPrice ? (
                           <>
                             <span className="mr-2 text-sm text-red-400/70 line-through">
-                              {currencySymbol}{originalTotalPrice}
+                              {formatCurrency(originalTotalPrice ?? "0")}
                             </span>
-                            <span className="text-green-400">{currencySymbol}{totalPrice} {currencyCode}</span>
+                            <span className="text-green-400">{formatCurrency(totalPrice)} {currencyCode}</span>
                           </>
                         ) : (
-                          <span className="text-green-400">{currencySymbol}{totalPrice} {currencyCode}</span>
+                          <span className="text-green-400">{formatCurrency(totalPrice)} {currencyCode}</span>
                         )}
                       </span>
                     </div>

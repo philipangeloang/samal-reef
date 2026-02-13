@@ -124,6 +124,39 @@ export const ourFileRouter = {
         fileKey: file.key,
       };
     }),
+
+  /**
+   * Gallery Image Uploader
+   * - Only admin users can upload
+   * - Accepts multiple images at once (up to 10)
+   * - Max file size: 8MB each
+   */
+  galleryUploader: f({
+    image: {
+      maxFileSize: "8MB",
+      maxFileCount: 10,
+    },
+  })
+    .middleware(async () => {
+      const session = await auth();
+
+      if (!session?.user) {
+        throw new UploadThingError("Unauthorized");
+      }
+
+      if (session.user.role !== "ADMIN") {
+        throw new UploadThingError("Admin access required");
+      }
+
+      return { userId: session.user.id };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      return {
+        uploadedBy: metadata.userId,
+        fileUrl: file.ufsUrl,
+        fileKey: file.key,
+      };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

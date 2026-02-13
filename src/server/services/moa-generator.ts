@@ -12,7 +12,7 @@ import { siteConfig } from "@/site.config";
 export interface MoaData {
   // Ownership details
   ownershipPercentage: number; // In basis points (100 = 1%)
-  purchasePrice: string; // Formatted amount (e.g., "₱1,500.00")
+  purchasePrice: string; // PDF-safe formatted amount (e.g., "PHP 1,500.00")
   unitName: string; // Property unit name (e.g., "B1")
   purchaseDate: Date;
 

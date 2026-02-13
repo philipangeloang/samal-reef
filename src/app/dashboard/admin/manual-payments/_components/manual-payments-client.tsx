@@ -34,6 +34,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { formatCurrency } from "@/lib/currency";
 
 type PendingReview = RouterOutputs["manualPayment"]["getPendingReviews"][number];
 
@@ -221,8 +222,7 @@ export function ManualPaymentsClient({
                               amountMatches ? "text-green-400" : "text-yellow-400"
                             }
                           >
-                            $
-                            {parseFloat(review.amount).toLocaleString()}
+                            {formatCurrency(review.amount)}
                           </span>
                           {!amountMatches && (
                             <AlertTriangle className="h-4 w-4 text-yellow-400" />
@@ -230,8 +230,7 @@ export function ManualPaymentsClient({
                         </div>
                         {review.expectedAmount && (
                           <p className="text-xs text-gray-400">
-                            Expected: $
-                            {parseFloat(review.expectedAmount).toLocaleString()}
+                            Expected: {formatCurrency(review.expectedAmount)}
                           </p>
                         )}
                       </TableCell>
@@ -325,16 +324,13 @@ export function ManualPaymentsClient({
               <div>
                 <p className="text-sm text-gray-400">Amount</p>
                 <p className="text-xl font-bold text-cyan-400">
-                  $
                   {selectedReview?.amount
-                    ? parseFloat(selectedReview.amount).toLocaleString()
+                    ? formatCurrency(selectedReview.amount)
                     : "-"}
                 </p>
                 {selectedReview?.expectedAmount && (
                   <p className="text-xs text-gray-400">
-                    Expected:{" "}
-                    $
-                    {parseFloat(selectedReview.expectedAmount).toLocaleString()}
+                    Expected: {formatCurrency(selectedReview.expectedAmount)}
                   </p>
                 )}
               </div>
@@ -435,9 +431,8 @@ export function ManualPaymentsClient({
             </p>
             <p className="mt-2 text-sm text-gray-400">Amount</p>
             <p className="text-lg font-bold text-cyan-400">
-              $
               {selectedReview?.amount
-                ? parseFloat(selectedReview.amount).toLocaleString()
+                ? formatCurrency(selectedReview.amount)
                 : "-"}
             </p>
           </div>

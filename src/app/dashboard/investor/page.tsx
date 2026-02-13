@@ -34,7 +34,7 @@ import {
   Download,
 } from "lucide-react";
 import { ManualPaymentSubmissions } from "./_components/manual-payment-submissions";
-import { currencySymbol } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 
 export default async function InvestorDashboardPage() {
   const session = await auth();
@@ -85,7 +85,7 @@ export default async function InvestorDashboardPage() {
                 </div>
               </div>
               <CardTitle className="text-3xl font-bold text-white">
-                {currencySymbol}{summary.totalInvested}
+                {formatCurrency(summary.totalInvested)}
               </CardTitle>
             </CardHeader>
           </Card>
@@ -218,7 +218,7 @@ export default async function InvestorDashboardPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="font-semibold text-green-400">
-                          {currencySymbol}{ownership.purchasePrice}
+                          {formatCurrency(ownership.purchasePrice)}
                         </TableCell>
                         <TableCell>
                           <Badge className="border-purple-400/30 bg-purple-400/20 text-purple-300">

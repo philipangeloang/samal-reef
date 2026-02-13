@@ -38,7 +38,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { UploadButton } from "@/utils/uploadthing";
-import { currencySymbol } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 import { siteConfig } from "@/site.config";
 
 type Submission = RouterOutputs["manualPayment"]["getMySubmissions"][number];
@@ -164,7 +164,7 @@ export function ManualPaymentSubmissions({
                       </Badge>
                     </TableCell>
                     <TableCell className="font-semibold text-green-400">
-                      {currencySymbol}{parseFloat(submission.amount).toLocaleString()}
+                      {formatCurrency(submission.amount)}
                     </TableCell>
                     <TableCell className="text-cyan-100/70">
                       {submission.paymentMethod?.name ?? "-"}
@@ -274,9 +274,8 @@ export function ManualPaymentSubmissions({
               </p>
               <p className="mt-2 text-sm text-gray-400">Amount Due</p>
               <p className="text-lg font-bold text-cyan-400">
-                {currencySymbol}
                 {selectedSubmission?.amount
-                  ? parseFloat(selectedSubmission.amount).toLocaleString()
+                  ? formatCurrency(selectedSubmission.amount)
                   : "-"}
               </p>
               {selectedSubmission?.rejectionReason && (

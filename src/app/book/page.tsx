@@ -3,13 +3,22 @@ import NextImage from "next/image";
 import { api } from "@/trpc/server";
 import { ArrowRight, MapPin, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { GALLERY_COLLECTIONS } from "@/lib/gallery-config";
 import { GalleryViewer } from "@/components/gallery-viewer";
 import { siteConfig } from "@/site.config";
 
 export default async function BookPage() {
   // Get all active collections (public endpoint, no auth required)
   const activeCollections = await api.collection.getActiveForBooking();
+
+  // Fetch gallery images for all active collections
+  const allGalleryImages = (
+    await Promise.all(
+      activeCollections.map((c) =>
+        api.gallery.getByCollection({ collectionId: c.id }),
+      ),
+    )
+  ).flat();
+  const allImageUrls = allGalleryImages.map((img) => img.url);
 
   return (
     <div className="min-h-screen bg-linear-to-b from-[#0a1929] via-[#0d1f31] to-[#0f2435]">
@@ -99,14 +108,16 @@ export default async function BookPage() {
         )}
 
         {/* Combined Gallery */}
-        <div className="mx-auto mt-16 max-w-4xl space-y-4">
-          <h2 className="text-center text-2xl font-bold text-white">Gallery</h2>
-          <GalleryViewer
-            images={Object.values(GALLERY_COLLECTIONS).flatMap((c) => Array.from(c.images))}
-            collectionName={siteConfig.brand.name}
-            columns={2}
-          />
-        </div>
+        {allImageUrls.length > 0 && (
+          <div className="mx-auto mt-16 max-w-4xl space-y-4">
+            <h2 className="text-center text-2xl font-bold text-white">Gallery</h2>
+            <GalleryViewer
+              images={allImageUrls}
+              collectionName={siteConfig.brand.name}
+              columns={2}
+            />
+          </div>
+        )}
 
       </div>
     </div>

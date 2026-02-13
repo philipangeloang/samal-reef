@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { UserPlus, Search, Pencil } from "lucide-react";
 import { InviteAffiliateDialog } from "./invite-affiliate-dialog";
 import { EditCommissionDialog } from "./edit-commission-dialog";
-import { currencySymbol } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 
 type Affiliate = RouterOutputs["affiliate"]["getAllAffiliates"][number];
 
@@ -184,10 +184,10 @@ export function AffiliatesManagementClient({
                             </div>
                           </TableCell>
                           <TableCell className="text-cyan-100/70">
-                            {currencySymbol}{totalEarned.toFixed(2)}
+                            {formatCurrency(totalEarned)}
                           </TableCell>
                           <TableCell className="text-cyan-100/70">
-                            {currencySymbol}{totalPaid.toFixed(2)}
+                            {formatCurrency(totalPaid)}
                           </TableCell>
                           <TableCell>
                             <span
@@ -197,7 +197,7 @@ export function AffiliatesManagementClient({
                                   : "text-cyan-100/70"
                               }
                             >
-                              {currencySymbol}{pending.toFixed(2)}
+                              {formatCurrency(pending)}
                             </span>
                           </TableCell>
                           <TableCell>

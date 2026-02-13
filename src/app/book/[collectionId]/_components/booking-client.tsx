@@ -17,10 +17,6 @@ import {
   Info,
 } from "lucide-react";
 import { BookingDatePicker } from "@/components/booking/booking-date-picker";
-import {
-  GALLERY_COLLECTIONS,
-  type GalleryCollectionKey,
-} from "@/lib/gallery-config";
 import { GalleryViewer } from "@/components/gallery-viewer";
 
 interface Collection {
@@ -73,6 +69,12 @@ export function BookingClient({
 
   // TRPC utils for manual queries
   const utils = api.useUtils();
+
+  // Fetch gallery images for this collection
+  const { data: galleryImages = [] } = api.gallery.getByCollection.useQuery({
+    collectionId: collection.id,
+  });
+  const galleryImageUrls = galleryImages.map((img) => img.url);
 
   // Handle date picker changes
   const handleDatePickerChange = useCallback((dates: {
@@ -200,27 +202,17 @@ export function BookingClient({
             </div>
 
             {/* Gallery Preview */}
-            {collection.slug in GALLERY_COLLECTIONS && (() => {
-              const galleryImages = GALLERY_COLLECTIONS[collection.slug as GalleryCollectionKey].images;
-              return (
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-white">Gallery</h3>
-                  <GalleryViewer
-                    images={Array.from(galleryImages)}
-                    collectionName={collection.name}
-                    columns={2}
-                    maxDisplay={4}
-                  />
-                  <Link
-                    href={`/gallery/${collection.slug.toLowerCase()}`}
-                    className="inline-flex items-center gap-1 text-sm text-cyan-300/80 transition-colors hover:text-cyan-300"
-                  >
-                    View all photos
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
-              );
-            })()}
+            {galleryImageUrls.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white">Gallery</h3>
+                <GalleryViewer
+                  images={galleryImageUrls}
+                  collectionName={collection.name}
+                  columns={2}
+                  maxDisplay={4}
+                />
+              </div>
+            )}
           </div>
 
           {/* Right Column: Booking Summary */}

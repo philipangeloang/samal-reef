@@ -14,7 +14,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { currencySymbol } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 
 interface MarkAllPaidDialogProps {
   open: boolean;
@@ -78,7 +78,7 @@ export function MarkAllPaidDialog({
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Total Amount:</span>
                   <span className="text-lg font-bold">
-                    {currencySymbol}{totalAmount.toFixed(2)}
+                    {formatCurrency(totalAmount)}
                   </span>
                 </div>
               </div>
@@ -121,7 +121,7 @@ export function MarkAllPaidDialog({
             <Button type="submit" disabled={markAllPaid.isPending}>
               {markAllPaid.isPending
                 ? "Processing..."
-                : `Confirm Payment of ${currencySymbol}${totalAmount.toFixed(2)}`}
+                : `Confirm Payment of ${formatCurrency(totalAmount)}`}
             </Button>
           </DialogFooter>
         </form>

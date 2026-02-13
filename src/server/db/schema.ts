@@ -215,6 +215,35 @@ export const collectionDiscounts = createTable(
   ],
 );
 
+// ===== GALLERY IMAGES TABLE =====
+/**
+ * Gallery images for property collections
+ * Managed by admins via UploadThing uploads
+ * Ordered via displayOrder for custom sorting
+ */
+export const galleryImages = createTable(
+  "gallery_image",
+  (d) => ({
+    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+    collectionId: d
+      .integer()
+      .notNull()
+      .references(() => propertyCollections.id, { onDelete: "cascade" }),
+    url: d.varchar({ length: 500 }).notNull(),
+    fileKey: d.varchar({ length: 255 }).notNull(),
+    alt: d.varchar({ length: 255 }),
+    displayOrder: d.integer().notNull().default(0),
+    createdAt: d
+      .timestamp({ withTimezone: true })
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+  }),
+  (t) => [
+    index("gallery_image_collection_idx").on(t.collectionId),
+    index("gallery_image_order_idx").on(t.collectionId, t.displayOrder),
+  ],
+);
+
 // ===== PRICING TIERS TABLE =====
 /**
  * Collection-specific pricing structure for fractional ownership
@@ -751,6 +780,7 @@ export const propertyCollectionsRelations = relations(
     units: many(units),
     pricingTiers: many(pricingTiers),
     discounts: many(collectionDiscounts),
+    galleryImages: many(galleryImages),
   }),
 );
 
@@ -763,6 +793,13 @@ export const collectionDiscountsRelations = relations(
     }),
   }),
 );
+
+export const galleryImagesRelations = relations(galleryImages, ({ one }) => ({
+  collection: one(propertyCollections, {
+    fields: [galleryImages.collectionId],
+    references: [propertyCollections.id],
+  }),
+}));
 
 export const unitsRelations = relations(units, ({ one, many }) => ({
   collection: one(propertyCollections, {

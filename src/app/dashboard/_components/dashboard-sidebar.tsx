@@ -52,6 +52,7 @@ import {
   CheckCircle,
   Briefcase,
   ShieldCheck,
+  ImageIcon,
 } from "lucide-react";
 
 interface NavItem {
@@ -72,6 +73,12 @@ const navItems: NavItem[] = [
     title: "Collections",
     href: "/dashboard/admin/collections",
     icon: Layers,
+    roles: ["ADMIN"],
+  },
+  {
+    title: "Gallery",
+    href: "/dashboard/admin/gallery",
+    icon: ImageIcon,
     roles: ["ADMIN"],
   },
   {

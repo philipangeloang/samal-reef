@@ -30,7 +30,7 @@ import { Input } from "@/components/ui/input";
 import { CheckCircle2, Search } from "lucide-react";
 import { MarkPaidDialog } from "./mark-paid-dialog";
 import { MarkAllPaidDialog } from "./mark-all-paid-dialog";
-import { currencySymbol } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 
 type Commission = RouterOutputs["admin"]["getAllCommissions"][number];
 
@@ -98,7 +98,7 @@ export function CommissionsManagementClient({
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-white">
-              {currencySymbol}{totalPending.toFixed(2)}
+              {formatCurrency(totalPending)}
             </div>
             <p className="text-sm text-cyan-100/60">
               {pendingCount} pending{" "}
@@ -116,7 +116,7 @@ export function CommissionsManagementClient({
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-400">
-              {currencySymbol}{totalPaid.toFixed(2)}
+              {formatCurrency(totalPaid)}
             </div>
             <p className="text-sm text-cyan-100/60">
               {paidCount} paid{" "}
@@ -316,7 +316,7 @@ export function CommissionsManagementClient({
                         {parseFloat(commission.commissionRate).toFixed(2)}%
                       </TableCell>
                       <TableCell className="font-semibold text-green-400">
-                        {currencySymbol}{parseFloat(commission.commissionAmount).toFixed(2)}
+                        {formatCurrency(commission.commissionAmount)}
                       </TableCell>
                       <TableCell>
                         {commission.isPaid ? (

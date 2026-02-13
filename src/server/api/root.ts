@@ -10,6 +10,7 @@ import { moaRouter } from "@/server/api/routers/moa";
 import { manualPaymentRouter } from "@/server/api/routers/manual-payment";
 import { bookingRouter } from "@/server/api/routers/booking";
 import { staffEntryRouter } from "@/server/api/routers/staff-entry";
+import { galleryRouter } from "@/server/api/routers/gallery";
 
 /**
  * This is the primary router for your server.
@@ -28,6 +29,7 @@ export const appRouter = createTRPCRouter({
   manualPayment: manualPaymentRouter,
   booking: bookingRouter,
   staffEntry: staffEntryRouter,
+  gallery: galleryRouter,
 });
 
 // export type definition of API
