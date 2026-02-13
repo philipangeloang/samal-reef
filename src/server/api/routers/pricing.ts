@@ -29,6 +29,28 @@ export const pricingRouter = createTRPCRouter({
   }),
 
   /**
+   * Get active pricing tiers for a specific collection
+   * Public endpoint - used on ownership page
+   */
+  getTiersByCollection: publicProcedure
+    .input(z.object({ collectionId: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const now = new Date();
+
+      const tiers = await ctx.db.query.pricingTiers.findMany({
+        where: (tiers, { eq, and, or, isNull, gte }) =>
+          and(
+            eq(tiers.collectionId, input.collectionId),
+            eq(tiers.isActive, true),
+            or(isNull(tiers.effectiveUntil), gte(tiers.effectiveUntil, now)),
+          ),
+        orderBy: (tiers, { asc }) => [asc(tiers.percentage)],
+      });
+
+      return tiers;
+    }),
+
+  /**
    * Check tier availability for a specific collection
    * Returns which percentage tiers are still available (not sold out)
    * Public endpoint - used to disable sold-out options in UI

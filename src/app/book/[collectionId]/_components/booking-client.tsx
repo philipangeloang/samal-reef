@@ -21,7 +21,7 @@ import {
   GALLERY_COLLECTIONS,
   type GalleryCollectionKey,
 } from "@/lib/gallery-config";
-import { GalleryViewer } from "@/app/gallery/[collection]/_components/gallery-viewer";
+import { GalleryViewer } from "@/components/gallery-viewer";
 
 interface Collection {
   id: number;

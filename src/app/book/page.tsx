@@ -4,7 +4,7 @@ import { api } from "@/trpc/server";
 import { ArrowRight, MapPin, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GALLERY_COLLECTIONS } from "@/lib/gallery-config";
-import { GalleryViewer } from "@/app/gallery/[collection]/_components/gallery-viewer";
+import { GalleryViewer } from "@/components/gallery-viewer";
 import { siteConfig } from "@/site.config";
 
 export default async function BookPage() {
