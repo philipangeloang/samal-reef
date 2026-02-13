@@ -4,13 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/site.config";
-import {
-  ArrowDown,
-  Waves,
-  Anchor,
-  ArrowRightLeft,
-  TrendingUp,
-} from "lucide-react";
+import { ArrowDown, Waves } from "lucide-react";
 
 export function HeroSection() {
   const scrollToCollection = () => {
@@ -22,7 +16,7 @@ export function HeroSection() {
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-linear-to-b from-[#0a1929] from-0% via-[#0d1f31] via-40% to-[#0f2435] to-100%">
       {/* Background Image */}
-      <div className="absolute inset-0 opacity-25">
+      <div className="absolute inset-0">
         <Image
           src="https://arkpad.co/wp-content/uploads/2025/09/Reef-Resort-35.jpg"
           alt="Background"
@@ -62,63 +56,24 @@ export function HeroSection() {
           seastead community in the ocean.
         </p>
 
-        <div className="mx-auto mb-16 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
-          <div className="group rounded-2xl border border-cyan-400/20 bg-white/5 p-6 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:bg-white/10">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg shadow-cyan-500/20">
-              <ArrowRightLeft className="h-8 w-8 text-white" />
-            </div>
-            <h3 className="mb-2 text-lg font-bold text-cyan-100">
-              Instant Liquidity
-            </h3>
-            <p className="text-sm leading-relaxed text-cyan-200/70">
-              Trade your ownership shares anytime
-            </p>
-          </div>
-
-          <div className="group rounded-2xl border border-cyan-400/20 bg-white/5 p-6 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:bg-white/10">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg shadow-cyan-500/20">
-              <Anchor className="h-8 w-8 text-white" />
-            </div>
-            <h3 className="mb-2 text-lg font-bold text-cyan-100">
-              Seastead Access
-            </h3>
-            <p className="text-sm leading-relaxed text-cyan-200/70">
-              Join one of the world&apos;s first communities redefining how
-              people live, invest, and thrive on the ocean.
-            </p>
-          </div>
-
-          <div className="group rounded-2xl border border-cyan-400/20 bg-white/5 p-6 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:bg-white/10">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg shadow-cyan-500/20">
-              <TrendingUp className="h-8 w-8 text-white" />
-            </div>
-            <h3 className="mb-2 text-lg font-bold text-cyan-100">
-              Yield Potential
-            </h3>
-            <p className="text-sm leading-relaxed text-cyan-200/70">
-              Earn from eco-resort operations
-            </p>
-          </div>
-        </div>
-
         <div className="flex flex-col justify-center gap-4 sm:flex-row">
           <Button
-            onClick={scrollToCollection}
+            asChild
             size="lg"
             className="rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 px-10 py-4 text-lg font-bold text-white shadow-xl shadow-cyan-500/20 transition-all hover:scale-105 hover:from-cyan-300 hover:to-blue-400 hover:shadow-2xl hover:shadow-cyan-500/30"
-          >
-            Become an Owner
-            <ArrowDown className="ml-2 h-5 w-5" />
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="rounded-full border-2 border-cyan-400/50 bg-transparent px-10 py-4 text-lg font-semibold text-cyan-100 backdrop-blur-sm transition-all hover:border-cyan-400 hover:bg-cyan-400/20"
           >
             <Link href="/book">
               Book a Stay
             </Link>
+          </Button>
+          <Button
+            onClick={scrollToCollection}
+            variant="outline"
+            size="lg"
+            className="rounded-full border-2 border-cyan-400/50 bg-transparent px-10 py-4 text-lg font-semibold text-cyan-100 backdrop-blur-sm transition-all hover:border-cyan-400 hover:bg-cyan-400/20"
+          >
+            Become an Owner
+            <ArrowDown className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </div>
