@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { auth } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { TrendingUp, Users, DollarSign, Building2 } from "lucide-react";
-import { currencySymbol } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 
 export default async function AdminDashboardPage() {
   const session = await auth();
@@ -66,7 +66,7 @@ export default async function AdminDashboardPage() {
             </CardHeader>
             <CardContent className="relative">
               <div className="text-2xl font-bold text-white">
-                {currencySymbol}{stats.totalRevenue}
+                {formatCurrency(stats.totalRevenue)}
               </div>
               <p className="mt-1 text-xs text-cyan-100/60">
                 {stats.totalSales} total sales
@@ -87,7 +87,7 @@ export default async function AdminDashboardPage() {
             </CardHeader>
             <CardContent className="relative">
               <div className="text-2xl font-bold text-white">
-                {currencySymbol}{stats.pendingCommissions}
+                {formatCurrency(stats.pendingCommissions)}
               </div>
               <p className="mt-1 text-xs text-cyan-100/60">
                 {stats.pendingCommissionsCount} unpaid
@@ -186,7 +186,7 @@ export default async function AdminDashboardPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="font-semibold text-green-400">
-                          {currencySymbol}{transaction.purchasePrice}
+                          {formatCurrency(transaction.purchasePrice)}
                         </TableCell>
                         <TableCell>
                           <Badge className="border-purple-400/30 bg-purple-400/20 text-purple-300">
@@ -244,7 +244,7 @@ export default async function AdminDashboardPage() {
                           {commission.ownership?.unit?.name ?? "Unknown"}
                         </TableCell>
                         <TableCell className="font-semibold text-green-400">
-                          {currencySymbol}{commission.commissionAmount}
+                          {formatCurrency(commission.commissionAmount)}
                         </TableCell>
                         <TableCell>
                           <Button

@@ -209,7 +209,7 @@ export default async function InvestorDashboardPage() {
                       >
                         <TableCell>
                           <span className="font-medium text-white">
-                            {ownership.unit.name}
+                            {ownership.unit?.name ?? "Unknown"}
                           </span>
                         </TableCell>
                         <TableCell>
