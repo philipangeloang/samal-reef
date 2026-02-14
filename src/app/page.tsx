@@ -3,6 +3,7 @@ import { HydrateClient, api } from "@/trpc/server";
 import { FinalCTA } from "./_components/final-cta";
 import { HeroSection } from "./_components/hero-section";
 import { CollectionShowcase } from "./_components/collection-showcase";
+import { ExperienceShowcase } from "./_components/experience-showcase";
 import { InvestmentValue } from "./_components/investment-value";
 import { FAQSection } from "./_components/faq-section";
 
@@ -56,6 +57,7 @@ export default async function Home() {
     <HydrateClient>
       <main className="min-h-screen">
         <HeroSection />
+        <ExperienceShowcase />
         <CollectionShowcase
           collections={collections}
           manualPaymentMethods={manualPaymentMethods}
