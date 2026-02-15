@@ -1024,3 +1024,104 @@ export const bookingRevenueCacheRelations = relations(bookingRevenueCache, ({ on
   }),
 }));
 
+// ============================================================================
+// QUARTERLY SETTLEMENT & PAYOUT
+// ============================================================================
+
+/**
+ * Locks in a quarter's financial numbers for a unit.
+ * Created when admin "settles" a quarter — captures gross revenue,
+ * expenses, and calculates the net pool available for owner payouts.
+ */
+export const quarterlyUnitSettlements = createTable(
+  "quarterly_unit_settlement",
+  (d) => ({
+    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+    unitId: d
+      .integer()
+      .notNull()
+      .references(() => units.id, { onDelete: "cascade" }),
+    year: d.integer().notNull(),
+    quarter: d.integer().notNull(), // 1-4
+    grossRevenue: d.numeric({ precision: 12, scale: 2 }).notNull().default("0"),
+    fixedExpense: d.numeric({ precision: 12, scale: 2 }).notNull().default("0"),
+    additionalExpense: d.numeric({ precision: 12, scale: 2 }).notNull().default("0"),
+    managementFee: d.numeric({ precision: 12, scale: 2 }).notNull().default("0"),
+    netPool: d.numeric({ precision: 12, scale: 2 }).notNull().default("0"),
+    notes: d.text(),
+    createdAt: d
+      .timestamp({ withTimezone: true })
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: d
+      .timestamp({ withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    createdByUserId: d.varchar({ length: 255 }).references(() => users.id),
+  }),
+  (t) => [
+    uniqueIndex("settlement_unit_year_quarter_idx").on(t.unitId, t.year, t.quarter),
+    index("settlement_unit_year_idx").on(t.unitId, t.year),
+  ],
+);
+
+/**
+ * Individual payout record per owner within a settlement.
+ * Tracks whether the admin has paid out each owner's share.
+ */
+export const quarterlyOwnerPayouts = createTable(
+  "quarterly_owner_payout",
+  (d) => ({
+    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+    settlementId: d
+      .integer()
+      .notNull()
+      .references(() => quarterlyUnitSettlements.id, { onDelete: "cascade" }),
+    userId: d
+      .varchar({ length: 255 })
+      .notNull()
+      .references(() => users.id),
+    percentageOwned: d.integer().notNull(), // Basis points snapshot at settlement time
+    amount: d.numeric({ precision: 12, scale: 2 }).notNull().default("0"),
+    isPaid: d.boolean().notNull().default(false),
+    paidAt: d.timestamp({ withTimezone: true }),
+    paidBy: d.varchar({ length: 255 }).references(() => users.id),
+    notes: d.text(),
+  }),
+  (t) => [
+    uniqueIndex("payout_settlement_user_idx").on(t.settlementId, t.userId),
+    index("payout_settlement_idx").on(t.settlementId),
+    index("payout_user_idx").on(t.userId),
+    index("payout_paid_idx").on(t.isPaid),
+  ],
+);
+
+export const quarterlyUnitSettlementRelations = relations(
+  quarterlyUnitSettlements,
+  ({ one, many }) => ({
+    unit: one(units, {
+      fields: [quarterlyUnitSettlements.unitId],
+      references: [units.id],
+    }),
+    createdBy: one(users, {
+      fields: [quarterlyUnitSettlements.createdByUserId],
+      references: [users.id],
+    }),
+    payouts: many(quarterlyOwnerPayouts),
+  }),
+);
+
+export const quarterlyOwnerPayoutRelations = relations(
+  quarterlyOwnerPayouts,
+  ({ one }) => ({
+    settlement: one(quarterlyUnitSettlements, {
+      fields: [quarterlyOwnerPayouts.settlementId],
+      references: [quarterlyUnitSettlements.id],
+    }),
+    user: one(users, {
+      fields: [quarterlyOwnerPayouts.userId],
+      references: [users.id],
+    }),
+  }),
+);
+

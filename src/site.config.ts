@@ -44,4 +44,10 @@ export const siteConfig = {
     /** Smoobu channel manager API base URL */
     smoobuBaseUrl: "https://login.smoobu.com/api",
   },
+  earnings: {
+    /** Fixed expense deducted per unit per quarter (in base currency) */
+    fixedExpensePerUnitPerQuarter: 6000,
+    /** Management fee percentage applied after fixed expense deduction (0.08 = 8%) */
+    managementFeePercent: 0.08,
+  },
 } as const;

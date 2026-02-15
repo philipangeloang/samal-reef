@@ -9,6 +9,16 @@ import {
 import { createCheckoutSession } from "@/lib/stripe";
 import { createDepayConfig } from "@/lib/depay";
 import { findAvailableUnit } from "@/lib/allocation";
+import { eq, and, isNull, or, inArray } from "drizzle-orm";
+import {
+  ownerships,
+  bookingRevenueCache,
+  bookingRevenueCacheMeta,
+  users,
+  quarterlyUnitSettlements,
+  quarterlyOwnerPayouts,
+} from "@/server/db/schema";
+import { siteConfig } from "@/site.config";
 
 export const purchaseRouter = createTRPCRouter({
   /**
@@ -325,4 +335,333 @@ export const purchaseRouter = createTRPCRouter({
       purchaseCount: myOwnerships.length,
     };
   }),
+
+  /**
+   * Get co-owners of a specific unit
+   * Returns all owners with name, email, and percentage for a given unit
+   * Auth: requesting user must own the unit (ADMIN bypasses this check)
+   */
+  getUnitCoOwners: investorProcedure
+    .input(z.object({ unitId: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const isAdmin = ctx.session.user.role === "ADMIN";
+
+      // Verify the requesting user owns this unit (unless ADMIN)
+      if (!isAdmin) {
+        const myOwnership = await ctx.db.query.ownerships.findFirst({
+          where: (o, { eq, and }) =>
+            and(eq(o.unitId, input.unitId), eq(o.userId, userId)),
+        });
+
+        if (!myOwnership) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You do not own this unit",
+          });
+        }
+      }
+
+      // Fetch all ownerships for this unit (excluding rejected/pending staff entries)
+      const unitOwnerships = await ctx.db
+        .select({
+          userId: ownerships.userId,
+          percentageOwned: ownerships.percentageOwned,
+          userName: users.name,
+          userEmail: users.email,
+        })
+        .from(ownerships)
+        .leftJoin(users, eq(ownerships.userId, users.id))
+        .where(
+          and(
+            eq(ownerships.unitId, input.unitId),
+            or(
+              isNull(ownerships.approvalStatus),
+              eq(ownerships.approvalStatus, "APPROVED"),
+            ),
+          ),
+        );
+
+      // Aggregate percentage per user (user may have multiple purchases for same unit)
+      const ownerMap = new Map<
+        string,
+        { name: string | null; email: string | null; percentageOwned: number }
+      >();
+
+      for (const row of unitOwnerships) {
+        if (!row.userId) continue;
+        const existing = ownerMap.get(row.userId);
+        if (existing) {
+          existing.percentageOwned += row.percentageOwned;
+        } else {
+          ownerMap.set(row.userId, {
+            name: row.userName,
+            email: row.userEmail,
+            percentageOwned: row.percentageOwned,
+          });
+        }
+      }
+
+      // Get unit name
+      const unit = await ctx.db.query.units.findFirst({
+        where: (u, { eq }) => eq(u.id, input.unitId),
+        columns: { id: true, name: true },
+      });
+
+      const coOwners = Array.from(ownerMap.entries()).map(
+        ([ownerId, data]) => ({
+          name: data.name ?? "Unknown",
+          email: data.email ?? "",
+          percentageOwned: data.percentageOwned,
+          percentageDisplay: `${(data.percentageOwned / 100).toFixed(2)}%`,
+          isCurrentUser: ownerId === userId,
+        }),
+      );
+
+      const totalAllocated = coOwners.reduce(
+        (sum, o) => sum + o.percentageOwned,
+        0,
+      );
+
+      return {
+        unitId: input.unitId,
+        unitName: unit?.name ?? "Unknown",
+        coOwners,
+        totalAllocated,
+        totalAllocatedDisplay: `${(totalAllocated / 100).toFixed(2)}%`,
+      };
+    }),
+
+  /**
+   * Get quarterly earnings breakdown for current user
+   * Calculates per-unit earnings from booking revenue minus expenses
+   * Formula per quarter per unit:
+   *   afterExpense = max(0, grossRevenue - fixedExpense)
+   *   managementFee = afterExpense × managementFeePercent
+   *   netPool = afterExpense - managementFee
+   *   ownerShare = netPool × (ownerPercentage / 10000)
+   */
+  getMyQuarterlyEarnings: investorProcedure
+    .input(z.object({ year: z.number().int().min(2020).max(2100) }))
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const { fixedExpensePerUnitPerQuarter, managementFeePercent } =
+        siteConfig.earnings;
+
+      // 1. Fetch user's ownerships with unit info (excluding rejected)
+      const myOwnerships = await ctx.db.query.ownerships.findMany({
+        where: (o, { eq, and, or, isNull }) =>
+          and(
+            eq(o.userId, userId),
+            or(isNull(o.approvalStatus), eq(o.approvalStatus, "APPROVED")),
+          ),
+        with: {
+          unit: {
+            with: {
+              collection: { columns: { id: true, name: true } },
+            },
+          },
+        },
+      });
+
+      // 2. Aggregate percentageOwned per unit
+      const unitMap = new Map<
+        number,
+        {
+          unitName: string;
+          collectionName: string;
+          totalPercentage: number;
+        }
+      >();
+
+      for (const ownership of myOwnerships) {
+        if (!ownership.unitId || !ownership.unit) continue;
+        const existing = unitMap.get(ownership.unitId);
+        if (existing) {
+          existing.totalPercentage += ownership.percentageOwned;
+        } else {
+          unitMap.set(ownership.unitId, {
+            unitName: ownership.unit.name,
+            collectionName: ownership.unit.collection?.name ?? "Unknown",
+            totalPercentage: ownership.percentageOwned,
+          });
+        }
+      }
+
+      const unitIds = Array.from(unitMap.keys());
+
+      if (unitIds.length === 0) {
+        return {
+          year: input.year,
+          lastRefreshedAt: null,
+          units: [],
+          grandTotal: 0,
+          config: {
+            fixedExpensePerQuarter: fixedExpensePerUnitPerQuarter,
+            managementFeePercent,
+          },
+        };
+      }
+
+      // 3. Fetch revenue cache for these units and year
+      const revenueRows = await ctx.db
+        .select()
+        .from(bookingRevenueCache)
+        .where(
+          and(
+            eq(bookingRevenueCache.year, input.year),
+            inArray(bookingRevenueCache.unitId, unitIds),
+          ),
+        );
+
+      // 4. Fetch cache meta for lastRefreshedAt
+      const meta = await ctx.db.query.bookingRevenueCacheMeta.findFirst({
+        where: (m, { eq }) => eq(m.year, input.year),
+      });
+
+      // 5. Fetch settlements + payouts for this user's units
+      const settlements = await ctx.db
+        .select()
+        .from(quarterlyUnitSettlements)
+        .where(
+          and(
+            eq(quarterlyUnitSettlements.year, input.year),
+            inArray(quarterlyUnitSettlements.unitId, unitIds),
+          ),
+        );
+
+      // Build settlement lookup: unitId -> quarter -> settlement
+      const settlementLookup = new Map<number, Map<number, typeof settlements[0]>>();
+      const settlementIds = settlements.map((s) => s.id);
+
+      for (const s of settlements) {
+        let quarterMap = settlementLookup.get(s.unitId);
+        if (!quarterMap) {
+          quarterMap = new Map();
+          settlementLookup.set(s.unitId, quarterMap);
+        }
+        quarterMap.set(s.quarter, s);
+      }
+
+      // Fetch this user's payouts from these settlements
+      const payoutLookup = new Map<number, { amount: number; isPaid: boolean; paidAt: Date | null }>();
+      if (settlementIds.length > 0) {
+        const payoutRows = await ctx.db
+          .select()
+          .from(quarterlyOwnerPayouts)
+          .where(
+            and(
+              eq(quarterlyOwnerPayouts.userId, userId),
+              inArray(quarterlyOwnerPayouts.settlementId, settlementIds),
+            ),
+          );
+        for (const p of payoutRows) {
+          payoutLookup.set(p.settlementId, {
+            amount: Number(p.amount),
+            isPaid: p.isPaid,
+            paidAt: p.paidAt,
+          });
+        }
+      }
+
+      // 6. Build revenue lookup: unitId -> month -> revenue
+      const revenueLookup = new Map<number, Map<number, number>>();
+      for (const row of revenueRows) {
+        let monthMap = revenueLookup.get(row.unitId);
+        if (!monthMap) {
+          monthMap = new Map();
+          revenueLookup.set(row.unitId, monthMap);
+        }
+        monthMap.set(row.month, Number(row.revenue));
+      }
+
+      // 7. Calculate quarterly earnings per unit
+      const quarterLabels = [
+        "Q1 (Jan–Mar)",
+        "Q2 (Apr–Jun)",
+        "Q3 (Jul–Sep)",
+        "Q4 (Oct–Dec)",
+      ];
+      const quarterMonths = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [10, 11, 12],
+      ];
+
+      let grandTotal = 0;
+
+      const unitsResult = unitIds.map((unitId) => {
+        const unitInfo = unitMap.get(unitId)!;
+        const monthRevenue = revenueLookup.get(unitId) ?? new Map();
+        const unitSettlements = settlementLookup.get(unitId);
+
+        let yearTotal = 0;
+
+        const quarters = quarterMonths.map((months, qi) => {
+          const quarterNum = qi + 1;
+          const settlement = unitSettlements?.get(quarterNum);
+
+          // Check for payout record
+          if (settlement) {
+            const payout = payoutLookup.get(settlement.id);
+            if (payout) {
+              yearTotal += payout.amount;
+              return {
+                quarter: quarterNum,
+                label: quarterLabels[qi]!,
+                ownerShare: payout.amount,
+                status: payout.isPaid ? ("PAID" as const) : ("PENDING" as const),
+                paidAt: payout.paidAt,
+              };
+            }
+          }
+
+          // Calculate estimated share from revenue cache
+          const grossRevenue = months.reduce(
+            (sum, m) => sum + (monthRevenue.get(m) ?? 0),
+            0,
+          );
+          const afterExpense = Math.max(
+            0,
+            grossRevenue - fixedExpensePerUnitPerQuarter,
+          );
+          const managementFee = Math.round(afterExpense * managementFeePercent * 100) / 100;
+          const netPool = Math.round((afterExpense - managementFee) * 100) / 100;
+          const ownerShare =
+            Math.round(
+              netPool * (unitInfo.totalPercentage / 10000) * 100,
+            ) / 100;
+
+          yearTotal += ownerShare;
+
+          return {
+            quarter: quarterNum,
+            label: quarterLabels[qi]!,
+            ownerShare,
+            status: "ESTIMATE" as const,
+            paidAt: null as Date | null,
+          };
+        });
+
+        grandTotal += yearTotal;
+
+        return {
+          unitId,
+          unitName: unitInfo.unitName,
+          collectionName: unitInfo.collectionName,
+          ownerPercentage: unitInfo.totalPercentage,
+          ownerPercentageDisplay: `${(unitInfo.totalPercentage / 100).toFixed(2)}%`,
+          quarters,
+          yearTotal: Math.round(yearTotal * 100) / 100,
+        };
+      });
+
+      return {
+        year: input.year,
+        lastRefreshedAt: meta?.lastRefreshedAt ?? null,
+        units: unitsResult,
+        grandTotal: Math.round(grandTotal * 100) / 100,
+      };
+    }),
 });
