@@ -25,7 +25,8 @@ export const affiliateRouter = createTRPCRouter({
     .input(
       z.object({
         email: z.string().email(),
-        commissionRate: z.string().regex(/^\d+\.\d{2}$/), // Format: "1.00" for 1%
+        commissionRate: z.string().regex(/^\d+\.\d{2}$/), // Format: "1.00" for 1% (ownership)
+        bookingCommissionRate: z.string().regex(/^\d+\.\d{2}$/).optional(), // Separate rate for bookings
         affiliateCode: z.string().min(3).max(20).optional(), // Custom code (optional)
       }),
     )
@@ -74,6 +75,7 @@ export const affiliateRouter = createTRPCRouter({
           email: input.email,
           token,
           commissionRate: input.commissionRate,
+          bookingCommissionRate: input.bookingCommissionRate ?? null,
           affiliateCode: input.affiliateCode,
           expiresAt,
           createdBy: ctx.session.user.id,
@@ -176,6 +178,7 @@ export const affiliateRouter = createTRPCRouter({
         .values({
           userId,
           defaultCommissionRate: invitation.commissionRate,
+          defaultBookingCommissionRate: invitation.bookingCommissionRate ?? null,
         })
         .returning();
 
@@ -191,6 +194,7 @@ export const affiliateRouter = createTRPCRouter({
           code,
           affiliateUserId: userId,
           commissionRate: invitation.commissionRate,
+          bookingCommissionRate: invitation.bookingCommissionRate ?? null,
           createdBy: userId,
         })
         .returning();
@@ -424,6 +428,7 @@ export const affiliateRouter = createTRPCRouter({
         id: true,
         affiliateUserId: true,
         commissionRate: true,
+        bookingCommissionRate: true,
       },
     });
     const linkByUser = new Map(links.map((l) => [l.affiliateUserId, l]));
@@ -442,12 +447,18 @@ export const affiliateRouter = createTRPCRouter({
       z.object({
         affiliateLinkId: z.number().int().positive(),
         newRate: z.string().regex(/^\d+\.\d{2}$/),
+        newBookingRate: z.string().regex(/^\d+\.\d{2}$/).nullable().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const linkUpdate: Record<string, unknown> = { commissionRate: input.newRate };
+      if (input.newBookingRate !== undefined) {
+        linkUpdate.bookingCommissionRate = input.newBookingRate;
+      }
+
       const [updatedLink] = await ctx.db
         .update(affiliateLinks)
-        .set({ commissionRate: input.newRate })
+        .set(linkUpdate)
         .where(eq(affiliateLinks.id, input.affiliateLinkId))
         .returning();
 
@@ -458,10 +469,15 @@ export const affiliateRouter = createTRPCRouter({
         });
       }
 
-      // Keep profile default in sync
+      // Keep profile defaults in sync
+      const profileUpdate: Record<string, unknown> = { defaultCommissionRate: input.newRate };
+      if (input.newBookingRate !== undefined) {
+        profileUpdate.defaultBookingCommissionRate = input.newBookingRate;
+      }
+
       await ctx.db
         .update(affiliateProfiles)
-        .set({ defaultCommissionRate: input.newRate })
+        .set(profileUpdate)
         .where(eq(affiliateProfiles.userId, updatedLink.affiliateUserId));
 
       return updatedLink;

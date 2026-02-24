@@ -26,6 +26,7 @@ export function InviteAffiliateDialog({
 }: InviteAffiliateDialogProps) {
   const [email, setEmail] = useState("");
   const [commissionRate, setCommissionRate] = useState("5.00");
+  const [bookingCommissionRate, setBookingCommissionRate] = useState("");
   const [affiliateCode, setAffiliateCode] = useState("");
 
   const utils = api.useUtils();
@@ -45,6 +46,7 @@ export function InviteAffiliateDialog({
   const resetForm = () => {
     setEmail("");
     setCommissionRate("5.00");
+    setBookingCommissionRate("");
     setAffiliateCode("");
   };
 
@@ -62,9 +64,16 @@ export function InviteAffiliateDialog({
       return;
     }
 
+    const bookingRate = bookingCommissionRate.trim() ? parseFloat(bookingCommissionRate) : null;
+    if (bookingRate !== null && (isNaN(bookingRate) || bookingRate < 0 || bookingRate > 100)) {
+      toast.error("Booking commission rate must be between 0 and 100");
+      return;
+    }
+
     createInvitation.mutate({
       email: email.trim(),
       commissionRate: rate.toFixed(2),
+      bookingCommissionRate: bookingRate !== null ? bookingRate.toFixed(2) : undefined,
       affiliateCode: affiliateCode.trim() || undefined,
     });
   };
@@ -95,7 +104,7 @@ export function InviteAffiliateDialog({
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="commissionRate">Commission Rate (%) *</Label>
+              <Label htmlFor="commissionRate">Ownership Commission Rate (%) *</Label>
               <Input
                 id="commissionRate"
                 type="number"
@@ -108,7 +117,24 @@ export function InviteAffiliateDialog({
                 required
               />
               <p className="text-muted-foreground text-xs">
-                The percentage of each sale this affiliate will earn
+                Commission on ownership purchases
+              </p>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="bookingCommissionRate">Booking Commission Rate (%)</Label>
+              <Input
+                id="bookingCommissionRate"
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                value={bookingCommissionRate}
+                onChange={(e) => setBookingCommissionRate(e.target.value)}
+                placeholder="Same as ownership"
+              />
+              <p className="text-muted-foreground text-xs">
+                Commission on booking reservations. If empty, uses the ownership rate.
               </p>
             </div>
 

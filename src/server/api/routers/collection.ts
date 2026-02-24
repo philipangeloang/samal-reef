@@ -348,7 +348,7 @@ export const collectionRouter = createTRPCRouter({
         collectionId: z.number().int().positive(),
         label: z.string().min(1).max(100),
         percent: z.string().regex(/^\d+\.?\d*$/),
-        conditionType: z.enum(["ALWAYS", "MIN_NIGHTS", "DATE_RANGE", "WEEKEND"]),
+        conditionType: z.enum(["ALWAYS", "MIN_NIGHTS", "DATE_RANGE", "WEEKEND", "WEEKDAY"]),
         conditionValue: z.string().nullable().optional(),
       }),
     )
@@ -377,7 +377,7 @@ export const collectionRouter = createTRPCRouter({
         id: z.number().int().positive(),
         label: z.string().min(1).max(100).optional(),
         percent: z.string().regex(/^\d+\.?\d*$/).optional(),
-        conditionType: z.enum(["ALWAYS", "MIN_NIGHTS", "DATE_RANGE", "WEEKEND"]).optional(),
+        conditionType: z.enum(["ALWAYS", "MIN_NIGHTS", "DATE_RANGE", "WEEKEND", "WEEKDAY"]).optional(),
         conditionValue: z.string().nullable().optional(),
         isActive: z.boolean().optional(),
       }),

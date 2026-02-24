@@ -198,7 +198,7 @@ export const collectionDiscounts = createTable(
     percent: d.numeric({ precision: 5, scale: 2 }).notNull(), // Discount % (e.g., 15.00 = 15% off)
     conditionType: d
       .varchar({ length: 50 })
-      .$type<"ALWAYS" | "MIN_NIGHTS" | "DATE_RANGE" | "WEEKEND">()
+      .$type<"ALWAYS" | "MIN_NIGHTS" | "DATE_RANGE" | "WEEKEND" | "WEEKDAY">()
       .notNull()
       .default("ALWAYS"),
     conditionValue: d.text(), // JSON: null for ALWAYS/WEEKEND, {"minNights":7} for MIN_NIGHTS, {"startDate":"...","endDate":"..."} for DATE_RANGE
@@ -404,7 +404,8 @@ export const affiliateInvitations = createTable(
     commissionRate: d
       .numeric({ precision: 5, scale: 2 })
       .notNull()
-      .default("1.00"), // e.g., "1.00" = 1%
+      .default("1.00"), // e.g., "1.00" = 1% (ownership)
+    bookingCommissionRate: d.numeric({ precision: 5, scale: 2 }), // Separate rate for bookings (nullable = use commissionRate)
     affiliateCode: d.varchar({ length: 50 }), // Optional custom affiliate code
     expiresAt: d.timestamp({ withTimezone: true }).notNull(), // 7 days from creation
     usedAt: d.timestamp({ withTimezone: true }),
@@ -438,7 +439,8 @@ export const affiliateProfiles = createTable(
     defaultCommissionRate: d
       .numeric({ precision: 5, scale: 2 })
       .notNull()
-      .default("1.00"), // Inherited from invitation
+      .default("1.00"), // Inherited from invitation (ownership)
+    defaultBookingCommissionRate: d.numeric({ precision: 5, scale: 2 }), // Separate rate for bookings (nullable = use defaultCommissionRate)
     totalEarned: d
       .numeric({ precision: 10, scale: 2 })
       .notNull()
@@ -470,7 +472,8 @@ export const affiliateLinks = createTable(
       .notNull()
       .unique() // One user can only have ONE affiliate link
       .references(() => users.id),
-    commissionRate: d.numeric({ precision: 5, scale: 2 }).notNull(), // Can override affiliate's default rate
+    commissionRate: d.numeric({ precision: 5, scale: 2 }).notNull(), // Ownership commission rate
+    bookingCommissionRate: d.numeric({ precision: 5, scale: 2 }), // Separate rate for bookings (nullable = use commissionRate)
     status: d.varchar({ length: 50 }).notNull().default("ACTIVE"), // 'ACTIVE' | 'PAUSED' | 'EXPIRED'
     // Analytics (future enhancement)
     clickCount: d.integer().notNull().default(0),

@@ -23,6 +23,7 @@ interface EditCommissionDialogProps {
     email: string;
     linkId: number;
     currentRate: string;
+    currentBookingRate: string | null;
   } | null;
 }
 
@@ -32,18 +33,24 @@ export function EditCommissionDialog({
   affiliate,
 }: EditCommissionDialogProps) {
   const [commissionRate, setCommissionRate] = useState("");
+  const [bookingCommissionRate, setBookingCommissionRate] = useState("");
 
   const utils = api.useUtils();
 
   useEffect(() => {
     if (affiliate) {
       setCommissionRate(parseFloat(affiliate.currentRate).toFixed(2));
+      setBookingCommissionRate(
+        affiliate.currentBookingRate
+          ? parseFloat(affiliate.currentBookingRate).toFixed(2)
+          : "",
+      );
     }
   }, [affiliate]);
 
   const updateRate = api.affiliate.updateCommissionRate.useMutation({
     onSuccess: async () => {
-      toast.success("Commission rate updated");
+      toast.success("Commission rates updated");
       await utils.affiliate.invalidate();
       onOpenChange(false);
     },
@@ -58,13 +65,22 @@ export function EditCommissionDialog({
 
     const rate = parseFloat(commissionRate);
     if (isNaN(rate) || rate < 0 || rate > 100) {
-      toast.error("Commission rate must be between 0 and 100");
+      toast.error("Ownership commission rate must be between 0 and 100");
+      return;
+    }
+
+    const bookingRate = bookingCommissionRate.trim()
+      ? parseFloat(bookingCommissionRate)
+      : null;
+    if (bookingRate !== null && (isNaN(bookingRate) || bookingRate < 0 || bookingRate > 100)) {
+      toast.error("Booking commission rate must be between 0 and 100");
       return;
     }
 
     updateRate.mutate({
       affiliateLinkId: affiliate.linkId,
       newRate: rate.toFixed(2),
+      newBookingRate: bookingRate !== null ? bookingRate.toFixed(2) : null,
     });
   };
 
@@ -73,9 +89,9 @@ export function EditCommissionDialog({
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Commission Rate</DialogTitle>
+            <DialogTitle>Edit Commission Rates</DialogTitle>
             <DialogDescription>
-              Update the commission percentage for{" "}
+              Update the commission percentages for{" "}
               <span className="font-medium text-white">
                 {affiliate?.name ?? affiliate?.email}
               </span>
@@ -84,7 +100,7 @@ export function EditCommissionDialog({
 
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="editCommissionRate">Commission Rate (%)</Label>
+              <Label htmlFor="editCommissionRate">Ownership Commission Rate (%)</Label>
               <Input
                 id="editCommissionRate"
                 type="number"
@@ -97,7 +113,24 @@ export function EditCommissionDialog({
                 required
               />
               <p className="text-muted-foreground text-xs">
-                The percentage of each sale this affiliate will earn
+                Commission on ownership purchases
+              </p>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="editBookingCommissionRate">Booking Commission Rate (%)</Label>
+              <Input
+                id="editBookingCommissionRate"
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                value={bookingCommissionRate}
+                onChange={(e) => setBookingCommissionRate(e.target.value)}
+                placeholder="Same as ownership"
+              />
+              <p className="text-muted-foreground text-xs">
+                Commission on booking reservations. If empty, uses the ownership rate.
               </p>
             </div>
           </div>

@@ -183,7 +183,7 @@ export function EditCollectionDialog({
       collectionId: collection.id,
       label: newDiscountLabel.trim(),
       percent: newDiscountPercent.trim(),
-      conditionType: newConditionType as "ALWAYS" | "MIN_NIGHTS" | "DATE_RANGE" | "WEEKEND",
+      conditionType: newConditionType as "ALWAYS" | "MIN_NIGHTS" | "DATE_RANGE" | "WEEKEND" | "WEEKDAY",
       conditionValue,
     });
   };
@@ -207,6 +207,8 @@ export function EditCollectionDialog({
       }
       case "WEEKEND":
         return "Fri/Sat check-in";
+      case "WEEKDAY":
+        return "Mon-Thu check-in";
       default:
         return type;
     }
@@ -570,6 +572,7 @@ export function EditCollectionDialog({
                         <SelectItem value="MIN_NIGHTS">Minimum nights stay</SelectItem>
                         <SelectItem value="DATE_RANGE">Date range</SelectItem>
                         <SelectItem value="WEEKEND">Weekend check-in (Fri/Sat)</SelectItem>
+                        <SelectItem value="WEEKDAY">Weekday check-in (Mon-Thu)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

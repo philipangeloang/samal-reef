@@ -40,6 +40,7 @@ export function AffiliatesManagementClient({
     email: string;
     linkId: number;
     currentRate: string;
+    currentBookingRate: string | null;
   } | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -120,7 +121,7 @@ export function AffiliatesManagementClient({
                 <TableHeader>
                   <TableRow className="border-cyan-400/20 bg-[#0a1929]/50 hover:bg-[#0a1929]/70">
                     <TableHead className="text-cyan-100">Affiliate</TableHead>
-                    <TableHead className="text-cyan-100">Commission Rate</TableHead>
+                    <TableHead className="text-cyan-100">Commission Rates</TableHead>
                     <TableHead className="text-cyan-100">Total Earned</TableHead>
                     <TableHead className="text-cyan-100">Total Paid</TableHead>
                     <TableHead className="text-cyan-100">Pending</TableHead>
@@ -163,9 +164,18 @@ export function AffiliatesManagementClient({
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-1.5">
-                              <span className="text-cyan-100/70">
-                                {parseFloat(affiliate.link?.commissionRate ?? affiliate.defaultCommissionRate).toFixed(2)}%
-                              </span>
+                              <div className="text-cyan-100/70">
+                                <div className="text-xs">
+                                  <span className="text-cyan-100/50">Own:</span>{" "}
+                                  {parseFloat(affiliate.link?.commissionRate ?? affiliate.defaultCommissionRate).toFixed(2)}%
+                                </div>
+                                <div className="text-xs">
+                                  <span className="text-cyan-100/50">Book:</span>{" "}
+                                  {affiliate.link?.bookingCommissionRate
+                                    ? `${parseFloat(affiliate.link.bookingCommissionRate).toFixed(2)}%`
+                                    : `${parseFloat(affiliate.link?.commissionRate ?? affiliate.defaultCommissionRate).toFixed(2)}%`}
+                                </div>
+                              </div>
                               {affiliate.link && (
                                 <button
                                   onClick={() =>
@@ -174,6 +184,7 @@ export function AffiliatesManagementClient({
                                       email: affiliate.user.email,
                                       linkId: affiliate.link!.id,
                                       currentRate: affiliate.link!.commissionRate,
+                                      currentBookingRate: affiliate.link!.bookingCommissionRate ?? null,
                                     })
                                   }
                                   className="rounded p-1 text-cyan-400/50 hover:bg-cyan-400/10 hover:text-cyan-300"

@@ -596,6 +596,8 @@ export async function getBookingPricing(
       }
       case "WEEKEND":
         return checkInDay === 5 || checkInDay === 6; // Friday or Saturday
+      case "WEEKDAY":
+        return checkInDay >= 1 && checkInDay <= 4; // Monday through Thursday
       default:
         return false;
     }
@@ -877,8 +879,9 @@ async function createBookingAffiliateCommission(booking: {
   const affiliateDiscountAmount = booking.affiliateDiscount ? parseFloat(booking.affiliateDiscount) : 0;
   const commissionBasePrice = parseFloat(booking.totalPrice) + affiliateDiscountAmount;
 
-  // Calculate commission amount
-  const commissionRate = parseFloat(affiliateLink.commissionRate);
+  // Calculate commission amount — use booking-specific rate if set, otherwise fall back to ownership rate
+  const effectiveRate = affiliateLink.bookingCommissionRate ?? affiliateLink.commissionRate;
+  const commissionRate = parseFloat(effectiveRate);
   const commissionAmount = (commissionBasePrice * commissionRate) / 100;
 
   // Create affiliate transaction for the booking
@@ -886,7 +889,7 @@ async function createBookingAffiliateCommission(booking: {
     affiliateLinkId: booking.affiliateLinkId,
     bookingId: booking.id,
     commissionAmount: commissionAmount.toFixed(2),
-    commissionRate: affiliateLink.commissionRate,
+    commissionRate: effectiveRate,
     isPaid: false,
   });
 
