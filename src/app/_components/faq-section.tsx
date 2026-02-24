@@ -13,7 +13,7 @@ const faqs: FAQItem[] = [
   {
     question: "What is seasteading?",
     answer:
-      "Seasteading is the concept of creating permanent dwellings at sea, called seasteads, outside the territory claimed by any government. This represents a pioneering approach to sustainable ocean living.",
+      "Seasteading is the concept of creating permanent dwellings at sea, called seasteads. This represents a pioneering approach to sustainable ocean living.",
   },
   {
     question: "How does fractional ownership work?",
@@ -23,17 +23,12 @@ const faqs: FAQItem[] = [
   {
     question: "How can I purchase a share?",
     answer:
-      "You can purchase shares through our platform using cryptocurrency or traditional payment methods. Simply browse available properties, select your desired ownership percentage, complete KYC verification, and finalize your purchase through our secure checkout process.",
-  },
-  {
-    question: "Can I trade or resell my share?",
-    answer:
-      "Yes! One of the key benefits is instant liquidity. You can trade or resell your ownership shares anytime through our marketplace, providing flexibility and the ability to adjust your investment as your needs change.",
+      "You can purchase ownership through our platform using cryptocurrency or traditional payment methods. Simply browse available properties, select your desired ownership percentage, complete KYC verification, and finalize your purchase through our secure checkout process.",
   },
   {
     question: "What perks do I get as an owner?",
     answer:
-      "As an owner, you receive usage rights to stay at your property based on your ownership tier, earn yield from eco-resort operations, gain access to exclusive seastead amenities, participate in community governance, and enjoy the unique experience of being part of a pioneering ocean community.",
+      "As an owner, you receive usage rights to stay at your property based on your ownership tier, earn yield from eco-resort operations, participate in community governance, and enjoy the unique experience of being part of a pioneering ocean community.",
   },
 ];
 

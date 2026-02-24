@@ -37,7 +37,7 @@ export function FinalCTA() {
 
             <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-cyan-50/80 md:text-xl">
               Be part of the first floating eco-resort community. Whether
-              you&apos;re an investor, traveler, or visionary — your place on
+              you&apos;re a builder, traveler, or visionary — your place on
               the water awaits.
             </p>
 

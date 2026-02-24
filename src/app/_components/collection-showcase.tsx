@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Home,
-  Waves,
   Sparkles,
   ArrowRight,
 } from "lucide-react";
@@ -115,7 +114,7 @@ export function CollectionShowcase({ collections, manualPaymentMethods = [] }: C
                     <Home className="h-4 w-4" />
                     <span>
                       {collection.name === "Glamphouse"
-                        ? "24 units (290 sq ft each)"
+                        ? "14 units (290 sq ft each)"
                         : collection.name === "Arkpad"
                           ? "2 units (490 sq ft each)"
                           : `${collection.totalUnits} Units`}
@@ -124,22 +123,6 @@ export function CollectionShowcase({ collections, manualPaymentMethods = [] }: C
                   <p className="mb-6 text-sm leading-relaxed text-cyan-50/70">
                     {collection.description ?? ""}
                   </p>
-
-                  {/* Features */}
-                  <div className="mb-6 flex flex-wrap gap-2">
-                    <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-3 py-1.5 text-xs transition-all hover:border-cyan-400/40 hover:bg-cyan-400/10">
-                      <Home className="h-3.5 w-3.5 text-cyan-400" />
-                      <span className="font-medium text-cyan-100">Usage Rights</span>
-                    </div>
-                    <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-3 py-1.5 text-xs transition-all hover:border-cyan-400/40 hover:bg-cyan-400/10">
-                      <ArrowRight className="h-3.5 w-3.5 text-cyan-400" />
-                      <span className="font-medium text-cyan-100">Flexible Terms</span>
-                    </div>
-                    <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-3 py-1.5 text-xs transition-all hover:border-cyan-400/40 hover:bg-cyan-400/10">
-                      <Waves className="h-3.5 w-3.5 text-cyan-400" />
-                      <span className="font-medium text-cyan-100">Eco-Restorative Vision</span>
-                    </div>
-                  </div>
 
                   {/* CTA Buttons */}
                   <div className="flex flex-col gap-3">
