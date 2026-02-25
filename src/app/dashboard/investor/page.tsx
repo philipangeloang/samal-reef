@@ -133,8 +133,8 @@ export default async function InvestorDashboardPage() {
         {/* Ownerships Table with Co-Owners */}
         <OwnershipsTable initialOwnerships={ownerships} />
 
-        {/* Quarterly Earnings */}
-        <QuarterlyEarnings />
+        {/* TODO: Re-enable when revenue/payout features are ready for production */}
+        {/* <QuarterlyEarnings /> */}
 
         {/* Manual Payment Submissions */}
         <ManualPaymentSubmissions initialSubmissions={manualPaymentSubmissions} />

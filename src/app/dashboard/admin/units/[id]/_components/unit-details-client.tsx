@@ -296,7 +296,7 @@ export function UnitDetailsClient({ initialData }: UnitDetailsClientProps) {
       </Card>
 
       {/* Quarterly Earnings & Settlements */}
-      <Card className="border-cyan-400/20 bg-gradient-to-br from-[#0d1f31]/90 to-[#0a1929]/90 backdrop-blur-sm">
+      <Card className="hidden border-cyan-400/20 bg-gradient-to-br from-[#0d1f31]/90 to-[#0a1929]/90 backdrop-blur-sm">
         <CardHeader>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>

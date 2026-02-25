@@ -135,12 +135,13 @@ const navItems: NavItem[] = [
     icon: CalendarDays,
     roles: ["ADMIN"],
   },
-  {
-    title: "Booking Revenue",
-    href: "/dashboard/admin/booking-revenue",
-    icon: BarChart3,
-    roles: ["ADMIN"],
-  },
+  // TODO: Re-enable when revenue/payout features are ready for production
+  // {
+  //   title: "Booking Revenue",
+  //   href: "/dashboard/admin/booking-revenue",
+  //   icon: BarChart3,
+  //   roles: ["ADMIN"],
+  // },
   {
     title: "Smoobu",
     href: "/dashboard/admin/smoobu",
