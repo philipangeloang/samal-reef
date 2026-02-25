@@ -18,7 +18,7 @@ export function HeroSection() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="https://arkpad.co/wp-content/uploads/2024/08/5-scaled.jpg"
+          src="https://arkpad.co/wp-content/uploads/2026/02/Screenshot-2026-02-25-093229-1.png"
           alt="Background"
           fill
           className="object-cover"
