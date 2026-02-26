@@ -351,6 +351,20 @@ async function sendPurchaseEmails(
     console.error("Failed to send MOA ready email:", emailError);
   }
 
+  // Send RMA ready email
+  try {
+    await emailService.sendRmaReadyEmail({
+      to: user.email,
+      userName: user.name ?? "Owner",
+      unitName: unit.name,
+      percentage: pricingTier.displayLabel,
+      ownershipId,
+    });
+    await delay(600);
+  } catch (emailError) {
+    console.error("Failed to send RMA ready email:", emailError);
+  }
+
   // Check if this is user's first purchase
   const userOwnerships = await db.query.ownerships.findMany({
     where: (ownerships, { eq }) => eq(ownerships.userId, userId),

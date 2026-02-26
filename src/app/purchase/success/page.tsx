@@ -196,6 +196,81 @@ export default async function PurchaseSuccessPage({
             </div>
           )}
 
+          {/* RMA Signing Prompt */}
+          {latestOwnership && session && (
+            <div className={`rounded-lg border p-4 ${
+              latestOwnership.isRmaSigned
+                ? "border-green-400/30 bg-green-400/10"
+                : "border-cyan-400/30 bg-cyan-400/10"
+            }`}>
+              <div className="flex items-start gap-3">
+                {latestOwnership.isRmaSigned ? (
+                  <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-400" />
+                ) : (
+                  <FileText className="mt-0.5 h-5 w-5 flex-shrink-0 text-cyan-400" />
+                )}
+                <div className="flex-1 space-y-2">
+                  <h3 className="font-semibold text-white">
+                    {latestOwnership.isRmaSigned
+                      ? "✅ RMA Signed & Secured"
+                      : "📄 Next Step: Sign Your RMA"}
+                  </h3>
+                  <p className="text-sm text-gray-300">
+                    {latestOwnership.isRmaSigned
+                      ? `Your Rental Management Agreement was signed on ${
+                          latestOwnership.rmaSignedAt
+                            ? new Date(latestOwnership.rmaSignedAt).toLocaleDateString()
+                            : "N/A"
+                        }. You can download it anytime from your dashboard.`
+                      : "Complete your setup by signing the Rental Management Agreement. This document authorizes the management of your property unit."}
+                  </p>
+                  <div className="flex gap-2">
+                    {latestOwnership.isRmaSigned ? (
+                      latestOwnership.rmaUrl && (
+                        <Button
+                          asChild
+                          size="sm"
+                          variant="outline"
+                          className="border-green-400/50 text-green-400 hover:bg-green-400/20"
+                        >
+                          <a
+                            href={latestOwnership.rmaUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Download className="mr-2 h-4 w-4" />
+                            Download RMA
+                          </a>
+                        </Button>
+                      )
+                    ) : (
+                      <>
+                        <Button
+                          asChild
+                          size="sm"
+                          className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
+                        >
+                          <Link href={`/rma/sign/${latestOwnership.id}`}>
+                            <PenTool className="mr-2 h-4 w-4" />
+                            Sign RMA Now
+                          </Link>
+                        </Button>
+                        <Button
+                          asChild
+                          size="sm"
+                          variant="ghost"
+                          className="text-gray-400 hover:text-white"
+                        >
+                          <Link href="/dashboard/investor">Sign Later</Link>
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Next Steps */}
           <div className="rounded-lg border border-white/10 bg-white/5 p-4">
             <h3 className="mb-2 font-semibold text-white">What&apos;s Next?</h3>

@@ -7,6 +7,7 @@ import { adminRouter } from "@/server/api/routers/admin";
 import { collectionRouter } from "@/server/api/routers/collection";
 import { userRouter } from "@/server/api/routers/user";
 import { moaRouter } from "@/server/api/routers/moa";
+import { rmaRouter } from "@/server/api/routers/rma";
 import { manualPaymentRouter } from "@/server/api/routers/manual-payment";
 import { bookingRouter } from "@/server/api/routers/booking";
 import { staffEntryRouter } from "@/server/api/routers/staff-entry";
@@ -26,6 +27,7 @@ export const appRouter = createTRPCRouter({
   collection: collectionRouter,
   user: userRouter,
   moa: moaRouter,
+  rma: rmaRouter,
   manualPayment: manualPaymentRouter,
   booking: bookingRouter,
   staffEntry: staffEntryRouter,

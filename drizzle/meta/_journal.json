@@ -22,6 +22,13 @@
       "when": 1771132507935,
       "tag": "0002_handy_star_brand",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1772127413284,
+      "tag": "0003_panoramic_silver_fox",
+      "breakpoints": true
     }
   ]
 }

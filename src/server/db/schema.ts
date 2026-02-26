@@ -370,6 +370,11 @@ export const ownerships = createTable(
     // Certificate of Ownership tracking
     certificateUrl: d.varchar({ length: 500 }), // Certificate PDF URL (null until generated)
     certificateGeneratedAt: d.timestamp({ withTimezone: true }), // When certificate was generated
+    // RMA (Rental Management Agreement) tracking
+    rmaUrl: d.varchar({ length: 500 }), // UploadThing URL (null until signed)
+    isRmaSigned: d.boolean().notNull().default(false), // RMA signature status
+    rmaSignedAt: d.timestamp({ withTimezone: true }), // When user signed RMA
+    rmaSignerName: d.varchar({ length: 255 }), // Full name provided during RMA signing
     // Staff entry approval tracking (null = normal automated purchase)
     approvalStatus: d
       .varchar({ length: 50 })
@@ -389,6 +394,7 @@ export const ownerships = createTable(
     index("ownership_affiliate_idx").on(t.affiliateLinkId),
     index("ownership_pricing_tier_idx").on(t.pricingTierId),
     index("ownership_moa_signed_idx").on(t.isSigned),
+    index("ownership_rma_signed_idx").on(t.isRmaSigned),
     index("ownership_approval_status_idx").on(t.approvalStatus),
   ],
 );

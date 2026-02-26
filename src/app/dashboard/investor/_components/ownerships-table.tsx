@@ -189,6 +189,7 @@ export function OwnershipsTable({ initialOwnerships }: OwnershipsTableProps) {
                   </TableHead>
                   <TableHead className="text-cyan-100">Date</TableHead>
                   <TableHead className="text-cyan-100">MOA Status</TableHead>
+                  <TableHead className="text-cyan-100">RMA Status</TableHead>
                   <TableHead className="text-cyan-100">Certificate</TableHead>
                   <TableHead className="text-cyan-100">Referred By</TableHead>
                   <TableHead className="text-cyan-100">Co-Owners</TableHead>
@@ -259,6 +260,51 @@ export function OwnershipsTable({ initialOwnerships }: OwnershipsTableProps) {
                             className="h-8 px-2 text-cyan-400 hover:text-cyan-300"
                           >
                             <Link href={`/moa/sign/${ownership.id}`}>
+                              <FileText className="mr-1 h-3 w-3" />
+                              Sign
+                            </Link>
+                          </Button>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {ownership.isRmaSigned ? (
+                        <div className="flex items-center gap-2">
+                          <Badge className="border-green-400/30 bg-green-400/20 text-green-300">
+                            <CheckCircle className="mr-1 h-3 w-3" />
+                            Signed
+                          </Badge>
+                          {ownership.rmaUrl && (
+                            <Button
+                              asChild
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 px-2 text-cyan-400 hover:text-cyan-300"
+                            >
+                              <a
+                                href={ownership.rmaUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Download RMA"
+                              >
+                                <Download className="h-4 w-4" />
+                              </a>
+                            </Button>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Badge className="border-amber-400/30 bg-amber-400/20 text-amber-300">
+                            <AlertCircle className="mr-1 h-3 w-3" />
+                            Pending
+                          </Badge>
+                          <Button
+                            asChild
+                            size="sm"
+                            variant="ghost"
+                            className="h-8 px-2 text-cyan-400 hover:text-cyan-300"
+                          >
+                            <Link href={`/rma/sign/${ownership.id}`}>
                               <FileText className="mr-1 h-3 w-3" />
                               Sign
                             </Link>

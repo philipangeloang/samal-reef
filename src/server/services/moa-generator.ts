@@ -554,7 +554,7 @@ export async function generateUnsignedMoaPdf(
   // I.2
   y = drawTextWrapped(
     page2,
-    "I.2. Upon payment of the agreed selling, the SECOND PARTY shall acquire ownership, either exclusively or jointly depending on the percentage of ownership purchased. In case the SECOND PARTY is a joint owner of the floating house, his or her name shall be included in the Roster of Owners.",
+    "I.2. Upon payment of the agreed selling price, the SECOND PARTY shall acquire ownership, either exclusively or jointly depending on the percentage of ownership purchased. In case the SECOND PARTY is a joint owner of the floating house, his or her name shall be included in the Roster of Owners.",
     { x: marginX, y, size: 10, maxWidth: contentWidth },
     bodyFont,
   );
@@ -569,8 +569,8 @@ export async function generateUnsignedMoaPdf(
   );
   y -= 25;
 
-  // II. RENTAL AND PROFIT DISTRIBUTION
-  page2.drawText("II. RENTAL AND PROFIT DISTRIBUTION", {
+  // II. MANAGEMENT
+  page2.drawText("II. MANAGEMENT", {
     x: marginX,
     y: y,
     size: 10,
@@ -582,7 +582,7 @@ export async function generateUnsignedMoaPdf(
   // II.1
   y = drawTextWrapped(
     page2,
-    "II.1 If the owned unit is shared by multiple owners, the FIRST PARTY shall be responsible for the leasing out of the floating house of the SECOND PARTY. The SECOND PARTY agrees to the established rates established of the FIRST PARTY.",
+    "II.1 The manager of the Floating House shall be determined in a separate written management agreement, which shall outline the rights, duties, compensation, and operational authority of the appointed manager.",
     { x: marginX, y, size: 10, maxWidth: contentWidth },
     bodyFont,
   );
@@ -591,7 +591,7 @@ export async function generateUnsignedMoaPdf(
   // II.2
   y = drawTextWrapped(
     page2,
-    "II.2 The FIRST PARTY is entitled to an EIGHT PERCENT (8%) management fee which shall be deducted from the revenue of the floating house rental.",
+    "II.2 In the event that a Floating House unit is co-owned by two or more owners, no individual co-owner shall directly manage the unit. Management must be entrusted to a duly appointed manager pursuant to a separate management agreement.",
     { x: marginX, y, size: 10, maxWidth: contentWidth },
     bodyFont,
   );
@@ -600,7 +600,16 @@ export async function generateUnsignedMoaPdf(
   // II.3
   y = drawTextWrapped(
     page2,
-    "II.3 The FIRST PARTY, on a quarterly basis, shall submit to the SECOND PARTY the total revenue earned and total expenses incurred. The net profit shall be divided to the SECOND PARTY and his/her co-owners in accordance with their percentage of ownership, net of the EIGHT PERCENT (8%) management fee, and operating and administrative expenses.",
+    "II.3 Any rental management company appointed by an owner or group of owners must be subject to the prior written agreement and approval of the Reef Resort management.",
+    { x: marginX, y, size: 10, maxWidth: contentWidth },
+    bodyFont,
+  );
+  y -= 15;
+
+  // II.4
+  y = drawTextWrapped(
+    page2,
+    "II.4 A fixed monthly fee of Two Thousand Pesos (PHP 2,000.00) shall be applied to each unit within the resort for access to common areas, facilities, walkways, mooring systems, and related shared infrastructure, proportional to ownership percentage.",
     { x: marginX, y, size: 10, maxWidth: contentWidth },
     bodyFont,
   );
@@ -637,7 +646,7 @@ export async function generateUnsignedMoaPdf(
   // III.3
   y = drawTextWrapped(
     page2,
-    "III.3 The Resort Management will withhold funds from the owners' rental profits to cover expenses such as repairs and maintenance, ensuring that all owners pay proportionally for relevant expenses.",
+    "III.3 The Resort Management will withhold funds from the owners' rental revenues or other income distributions to cover expenses such as repairs and maintenance, ensuring that all owners pay proportionally for relevant expenses.",
     { x: marginX, y, size: 10, maxWidth: contentWidth },
     bodyFont,
   );

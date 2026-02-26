@@ -2146,4 +2146,470 @@ export const emailService = {
       throw error;
     }
   },
+
+  // ===== RMA (Rental Management Agreement) EMAILS =====
+
+  /**
+   * Send RMA ready email to owner after purchase
+   */
+  async sendRmaReadyEmail(params: {
+    to: string;
+    userName: string;
+    unitName: string;
+    percentage: string;
+    ownershipId: number;
+  }) {
+    const { to, userName, unitName, percentage, ownershipId } = params;
+    const rmaSigningUrl = `${env.NEXT_PUBLIC_APP_URL}/rma/sign/${ownershipId}`;
+
+    try {
+      const { data, error } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to,
+        subject: `📄 Sign Your Rental Management Agreement - ${siteConfig.brand.name}`,
+        html: `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Sign Your RMA</title>
+          </head>
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(180deg, #0a1929 0%, #0d1f31 50%, #0f2435 100%);">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(180deg, #0a1929 0%, #0d1f31 50%, #0f2435 100%); min-height: 100vh;">
+              <tr>
+                <td style="padding: 40px 20px;">
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, rgba(13, 31, 49, 0.95) 0%, rgba(10, 25, 41, 0.95) 100%); border-radius: 16px; border: 1px solid rgba(34, 211, 238, 0.2); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(34, 211, 238, 0.1);">
+                    <tr>
+                      <td style="padding: 48px 40px;">
+                        <!-- Logo -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="text-align: center; padding-bottom: 32px;">
+                              <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
+                                <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
+                                  🌊 ${siteConfig.brand.name}
+                                </h1>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- Main Content -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding-top: 24px;">
+                              <h2 style="margin: 0 0 16px 0; font-size: 24px; font-weight: 600; color: #e0f2fe; text-align: center;">
+                                Rental Management Agreement Ready 📄
+                              </h2>
+                              <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
+                                Hi ${userName}, please sign your Rental Management Agreement to set up rental management for your property.
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- Ownership Details -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding: 24px; background: rgba(34, 211, 238, 0.08); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.15);">
+                              <p style="margin: 0 0 16px 0; font-size: 14px; color: #22d3ee; font-weight: 600;">
+                                📋 Property Details:
+                              </p>
+                              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                  <td style="padding: 8px 0;">
+                                    <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Unit</p>
+                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">${unitName}</p>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="padding: 8px 0;">
+                                    <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Ownership</p>
+                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">${percentage}</p>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- Next Step -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 24px 0;">
+                          <tr>
+                            <td>
+                              <p style="margin: 0 0 12px 0; font-size: 14px; color: #22d3ee; font-weight: 600;">
+                                ✍️ Next Step:
+                              </p>
+                              <p style="margin: 0 0 8px 0; font-size: 13px; line-height: 1.6; color: rgba(224, 242, 254, 0.7);">
+                                • Review your Rental Management Agreement
+                              </p>
+                              <p style="margin: 0 0 8px 0; font-size: 13px; line-height: 1.6; color: rgba(224, 242, 254, 0.7);">
+                                • Add your digital signature
+                              </p>
+                              <p style="margin: 0; font-size: 13px; line-height: 1.6; color: rgba(224, 242, 254, 0.7);">
+                                • Download your signed document for your records
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- CTA Button -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding: 32px 0; text-align: center;">
+                              <a href="${rmaSigningUrl}" style="display: inline-block; padding: 16px 48px; background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%); color: #ffffff; text-decoration: none; font-size: 18px; font-weight: 600; border-radius: 12px; box-shadow: 0 10px 30px rgba(34, 211, 238, 0.3), 0 0 20px rgba(34, 211, 238, 0.2);">
+                                ✍️ Sign RMA Now
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- Optional Notice -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding: 16px; background: rgba(34, 211, 238, 0.05); border-radius: 8px; text-align: center;">
+                              <p style="margin: 0; font-size: 13px; line-height: 1.6; color: rgba(224, 242, 254, 0.6);">
+                                💡 You can sign this later from your owner dashboard, but we recommend completing it now.
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Footer -->
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 32px auto 0;">
+                    <tr>
+                      <td style="text-align: center; padding: 0 20px;">
+                        <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
+                          ${siteConfig.brand.name} - Your Gateway to Paradise Investment
+                        </p>
+                        <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
+                          This email was sent to ${to}
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+
+                </td>
+              </tr>
+            </table>
+          </body>
+          </html>
+        `,
+      });
+
+      if (error) {
+        console.error("Failed to send RMA ready email:", error);
+        throw new Error("Failed to send email");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error in sendRmaReadyEmail:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Send RMA signed confirmation to owner
+   */
+  async sendRmaSignedConfirmation(params: {
+    to: string;
+    userName: string;
+    unitName: string;
+    rmaUrl: string;
+  }) {
+    const { to, userName, unitName, rmaUrl } = params;
+
+    try {
+      const { data, error } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to,
+        subject: `✅ Your RMA Has Been Signed - ${siteConfig.brand.name}`,
+        html: `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>RMA Signed</title>
+          </head>
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(180deg, #0a1929 0%, #0d1f31 50%, #0f2435 100%);">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(180deg, #0a1929 0%, #0d1f31 50%, #0f2435 100%); min-height: 100vh;">
+              <tr>
+                <td style="padding: 40px 20px;">
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, rgba(13, 31, 49, 0.95) 0%, rgba(10, 25, 41, 0.95) 100%); border-radius: 16px; border: 1px solid rgba(34, 211, 238, 0.2); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(34, 211, 238, 0.1);">
+                    <tr>
+                      <td style="padding: 48px 40px;">
+                        <!-- Logo -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="text-align: center; padding-bottom: 32px;">
+                              <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
+                                <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
+                                  🌊 ${siteConfig.brand.name}
+                                </h1>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- Main Content -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding-top: 24px;">
+                              <h2 style="margin: 0 0 16px 0; font-size: 24px; font-weight: 600; color: #e0f2fe; text-align: center;">
+                                RMA Successfully Signed! ✅
+                              </h2>
+                              <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
+                                Hi ${userName}, your Rental Management Agreement for ${unitName} has been signed and securely stored.
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- Success Box -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding: 32px; background: rgba(34, 211, 238, 0.08); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.15); text-align: center;">
+                              <p style="margin: 0 0 16px 0; font-size: 48px;">📄</p>
+                              <p style="margin: 0 0 8px 0; font-size: 14px; color: #22d3ee; font-weight: 600;">
+                                Document Status
+                              </p>
+                              <p style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;">
+                                SIGNED & STORED
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- Next Steps -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 24px 0;">
+                          <tr>
+                            <td>
+                              <p style="margin: 0 0 12px 0; font-size: 14px; color: #22d3ee; font-weight: 600;">
+                                📁 Your Document:
+                              </p>
+                              <p style="margin: 0 0 8px 0; font-size: 13px; line-height: 1.6; color: rgba(224, 242, 254, 0.7);">
+                                • Your signed RMA is securely stored in your account
+                              </p>
+                              <p style="margin: 0 0 8px 0; font-size: 13px; line-height: 1.6; color: rgba(224, 242, 254, 0.7);">
+                                • You can download it anytime from your dashboard
+                              </p>
+                              <p style="margin: 0; font-size: 13px; line-height: 1.6; color: rgba(224, 242, 254, 0.7);">
+                                • Keep this document for your records
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- CTA Buttons -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding: 16px 0; text-align: center;">
+                              <a href="${rmaUrl}" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%); color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 10px; margin: 0 8px; box-shadow: 0 10px 30px rgba(34, 211, 238, 0.3);">
+                                📥 Download RMA
+                              </a>
+                              <a href="${env.NEXT_PUBLIC_APP_URL}/dashboard/investor" style="display: inline-block; padding: 14px 32px; background: rgba(34, 211, 238, 0.1); color: #22d3ee; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 10px; margin: 0 8px; border: 1px solid rgba(34, 211, 238, 0.3);">
+                                📊 View Dashboard
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Footer -->
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 32px auto 0;">
+                    <tr>
+                      <td style="text-align: center; padding: 0 20px;">
+                        <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
+                          ${siteConfig.brand.name} - Your Gateway to Paradise Investment
+                        </p>
+                        <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
+                          This email was sent to ${to}
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+
+                </td>
+              </tr>
+            </table>
+          </body>
+          </html>
+        `,
+      });
+
+      if (error) {
+        console.error("Failed to send RMA signed confirmation:", error);
+        throw new Error("Failed to send email");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error in sendRmaSignedConfirmation:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Send RMA signed notification to admin
+   */
+  async sendAdminRmaSignedNotification(params: {
+    ownerName: string;
+    ownerEmail: string;
+    unitName: string;
+    percentage: string;
+    rmaUrl: string;
+    ownershipId: number;
+  }) {
+    const { ownerName, ownerEmail, unitName, percentage, rmaUrl, ownershipId } = params;
+
+    const adminEmail = env.NEXT_PUBLIC_APP_URL.includes("localhost")
+      ? siteConfig.emails.admin
+      : siteConfig.emails.admin;
+
+    try {
+      const { data, error } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: adminEmail,
+        subject: `✅ New RMA Signed - ${ownerName} (${unitName})`,
+        html: `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>RMA Signed - Admin Notification</title>
+          </head>
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(180deg, #0a1929 0%, #0d1f31 50%, #0f2435 100%);">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(180deg, #0a1929 0%, #0d1f31 50%, #0f2435 100%); min-height: 100vh;">
+              <tr>
+                <td style="padding: 40px 20px;">
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, rgba(13, 31, 49, 0.95) 0%, rgba(10, 25, 41, 0.95) 100%); border-radius: 16px; border: 1px solid rgba(34, 211, 238, 0.2); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(34, 211, 238, 0.1);">
+                    <tr>
+                      <td style="padding: 48px 40px;">
+                        <!-- Logo -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="text-align: center; padding-bottom: 32px;">
+                              <div style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3);">
+                                <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">
+                                  🌊 ${siteConfig.brand.name} Admin
+                                </h1>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- Main Content -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding-top: 24px;">
+                              <h2 style="margin: 0 0 16px 0; font-size: 24px; font-weight: 600; color: #e0f2fe; text-align: center;">
+                                New RMA Signed ✅
+                              </h2>
+                              <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
+                                An owner has signed their Rental Management Agreement
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- Owner & Property Details -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding: 24px; background: rgba(34, 211, 238, 0.08); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.15);">
+                              <p style="margin: 0 0 16px 0; font-size: 14px; color: #22d3ee; font-weight: 600;">
+                                📋 Details:
+                              </p>
+                              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                  <td style="padding: 8px 0;">
+                                    <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Owner</p>
+                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">${ownerName}</p>
+                                    <p style="margin: 2px 0 0 0; font-size: 13px; color: #22d3ee;">${ownerEmail}</p>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="padding: 8px 0;">
+                                    <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Property Unit</p>
+                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">${unitName}</p>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="padding: 8px 0;">
+                                    <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Ownership</p>
+                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">${percentage}</p>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="padding: 8px 0;">
+                                    <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Ownership ID</p>
+                                    <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">#${ownershipId}</p>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <!-- CTA Button -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                          <tr>
+                            <td style="padding: 32px 0; text-align: center;">
+                              <a href="${rmaUrl}" style="display: inline-block; padding: 16px 48px; background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%); color: #ffffff; text-decoration: none; font-size: 18px; font-weight: 600; border-radius: 12px; box-shadow: 0 10px 30px rgba(34, 211, 238, 0.3), 0 0 20px rgba(34, 211, 238, 0.2); margin: 0 8px;">
+                                📥 Download RMA
+                              </a>
+                              <a href="${env.NEXT_PUBLIC_APP_URL}/dashboard/admin/rmas" style="display: inline-block; padding: 16px 48px; background: rgba(34, 211, 238, 0.1); color: #22d3ee; text-decoration: none; font-size: 18px; font-weight: 600; border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.3); margin: 0 8px;">
+                                🗂️ View All RMAs
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Footer -->
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 32px auto 0;">
+                    <tr>
+                      <td style="text-align: center; padding: 0 20px;">
+                        <p style="margin: 0 0 8px 0; font-size: 13px; color: rgba(224, 242, 254, 0.5);">
+                          ${siteConfig.brand.name} Admin Notification
+                        </p>
+                        <p style="margin: 0; font-size: 12px; color: rgba(224, 242, 254, 0.4);">
+                          This is an automated notification
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+
+                </td>
+              </tr>
+            </table>
+          </body>
+          </html>
+        `,
+      });
+
+      if (error) {
+        console.error("Failed to send admin RMA signed notification:", error);
+        throw new Error("Failed to send email");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error in sendAdminRmaSignedNotification:", error);
+      throw error;
+    }
+  },
 };

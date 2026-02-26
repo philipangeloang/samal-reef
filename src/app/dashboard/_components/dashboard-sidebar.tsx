@@ -124,6 +124,12 @@ const navItems: NavItem[] = [
     roles: ["ADMIN"],
   },
   {
+    title: "RMAs",
+    href: "/dashboard/admin/rmas",
+    icon: FileText,
+    roles: ["ADMIN"],
+  },
+  {
     title: "Manual Payments",
     href: "/dashboard/admin/manual-payments",
     icon: ClipboardCheck,

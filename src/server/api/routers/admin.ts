@@ -984,6 +984,85 @@ export const adminRouter = createTRPCRouter({
     }),
 
   /**
+   * Get all RMA statuses for admin management
+   */
+  getAllRmaStatuses: adminProcedure
+    .input(
+      z
+        .object({
+          isRmaSigned: z.boolean().optional(),
+          userId: z.string().optional(),
+          limit: z.number().int().min(1).max(100).optional().default(50),
+        })
+        .optional(),
+    )
+    .query(async ({ ctx, input }) => {
+      const rmaStatuses = await ctx.db.query.ownerships.findMany({
+        where: (ownerships, { eq, and }) => {
+          const conditions = [];
+          if (input?.isRmaSigned !== undefined) {
+            conditions.push(eq(ownerships.isRmaSigned, input.isRmaSigned));
+          }
+          if (input?.userId) {
+            conditions.push(eq(ownerships.userId, input.userId));
+          }
+          return conditions.length > 0 ? and(...conditions) : undefined;
+        },
+        with: {
+          unit: {
+            columns: {
+              id: true,
+              name: true,
+              collectionId: true,
+            },
+            with: {
+              collection: {
+                columns: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                },
+              },
+            },
+          },
+          user: {
+            columns: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+        limit: input?.limit ?? 50,
+        orderBy: [desc(ownerships.createdAt)],
+      });
+
+      return rmaStatuses
+        .filter((ownership) => ownership.user && ownership.unit)
+        .map((ownership) => ({
+          ownershipId: ownership.id,
+          owner: {
+            id: ownership.user!.id,
+            name: ownership.user!.name,
+            email: ownership.user!.email,
+          },
+          unit: {
+            id: ownership.unit!.id,
+            name: ownership.unit!.name,
+            collectionId: ownership.unit!.collectionId,
+            collection: ownership.unit!.collection,
+          },
+          percentageOwned: (ownership.percentageOwned / 100).toFixed(2),
+          purchasePrice: formatCurrency(ownership.purchasePrice),
+          purchaseDate: ownership.createdAt.toISOString(),
+          isRmaSigned: ownership.isRmaSigned,
+          rmaUrl: ownership.rmaUrl,
+          rmaSignedAt: ownership.rmaSignedAt?.toISOString(),
+          rmaSignerName: ownership.rmaSignerName,
+        }));
+    }),
+
+  /**
    * Get detailed user information
    * Shows comprehensive user data including investor and/or affiliate profiles
    * Used for admin user detail page
