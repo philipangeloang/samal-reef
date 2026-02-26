@@ -1,94 +1,81 @@
 "use client";
 
-import {
-  Palmtree,
-  Waves,
-  Sunset,
-  Sailboat,
-  UtensilsCrossed,
-  TreePine,
-  Heart,
-  Star,
-  Camera,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import Image from "next/image";
+import { Palmtree } from "lucide-react";
 
 interface Experience {
+  src: string;
+  alt: string;
   title: string;
   tagline: string;
-  icon: LucideIcon;
-  gradient: string;
-  iconGradient: string;
+  /** CSS grid placement on md+ */
   gridClass: string;
-  large?: boolean;
+  /** Focus point for object-position */
+  objectPosition?: string;
 }
 
 const experiences: Experience[] = [
   {
-    title: "Island Paradise",
-    tagline: "Experience tropical living at its finest",
-    icon: Palmtree,
-    gradient: "from-teal-600/40 via-emerald-700/30 to-teal-900/50",
-    iconGradient: "from-teal-400 to-emerald-500",
-    gridClass: "sm:col-span-2 md:[grid-column:1/3] md:[grid-row:1/3]",
-    large: true,
+    src: "/showcase/Reefresort-11.jpg",
+    alt: "Sunset view from glamping tent over the ocean",
+    title: "Golden Sunsets",
+    tagline: "End every day in paradise",
+    gridClass: "md:[grid-column:1/3] md:[grid-row:1/3]",
   },
   {
+    src: "/showcase/Reefresort-5.jpg",
+    alt: "Glamping tent interior with ocean view",
+    title: "Overwater Glamping",
+    tagline: "Wake up to the sound of waves",
+    gridClass: "md:[grid-column:3/5] md:[grid-row:1/2]",
+    objectPosition: "center 65%",
+  },
+  {
+    src: "/showcase/WaterActivity-5.jpg",
+    alt: "Crystal clear kayaking in turquoise waters",
     title: "Crystal Waters",
-    tagline: "Snorkel pristine coral reefs",
-    icon: Waves,
-    gradient: "from-cyan-600/40 via-blue-700/30 to-cyan-900/50",
-    iconGradient: "from-cyan-400 to-blue-500",
-    gridClass: "sm:col-span-2 md:[grid-column:3/5] md:[grid-row:1/2]",
-  },
-  {
-    title: "Sunset Lounge",
-    tagline: "Golden hour cocktails",
-    icon: Sunset,
-    gradient: "from-amber-600/40 via-orange-700/30 to-amber-900/50",
-    iconGradient: "from-amber-400 to-orange-500",
+    tagline: "Explore pristine blue seas",
     gridClass: "md:[grid-column:3/4] md:[grid-row:2/3]",
+    objectPosition: "center 70%",
   },
   {
-    title: "Water Sports",
-    tagline: "Kayak, paddleboard & more",
-    icon: Sailboat,
-    gradient: "from-blue-600/40 via-indigo-700/30 to-blue-900/50",
-    iconGradient: "from-blue-400 to-indigo-500",
+    src: "/showcase/WaterActivity-3.jpg",
+    alt: "Paddleboarding on calm ocean",
+    title: "Paddleboarding",
+    tagline: "Glide across the open water",
     gridClass: "md:[grid-column:4/5] md:[grid-row:2/3]",
+    objectPosition: "center 55%",
   },
   {
-    title: "Fresh Cuisine",
-    tagline: "Ocean-to-table dining",
-    icon: UtensilsCrossed,
-    gradient: "from-emerald-600/40 via-teal-700/30 to-emerald-900/50",
-    iconGradient: "from-emerald-400 to-teal-500",
+    src: "/showcase/Reefresort-17.jpg",
+    alt: "Luxury floating tent bedroom with string lights",
+    title: "Luxury Stays",
+    tagline: "Curated comfort on the sea",
     gridClass: "md:[grid-column:1/2] md:[grid-row:3/5]",
   },
   {
-    title: "Eco Adventures",
-    tagline: "Nature trails & wildlife",
-    icon: TreePine,
-    gradient: "from-green-600/40 via-emerald-700/30 to-green-900/50",
-    iconGradient: "from-green-400 to-emerald-500",
+    src: "/showcase/WaterActivity-1.jpg",
+    alt: "Dragon banana boat ride with guests",
+    title: "Thrilling Rides",
+    tagline: "Adventures for everyone",
     gridClass: "md:[grid-column:2/3] md:[grid-row:3/4]",
+    objectPosition: "center center",
   },
   {
-    title: "Wellness Retreat",
-    tagline: "Yoga & spa by the sea",
-    icon: Heart,
-    gradient: "from-purple-600/40 via-pink-700/30 to-purple-900/50",
-    iconGradient: "from-purple-400 to-pink-500",
+    src: "/showcase/Reefresort-2.jpg",
+    alt: "Ocean view from glamping tent deck",
+    title: "Ocean Front Deck",
+    tagline: "Your private sea view",
     gridClass: "md:[grid-column:2/3] md:[grid-row:4/5]",
+    objectPosition: "center 30%",
   },
   {
-    title: "Starlit Nights",
-    tagline: "Bonfires under the stars",
-    icon: Star,
-    gradient: "from-indigo-600/40 via-purple-700/30 to-indigo-900/50",
-    iconGradient: "from-indigo-400 to-purple-500",
-    gridClass: "sm:col-span-2 md:[grid-column:3/5] md:[grid-row:3/5]",
-    large: true,
+    src: "/showcase/WaterActivity-8.jpg",
+    alt: "Water bike on the dock with ocean panorama",
+    title: "Water Sports",
+    tagline: "Bikes, kayaks & more",
+    gridClass: "md:[grid-column:3/5] md:[grid-row:3/5]",
+    objectPosition: "center 60%",
   },
 ];
 
@@ -99,60 +86,47 @@ function ExperienceCard({
   experience: Experience;
   index: number;
 }) {
-  const Icon = experience.icon;
+  const isLarge =
+    experience.gridClass.includes("1/3]") ||
+    experience.gridClass.includes("3/5]");
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br ${experience.gradient} backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:border-cyan-400/40 hover:shadow-xl hover:shadow-cyan-500/10 ${experience.gridClass}`}
+      className={`group relative overflow-hidden rounded-2xl md:rounded-3xl ${experience.gridClass}`}
       style={{
-        animationDelay: `${index * 100}ms`,
+        animationDelay: `${index * 80}ms`,
         animationFillMode: "backwards",
       }}
     >
-      {/* Dot texture overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.07] transition-opacity duration-300 group-hover:opacity-[0.12]"
+      {/* Photo */}
+      <Image
+        src={experience.src}
+        alt={experience.alt}
+        fill
+        sizes={isLarge ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, 25vw"}
+        className="object-cover transition-transform duration-700 group-hover:scale-110"
         style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
+          objectPosition: experience.objectPosition ?? "center center",
         }}
       />
 
-      {/* Gradient glow in corner */}
-      <div
-        className={`absolute -right-12 -top-12 h-40 w-40 rounded-full bg-gradient-to-br ${experience.iconGradient} opacity-20 blur-3xl transition-opacity duration-300 group-hover:opacity-30`}
-      />
+      {/* Gradient overlay — stronger at bottom for text readability */}
+      <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90" />
+
+      {/* Subtle border glow on hover */}
+      <div className="absolute inset-0 rounded-2xl border border-white/0 transition-all duration-300 group-hover:border-cyan-400/30 md:rounded-3xl" />
 
       {/* Content */}
       <div
-        className={`relative flex h-full flex-col justify-end ${experience.large ? "p-8 md:p-10" : "p-6 md:p-8"}`}
+        className={`absolute inset-0 flex flex-col justify-end ${isLarge ? "p-6 md:p-8" : "p-4 md:p-6"}`}
       >
-        {/* Photo coming indicator */}
-        <div className="absolute right-4 top-4 flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium text-white/40">
-          <Camera className="h-3 w-3" />
-          <span>Photo coming</span>
-        </div>
-
-        {/* Icon */}
-        <div
-          className={`mb-4 flex items-center justify-center rounded-2xl bg-gradient-to-br ${experience.iconGradient} shadow-lg transition-transform duration-300 group-hover:scale-110 ${experience.large ? "h-16 w-16" : "h-12 w-12"}`}
-        >
-          <Icon
-            className={experience.large ? "h-8 w-8 text-white" : "h-6 w-6 text-white"}
-          />
-        </div>
-
-        {/* Title */}
         <h3
-          className={`mb-1 font-bold text-white ${experience.large ? "text-2xl md:text-3xl" : "text-lg md:text-xl"}`}
+          className={`font-bold text-white ${isLarge ? "text-xl md:text-2xl" : "text-base md:text-lg"}`}
         >
           {experience.title}
         </h3>
-
-        {/* Tagline */}
         <p
-          className={`leading-relaxed text-white/60 ${experience.large ? "text-base" : "text-sm"}`}
+          className={`mt-0.5 text-white/70 ${isLarge ? "text-sm md:text-base" : "text-xs md:text-sm"}`}
         >
           {experience.tagline}
         </p>
@@ -198,7 +172,7 @@ export function ExperienceShowcase() {
 
         {/* Bento Grid */}
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:auto-rows-[180px]">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4 md:auto-rows-[200px] md:gap-4">
             {experiences.map((experience, index) => (
               <ExperienceCard
                 key={experience.title}
