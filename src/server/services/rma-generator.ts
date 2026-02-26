@@ -163,25 +163,67 @@ function drawParagraph(ctx: DrawContext, text: string, indent = 0): void {
 }
 
 /**
- * Draw a bold+body inline paragraph (title on its own line, then body)
+ * Draw a clause with bold number inline with body text (e.g. "1.1 The OWNER hereby...")
  */
 function drawClause(ctx: DrawContext, number: string, body: string, indent = 0): void {
   ensureSpace(ctx, 30);
-  ctx.y = drawTextWrapped(
-    ctx.currentPage,
-    number,
-    {
+  // Draw bold number
+  const numberText = `${number} `;
+  const numberWidth = ctx.boldFont.widthOfTextAtSize(numberText, 9);
+  ctx.currentPage.drawText(numberText, {
+    x: ctx.marginX + indent,
+    y: ctx.y,
+    size: 9,
+    font: ctx.boldFont,
+    color: rgb(0, 0, 0),
+  });
+  // Draw body starting after the number, wrapping to full width on subsequent lines
+  const firstLineMaxWidth = ctx.contentWidth - indent - numberWidth;
+  const words = body.split(" ");
+  const lines: string[] = [];
+  let currentLine = "";
+
+  // Build first line with reduced width
+  let isFirstLine = true;
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    const maxW = isFirstLine ? firstLineMaxWidth : ctx.contentWidth - indent;
+    const width = ctx.bodyFont.widthOfTextAtSize(testLine, 9);
+    if (width > maxW && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+      isFirstLine = false;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+
+  // Draw first line next to the bold number
+  if (lines.length > 0) {
+    ctx.currentPage.drawText(lines[0]!, {
+      x: ctx.marginX + indent + numberWidth,
+      y: ctx.y,
+      size: 9,
+      font: ctx.bodyFont,
+      color: rgb(0, 0, 0),
+    });
+    ctx.y -= 13;
+  }
+
+  // Draw remaining lines at full width
+  for (let i = 1; i < lines.length; i++) {
+    ensureSpace(ctx, 15);
+    ctx.currentPage.drawText(lines[i]!, {
       x: ctx.marginX + indent,
       y: ctx.y,
       size: 9,
-      font: ctx.boldFont,
-      maxWidth: ctx.contentWidth - indent,
-      lineHeight: 13,
-    },
-    ctx.bodyFont,
-  );
-  ctx.y -= 2;
-  drawParagraph(ctx, body, indent);
+      font: ctx.bodyFont,
+      color: rgb(0, 0, 0),
+    });
+    ctx.y -= 13;
+  }
+  ctx.y -= 5;
 }
 
 /**
@@ -195,16 +237,6 @@ export async function generateUnsignedRmaPdf(
   const bodyFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   const italicFont = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
-
-  // Try to embed logo
-  let logoImage;
-  try {
-    const logoPath = path.join(process.cwd(), "public", "Logo.png");
-    const logoBytes = fs.readFileSync(logoPath);
-    logoImage = await pdfDoc.embedPng(logoBytes);
-  } catch {
-    // Logo embedding is optional
-  }
 
   // Load manager signature
   let managerSignature;
@@ -238,17 +270,6 @@ export async function generateUnsignedRmaPdf(
   };
 
   // ===== HEADER =====
-  if (logoImage) {
-    const logoDims = logoImage.scale(0.15);
-    ctx.currentPage.drawImage(logoImage, {
-      x: (pageWidth - logoDims.width) / 2,
-      y: ctx.y - logoDims.height,
-      width: logoDims.width,
-      height: logoDims.height,
-    });
-    ctx.y -= logoDims.height + 15;
-  }
-
   // Title
   const title = "RENTAL MANAGEMENT AGREEMENT";
   const titleWidth = boldFont.widthOfTextAtSize(title, 14);
@@ -286,11 +307,31 @@ export async function generateUnsignedRmaPdf(
   });
   ctx.y -= 15;
 
-  // Second Party (Owner) — dynamic
-  const ownerDisplay = data.ownerName ?? "______________________________";
-  drawParagraph(ctx,
-    `${ownerDisplay}, hereinafter referred to as the "OWNER."`
-  );
+  // Second Party (Owner) — dynamic name in bold
+  if (data.ownerName) {
+    ensureSpace(ctx, 20);
+    const nameText = data.ownerName;
+    const nameWidth = ctx.boldFont.widthOfTextAtSize(nameText, 10);
+    ctx.currentPage.drawText(nameText, {
+      x: ctx.marginX,
+      y: ctx.y,
+      size: 10,
+      font: ctx.boldFont,
+      color: rgb(0, 0, 0),
+    });
+    ctx.currentPage.drawText(', hereinafter referred to as the "OWNER."', {
+      x: ctx.marginX + nameWidth,
+      y: ctx.y,
+      size: 9,
+      font: ctx.bodyFont,
+      color: rgb(0, 0, 0),
+    });
+    ctx.y -= 14;
+  } else {
+    drawParagraph(ctx,
+      '______________________________, hereinafter referred to as the "OWNER."'
+    );
+  }
   ctx.y -= 3;
 
   drawParagraph(ctx,
@@ -491,100 +532,75 @@ export async function generateUnsignedRmaPdf(
   );
   ctx.y -= 40;
 
-  // --- Manager (left side) ---
+  // Signature section
+  const signatureY = ctx.y;
+
+  // Left side: Manager
   signPage.drawText("ARK-MARINE CONSTRUCTION, INC.", {
     x: marginX,
-    y: ctx.y,
-    size: 9,
-    font: boldFont,
-    color: rgb(0, 0, 0),
-  });
-  ctx.y -= 13;
-
-  signPage.drawText('Operating as REEF RESORT', {
-    x: marginX,
-    y: ctx.y,
-    size: 9,
-    font: bodyFont,
-    color: rgb(0, 0, 0),
-  });
-  ctx.y -= 25;
-
-  // Manager signature image
-  if (managerSignature) {
-    const sigDims = managerSignature.scale(0.2);
-    signPage.drawImage(managerSignature, {
-      x: marginX,
-      y: ctx.y - sigDims.height,
-      width: sigDims.width,
-      height: sigDims.height,
-    });
-  }
-
-  // "By:" label
-  signPage.drawText("By: ___________________________", {
-    x: marginX,
-    y: ctx.y - 5,
-    size: 9,
-    font: bodyFont,
-    color: rgb(0, 0, 0),
-  });
-  ctx.y -= 20;
-
-  signPage.drawText("Name: _________________________", {
-    x: marginX,
-    y: ctx.y,
-    size: 9,
-    font: bodyFont,
-    color: rgb(0, 0, 0),
-  });
-  ctx.y -= 15;
-
-  signPage.drawText("Title: _________________________", {
-    x: marginX,
-    y: ctx.y,
-    size: 9,
-    font: bodyFont,
-    color: rgb(0, 0, 0),
-  });
-
-  // --- Owner (right side) ---
-  const rightX = marginX + 280;
-  const sigBlockStartY = pageHeight - 80 - 50; // after the witness text
-
-  signPage.drawText("OWNER", {
-    x: rightX,
-    y: sigBlockStartY,
+    y: signatureY,
     size: 10,
     font: boldFont,
     color: rgb(0, 0, 0),
   });
 
-  signPage.drawText("Signature: _______________________", {
-    x: rightX,
-    y: sigBlockStartY - 50,
+  signPage.drawText("Operating as REEF RESORT", {
+    x: marginX,
+    y: signatureY - 15,
     size: 9,
     font: bodyFont,
     color: rgb(0, 0, 0),
   });
 
-  const ownerNameLine = data.ownerName
-    ? `Name: ${data.ownerName}`
-    : "Name: ____________________________";
-  signPage.drawText(ownerNameLine, {
-    x: rightX,
-    y: sigBlockStartY - 70,
+  signPage.drawText("Represented by:", {
+    x: marginX,
+    y: signatureY - 45,
     size: 9,
     font: bodyFont,
     color: rgb(0, 0, 0),
   });
 
-  const signDateStr = data.signDate
-    ? `Date: ${formatDate(data.signDate)}`
-    : "Date: ___________________________";
-  signPage.drawText(signDateStr, {
+  // Manager signature image
+  if (managerSignature) {
+    const sigDims = managerSignature.scale(0.15);
+    signPage.drawImage(managerSignature, {
+      x: marginX,
+      y: signatureY - 85,
+      width: sigDims.width,
+      height: sigDims.height,
+    });
+  }
+
+  signPage.drawText("MITCHELL SUCHNER", {
+    x: marginX,
+    y: signatureY - 95,
+    size: 9,
+    font: boldFont,
+    color: rgb(0, 0, 0),
+  });
+
+  signPage.drawText("General Manager", {
+    x: marginX,
+    y: signatureY - 110,
+    size: 9,
+    font: bodyFont,
+    color: rgb(0, 0, 0),
+  });
+
+  // Right side: Owner (placeholder for unsigned)
+  const rightX = marginX + 280;
+
+  signPage.drawText("__________________________", {
     x: rightX,
-    y: sigBlockStartY - 90,
+    y: signatureY,
+    size: 10,
+    font: bodyFont,
+    color: rgb(0, 0, 0),
+  });
+
+  signPage.drawText("Second Party", {
+    x: rightX,
+    y: signatureY - 15,
     size: 9,
     font: bodyFont,
     color: rgb(0, 0, 0),
@@ -607,14 +623,12 @@ export async function generateSignedRmaPdf(
   const pages = pdfDoc.getPages();
   const lastPage = pages[pages.length - 1]!;
 
-  const marginX = 72;
-  const rightX = marginX + 280;
-  const pageHeight = 792;
-  const sigBlockStartY = pageHeight - 80 - 50;
-
-  // Embed signature image
+  // Embed the signature image
   try {
-    const base64Data = data.signatureDataUrl.split(",")[1]!;
+    const base64Data = data.signatureDataUrl.split(",")[1];
+    if (!base64Data) {
+      throw new Error("Invalid signature data URL");
+    }
 
     let signatureImage;
     if (data.signatureDataUrl.startsWith("data:image/png")) {
@@ -628,22 +642,39 @@ export async function generateSignedRmaPdf(
       throw new Error("Unsupported signature image format");
     }
 
-    // Draw signature image above the "Signature:" line
+    // Calculate signature position (right side, above "Second Party")
+    // RMA signature page: witness text near top, signature blocks ~150px from top
+    const marginX = 72;
+    const rightX = marginX + 280;
+    const pageH = 792;
+    const signatureY = pageH - 150; // matches where underline is drawn in unsigned template
+
+    // Draw signature image above the underline
     const signatureDims = signatureImage.scale(0.25);
     lastPage.drawImage(signatureImage, {
       x: rightX,
-      y: sigBlockStartY - 45,
+      y: signatureY - 20,
       width: signatureDims.width,
       height: signatureDims.height,
     });
 
-    // Overlay the owner name on the "Name:" line
+    // Add owner name below signature (bold, ALL CAPS)
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     lastPage.drawText(data.ownerName.toUpperCase(), {
-      x: rightX + 45,
-      y: sigBlockStartY - 70,
+      x: rightX,
+      y: signatureY - 55,
       size: 9,
       font: boldFont,
+      color: rgb(0, 0, 0),
+    });
+
+    // Add date below name
+    const bodyFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    lastPage.drawText(`Date: ${formatDate(data.signDate)}`, {
+      x: rightX,
+      y: signatureY - 70,
+      size: 9,
+      font: bodyFont,
       color: rgb(0, 0, 0),
     });
   } catch (error) {

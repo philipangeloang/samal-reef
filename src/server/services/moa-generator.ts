@@ -109,10 +109,11 @@ function drawTextWrapped(
 }
 
 /**
- * Helper to format percentage as whole number
+ * Helper to format percentage from basis points (e.g. 75 → "0.75", 300 → "3")
  */
 function formatPercentage(basisPoints: number): string {
-  return Math.round(basisPoints / 100).toString();
+  const pct = basisPoints / 100;
+  return pct % 1 === 0 ? pct.toFixed(0) : pct.toString();
 }
 
 /**
@@ -382,7 +383,7 @@ export async function generateUnsignedMoaPdf(
 
   // WHEREAS clause with percentages (bold the purchased percentage)
   const purchasedPercent = formatPercentage(data.ownershipPercentage);
-  const percentages = ["1", "3", "6", "12", "25", "50", "100"];
+  const percentages = ["0.75", "1.5", "3", "6", "12.5", "25", "50", "100"];
 
   // First line
   page1.drawText(
@@ -763,7 +764,7 @@ export async function generateUnsignedMoaPdf(
     10,
   );
 
-  page3.drawText(witnessDate, {
+  page3.drawText(` ${witnessDate}`, {
     x: marginX + witnessTextWidth,
     y: y,
     size: 11,
