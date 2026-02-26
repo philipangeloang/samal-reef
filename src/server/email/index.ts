@@ -1503,13 +1503,13 @@ export const emailService = {
                                 New MOA Signed ✅
                               </h2>
                               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
-                                An investor has signed their Memorandum of Agreement
+                                An owner has signed their Memorandum of Agreement
                               </p>
                             </td>
                           </tr>
                         </table>
 
-                        <!-- Investor & Property Details -->
+                        <!-- Owner & Property Details -->
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                           <tr>
                             <td style="padding: 24px; background: rgba(34, 211, 238, 0.08); border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.15);">
@@ -1519,7 +1519,7 @@ export const emailService = {
                               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
                                   <td style="padding: 8px 0;">
-                                    <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Investor</p>
+                                    <p style="margin: 0; font-size: 13px; color: rgba(224, 242, 254, 0.6);">Owner</p>
                                     <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffffff; font-weight: 600;">${investorName}</p>
                                     <p style="margin: 2px 0 0 0; font-size: 13px; color: #22d3ee;">${investorEmail}</p>
                                   </td>
@@ -1659,7 +1659,7 @@ export const emailService = {
                                 Payment Under Review
                               </h2>
                               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(224, 242, 254, 0.8); text-align: center;">
-                                Hi ${userName || "Investor"}, we've received your payment submission and it's now being reviewed by our team.
+                                Hi ${userName || "Owner"}, we've received your payment submission and it's now being reviewed by our team.
                               </p>
                             </td>
                           </tr>

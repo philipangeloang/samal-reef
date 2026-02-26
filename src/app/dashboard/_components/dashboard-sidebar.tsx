@@ -182,7 +182,7 @@ const navItems: NavItem[] = [
     icon: LayoutDashboard,
     roles: ["AFFILIATE"],
   },
-  // Investor routes
+  // Owner routes
   {
     title: "Overview",
     href: "/dashboard/investor",
@@ -224,7 +224,7 @@ export function DashboardSidebar() {
     // Affiliate dashboard - only show affiliate nav
     if (isOnAffiliateDashboard && item.roles.includes("AFFILIATE")) return true;
 
-    // Investor dashboard - only show investor nav
+    // Owner dashboard - only show owner nav
     if (isOnInvestorDashboard && item.roles.includes("INVESTOR")) return true;
 
     return false;
@@ -365,7 +365,7 @@ export function DashboardSidebar() {
                           </DropdownMenuItem>
                         )}
 
-                      {/* Show Investor Dashboard option if they have investor profile and not currently on it */}
+                      {/* Show Owner Dashboard option if they have investor profile and not currently on it */}
                       {profiles?.hasInvestorProfile &&
                         !isOnInvestorDashboard && (
                           <DropdownMenuItem asChild>

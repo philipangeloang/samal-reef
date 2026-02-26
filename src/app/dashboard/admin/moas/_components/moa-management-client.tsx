@@ -240,7 +240,7 @@ export function MoaManagementClient({
                       <TableHead className="text-cyan-100">
                         Ownership ID
                       </TableHead>
-                      <TableHead className="text-cyan-100">Investor</TableHead>
+                      <TableHead className="text-cyan-100">Owner</TableHead>
                       <TableHead className="text-cyan-100">Property</TableHead>
                       <TableHead className="text-cyan-100">
                         Collection

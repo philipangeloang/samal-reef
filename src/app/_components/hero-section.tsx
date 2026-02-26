@@ -27,7 +27,7 @@ export function HeroSection() {
       </div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a1929]/60 via-[#0d1f31]/70 to-[#0f2435]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0f2435]" />
 
       {/* Animated ocean wave overlay */}
       <div className="absolute inset-0">
@@ -37,7 +37,7 @@ export function HeroSection() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 py-20 text-center text-white">
         <div className="animate-fade-in mb-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-5 py-2.5 text-sm font-medium backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-5 py-2.5 text-sm font-medium backdrop-blur-sm [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
             <Waves className="h-4 w-4 text-cyan-300" />
             <span className="text-cyan-100">
               Sustainable • Innovative • Ocean Living
@@ -51,12 +51,12 @@ export function HeroSection() {
           </span>
         </h1>
 
-        <p className="mx-auto mb-16 max-w-3xl text-lg leading-relaxed text-balance text-cyan-50/90 md:text-xl">
+        <p className="mx-auto mb-16 max-w-3xl text-lg leading-relaxed text-balance text-cyan-50/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.6)] md:text-xl">
           Experience the first floating real estate — an eco-restorative
           seastead community in the ocean.
         </p>
 
-        <div className="flex flex-col justify-center gap-4 sm:flex-row">
+        <div className="flex flex-col justify-center gap-4 [text-shadow:0_2px_8px_rgba(0,0,0,0.6)] sm:flex-row">
           <Button
             asChild
             size="lg"

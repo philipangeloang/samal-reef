@@ -130,9 +130,9 @@ export function AddOwnershipForm({ collections, isAdmin }: AddOwnershipFormProps
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Investor Information */}
+          {/* Owner Information */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium text-cyan-300">Investor Information</h3>
+            <h3 className="text-sm font-medium text-cyan-300">Owner Information</h3>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="investorEmail" className="text-cyan-100">
@@ -143,7 +143,7 @@ export function AddOwnershipForm({ collections, isAdmin }: AddOwnershipFormProps
                   type="email"
                   value={investorEmail}
                   onChange={(e) => setInvestorEmail(e.target.value)}
-                  placeholder="investor@example.com"
+                  placeholder="owner@example.com"
                   className="border-cyan-400/30 bg-[#0a1929]/50 text-white placeholder:text-cyan-100/40"
                   required
                 />

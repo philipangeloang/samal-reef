@@ -272,7 +272,7 @@ export const manualPaymentRouter = createTRPCRouter({
         try {
           await emailService.sendManualPaymentUnderReview({
             to: user.email,
-            userName: user.name ?? user.email.split("@")[0] ?? "Investor",
+            userName: user.name ?? user.email.split("@")[0] ?? "Owner",
             referenceCode: input.referenceCode,
             collectionName: collection?.name ?? "Property",
             percentage: pricingTier?.displayLabel ?? `${input.percentageToBuy / 100}%`,

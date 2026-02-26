@@ -161,7 +161,7 @@ export function UnitDetailsClient({ initialData }: UnitDetailsClientProps) {
         <Card className="border-cyan-400/20 bg-gradient-to-br from-[#0d1f31]/90 to-[#0a1929]/90 backdrop-blur-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-cyan-100">
-              Total Investors
+              Total Owners
             </CardTitle>
             <Users className="h-4 w-4 text-blue-400" />
           </CardHeader>
@@ -231,7 +231,7 @@ export function UnitDetailsClient({ initialData }: UnitDetailsClientProps) {
         <CardHeader>
           <CardTitle className="text-white">Ownership Breakdown</CardTitle>
           <CardDescription className="text-cyan-100/60">
-            Detailed list of all investors and their ownership percentages
+            Detailed list of all owners and their ownership percentages
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -244,7 +244,7 @@ export function UnitDetailsClient({ initialData }: UnitDetailsClientProps) {
               <Table>
                 <TableHeader>
                   <TableRow className="border-cyan-400/20 bg-[#0a1929]/50 hover:bg-[#0a1929]/70">
-                    <TableHead className="text-cyan-100">Investor</TableHead>
+                    <TableHead className="text-cyan-100">Owner</TableHead>
                     <TableHead className="text-cyan-100">Email</TableHead>
                     <TableHead className="text-right text-cyan-100">
                       Ownership %

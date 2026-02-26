@@ -33,10 +33,10 @@ export function TestimonialsSection() {
       <div className="container mx-auto px-4">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-4xl font-bold text-white md:text-5xl">
-            Elite Investor Testimonials
+            Elite Owner Testimonials
           </h2>
           <p className="mx-auto max-w-2xl text-lg leading-relaxed text-cyan-50/90 md:text-xl">
-            Trusted by the most sophisticated investors worldwide
+            Trusted by the most sophisticated owners worldwide
           </p>
         </div>
 

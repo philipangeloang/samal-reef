@@ -123,9 +123,17 @@ export function UsersManagementClient({
       VISITOR: "bg-gray-400/20 text-gray-300 border-gray-400/30",
     };
 
+    const roleLabels: Record<User["role"], string> = {
+      ADMIN: "ADMIN",
+      STAFF: "STAFF",
+      AFFILIATE: "AFFILIATE",
+      INVESTOR: "OWNER",
+      VISITOR: "VISITOR",
+    };
+
     return (
       <Badge className={roleStyles[role]}>
-        {role}
+        {roleLabels[role]}
       </Badge>
     );
   };
@@ -169,7 +177,7 @@ export function UsersManagementClient({
                 <SelectItem value="ADMIN">Admin</SelectItem>
                 <SelectItem value="STAFF">Staff</SelectItem>
                 <SelectItem value="AFFILIATE">Affiliate</SelectItem>
-                <SelectItem value="INVESTOR">Investor</SelectItem>
+                <SelectItem value="INVESTOR">Owner</SelectItem>
                 <SelectItem value="VISITOR">Visitor</SelectItem>
               </SelectContent>
             </Select>
@@ -262,7 +270,7 @@ export function UsersManagementClient({
                           <SelectItem value="ADMIN">Admin</SelectItem>
                           <SelectItem value="STAFF">Staff</SelectItem>
                           <SelectItem value="AFFILIATE">Affiliate</SelectItem>
-                          <SelectItem value="INVESTOR">Investor</SelectItem>
+                          <SelectItem value="INVESTOR">Owner</SelectItem>
                           <SelectItem value="VISITOR">Visitor</SelectItem>
                         </SelectContent>
                       </Select>

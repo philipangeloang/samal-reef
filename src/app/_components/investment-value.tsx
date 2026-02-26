@@ -39,7 +39,7 @@ export function InvestmentValue() {
                 </h3>
                 <p className="text-sm leading-relaxed text-cyan-200/70 md:text-lg md:text-cyan-200/80">
                   Offering a pro-innovation legal and regulatory environment for
-                  investors, ensuring stability and growth potential in a
+                  owners, ensuring stability and growth potential in a
                   cutting-edge jurisdiction.
                 </p>
               </div>

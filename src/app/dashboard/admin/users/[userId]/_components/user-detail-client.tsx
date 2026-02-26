@@ -158,7 +158,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
             }
           >
             <TrendingUp className="mr-2 h-4 w-4" />
-            Investor Profile
+            Owner Profile
           </Button>
           <Button
             variant={activeTab === "affiliate" ? "default" : "outline"}
@@ -175,10 +175,10 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
         </div>
       )}
 
-      {/* Investor Profile */}
+      {/* Owner Profile */}
       {hasInvestorProfile && (!hasBothProfiles || activeTab === "investor") && investorData && (
         <div className="space-y-6">
-          {/* Investor Summary Stats */}
+          {/* Owner Summary Stats */}
           <div className="grid gap-6 md:grid-cols-3">
             {/* Total Invested */}
             <Card className="group relative overflow-hidden border-cyan-400/20 bg-gradient-to-br from-[#0d1f31]/90 to-[#0a1929]/90 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:shadow-lg hover:shadow-green-500/10">
@@ -481,7 +481,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
                       <TableHeader>
                         <TableRow className="border-cyan-400/20 bg-[#0a1929]/50 hover:bg-[#0a1929]/70">
                           <TableHead className="text-cyan-100">Date</TableHead>
-                          <TableHead className="text-cyan-100">Investor</TableHead>
+                          <TableHead className="text-cyan-100">Owner</TableHead>
                           <TableHead className="text-cyan-100">Unit</TableHead>
                           <TableHead className="text-cyan-100">Sale Amount</TableHead>
                           <TableHead className="text-cyan-100">Rate</TableHead>
@@ -552,7 +552,7 @@ export function UserDetailClient({ userData }: UserDetailClientProps) {
             <div className="flex flex-col items-center justify-center">
               <Users className="mb-3 h-12 w-12 text-cyan-400/50" />
               <p className="text-center text-cyan-100/60">
-                This user has no investor or affiliate profile yet.
+                This user has no owner or affiliate profile yet.
               </p>
             </div>
           </CardContent>

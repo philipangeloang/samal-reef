@@ -48,7 +48,7 @@ export default async function InvestorDashboardPage() {
       {/* Header */}
       <div className="animate-fade-in">
         <h1 className="bg-gradient-to-r from-cyan-300 via-cyan-200 to-blue-300 bg-clip-text text-4xl font-bold text-transparent">
-          Investor Dashboard
+          Owner Dashboard
         </h1>
         <p className="mt-2 text-cyan-100/70">
           Welcome back, {session.user.name ?? session.user.email}

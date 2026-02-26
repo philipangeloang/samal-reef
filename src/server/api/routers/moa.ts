@@ -269,7 +269,7 @@ export const moaRouter = createTRPCRouter({
         // Send confirmation email to investor
         await emailService.sendMoaSignedConfirmation({
           to: ownership.user.email!,
-          userName: ownership.user.name ?? "Investor",
+          userName: ownership.user.name ?? "Owner",
           unitName: ownership.unit.name,
           moaUrl: uploadedFile.data.url,
         });

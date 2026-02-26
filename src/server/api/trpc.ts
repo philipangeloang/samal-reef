@@ -247,7 +247,7 @@ export const investorProcedure = t.procedure
     if (!investorProfile && userRole !== "ADMIN") {
       throw new TRPCError({
         code: "FORBIDDEN",
-        message: "Investor access required",
+        message: "Owner access required",
       });
     }
 

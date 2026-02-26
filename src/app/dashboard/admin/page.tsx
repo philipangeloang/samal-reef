@@ -112,7 +112,7 @@ export default async function AdminDashboardPage() {
               </div>
               <p className="mt-1 text-xs text-cyan-100/60">
                 {stats.activeAffiliates} affiliates, {stats.totalInvestors}{" "}
-                investors
+                owners
               </p>
             </CardContent>
           </Card>
@@ -158,7 +158,7 @@ export default async function AdminDashboardPage() {
                   <TableHeader>
                     <TableRow className="border-cyan-400/20 bg-[#0a1929]/50 hover:bg-[#0a1929]/70">
                       <TableHead className="text-cyan-100">Date</TableHead>
-                      <TableHead className="text-cyan-100">Investor</TableHead>
+                      <TableHead className="text-cyan-100">Owner</TableHead>
                       <TableHead className="text-cyan-100">Property</TableHead>
                       <TableHead className="text-cyan-100">Ownership</TableHead>
                       <TableHead className="text-cyan-100">Amount</TableHead>

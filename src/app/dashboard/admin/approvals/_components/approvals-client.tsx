@@ -201,7 +201,7 @@ export function ApprovalsClient() {
                         <TableRow className="border-cyan-400/20 bg-[#0a1929]/50 hover:bg-[#0a1929]/70">
                           <TableHead className="text-cyan-100">Date</TableHead>
                           <TableHead className="text-cyan-100">Created By</TableHead>
-                          <TableHead className="text-cyan-100">Investor</TableHead>
+                          <TableHead className="text-cyan-100">Owner</TableHead>
                           <TableHead className="text-cyan-100">Collection</TableHead>
                           <TableHead className="text-cyan-100">Tier</TableHead>
                           <TableHead className="text-cyan-100">Amount</TableHead>

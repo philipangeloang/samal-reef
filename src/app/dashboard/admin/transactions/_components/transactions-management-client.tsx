@@ -469,14 +469,14 @@ export function TransactionsManagementClient({
           <DialogHeader>
             <DialogTitle className="text-white">Add Ownership</DialogTitle>
             <DialogDescription className="text-cyan-100/60">
-              Create a new ownership entry directly. This will create the investor account if needed.
+              Create a new ownership entry directly. This will create the owner account if needed.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
-            {/* Investor Information */}
+            {/* Owner Information */}
             <div className="space-y-4">
-              <h3 className="text-sm font-medium text-cyan-300">Investor Information</h3>
+              <h3 className="text-sm font-medium text-cyan-300">Owner Information</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label className="text-cyan-100">
@@ -486,7 +486,7 @@ export function TransactionsManagementClient({
                     type="email"
                     value={addForm.investorEmail}
                     onChange={(e) => setAddForm({ ...addForm, investorEmail: e.target.value })}
-                    placeholder="investor@example.com"
+                    placeholder="owner@example.com"
                     className="border-cyan-500/30 bg-gray-900/50 text-white"
                   />
                 </div>

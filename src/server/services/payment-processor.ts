@@ -326,7 +326,7 @@ async function sendPurchaseEmails(
   try {
     await emailService.sendPurchaseConfirmation({
       to: user.email,
-      userName: user.name ?? "Investor",
+      userName: user.name ?? "Owner",
       unitName: unit.name,
       percentage: pricingTier.displayLabel,
       amount: amountPaid,
@@ -341,7 +341,7 @@ async function sendPurchaseEmails(
   try {
     await emailService.sendMoaReadyEmail({
       to: user.email,
-      userName: user.name ?? "Investor",
+      userName: user.name ?? "Owner",
       unitName: unit.name,
       percentage: pricingTier.displayLabel,
       ownershipId,
@@ -370,7 +370,7 @@ async function sendPurchaseEmails(
       } else {
         await emailService.sendInvestorWelcome({
           to: user.email,
-          userName: user.name ?? "Investor",
+          userName: user.name ?? "Owner",
         });
       }
     } catch (emailError) {
